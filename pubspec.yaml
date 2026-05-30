@@ -1,0 +1,72 @@
+name: decant
+description: "Decant — Pour. Sort. Unwind. A calm, 3D-styled water sort puzzle with ASMR audio."
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+  flutter: ">=3.22.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State management — keeps game logic pure and testable, separate from UI.
+  flutter_riverpod: ^2.5.1
+
+  # Low-latency audio with per-voice pitch/speed control (for fill-level pitch shift).
+  flutter_soloud: ^2.0.0
+
+  # Lightweight persistence for progress, settings and best stats.
+  shared_preferences: ^2.2.3
+
+  # Cupertino icons (default Flutter asset).
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+  # Brand the native launcher icon and launch screen from branding/ images.
+  flutter_launcher_icons: ^0.14.0
+  flutter_native_splash: ^2.4.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/sounds/
+
+  # GLSL fragment shader used by the glass-tube painter.
+  shaders:
+    - shaders/glass.frag
+
+# ---------------------------------------------------------------------------
+# Launcher icon — run:  dart run flutter_launcher_icons
+# Teal gradient mark for legacy/iOS; teal background + white mark for adaptive.
+# ---------------------------------------------------------------------------
+flutter_launcher_icons:
+  image_path: "branding/decant_icon.png"
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  min_sdk_android: 21
+  adaptive_icon_background: "#20294A"
+  adaptive_icon_foreground: "branding/decant_foreground.png"
+  web:
+    generate: false
+
+# ---------------------------------------------------------------------------
+# Native splash / launch screen — run:  dart run flutter_native_splash:create
+# Solid brand background + the white Decant mark, matching the in-app splash.
+# ---------------------------------------------------------------------------
+flutter_native_splash:
+  color: "#243156"
+  image: branding/decant_splash.png
+  android: true
+  ios: true
+  fullscreen: true
+  android_12:
+    color: "#243156"
+    image: branding/decant_foreground.png
