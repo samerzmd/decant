@@ -63,9 +63,10 @@ decant/
 │       ├── widgets/               #   tube, board, buttons, logo, win overlay, stars
 │       └── screens/               #   splash, home, level select, game, settings
 ├── shaders/glass.frag             # GLSL glass-cylinder highlight overlay
-├── assets/sounds/                 # 8 synthesized CC0 WAVs (see license table)
+├── assets/sounds/                 # synthesized CC0 SFX (WAV) + ambient beds (OGG)
 ├── tool/
-│   ├── generate_sounds.py         # regenerates every sound asset
+│   ├── generate_sounds.py         # regenerates the sound effects
+│   ├── generate_ambient.py        # regenerates the ambient beds
 │   └── verify_algorithm.py        # Python port that proves the logic invariants
 ├── test/                          # unit + widget tests
 └── pubspec.yaml
@@ -136,12 +137,17 @@ Re-run the two `dart run` commands whenever you change the art or colors.
 
 **Every sound in Decant is original and synthesized from scratch**, so the
 entire set is released into the public domain under **CC0 1.0**. There are no
-third-party samples. The generator is `tool/generate_sounds.py` (NumPy); re-run
-it to regenerate or tweak any sound:
+third-party samples. Two generators (NumPy; the ambient one also needs SciPy and
+`ffmpeg` with libvorbis) regenerate or tweak any sound:
 
 ```bash
-python3 tool/generate_sounds.py
+python3 tool/generate_sounds.py    # sound effects  → assets/sounds/*.wav
+python3 tool/generate_ambient.py   # ambient beds   → assets/sounds/ambient_*.ogg
 ```
+
+The ambient beds are 48-second **stereo** loops (Ogg Vorbis, 44.1 kHz). Every
+layer, envelope and reverb tail is generated circularly, so they loop with no
+seam or click, and all five are mastered to the same loudness.
 
 | File                     | Trigger                                   | How it's synthesized                            | License |
 |--------------------------|-------------------------------------------|-------------------------------------------------|---------|
@@ -152,13 +158,13 @@ python3 tool/generate_sounds.py
 | `tube_complete.wav`      | A tube is solved                          | Two-note bell (C6→E6)                            | CC0 1.0 |
 | `combo.wav`              | Consecutive tube completions              | Ascending bell arpeggio (C6 E6 G6 C7)           | CC0 1.0 |
 | `win_jingle.wav`         | Puzzle solved                             | Bell melody over a soft pad                      | CC0 1.0 |
-| `ambient_loop.wav`       | Ambient bed — **Twilight Pad** (default)  | Slow detuned drone + airy shimmer, seamless loop | CC0 1.0 |
-| `ambient_rain.wav`       | Ambient bed — **Rain**                    | High-passed hiss + scattered droplet ticks + low rumble | CC0 1.0 |
-| `ambient_ocean.wav`      | Ambient bed — **Ocean**                   | Low-passed surf swelling in/out over a deep rumble | CC0 1.0 |
-| `ambient_stream.wav`     | Ambient bed — **Stream**                  | Soft mid-band water flow + lazy bubbles          | CC0 1.0 |
-| `ambient_fireplace.wav`  | Ambient bed — **Fireplace**               | Brown-noise rumble + airy hiss + random crackle pops | CC0 1.0 |
+| `ambient_pad.ogg`        | Ambient bed — **Twilight Pad** (default)  | Four-chord detuned additive pad, bell shimmer, large reverb | CC0 1.0 |
+| `ambient_rain.ogg`       | Ambient bed — **Rain**                    | Shaped stereo wash + thousands of individual drops + near puddle drips | CC0 1.0 |
+| `ambient_ocean.ogg`      | Ambient bed — **Ocean**                   | Irregular waves (rise → crash → foam fizz) drifting along the shore | CC0 1.0 |
+| `ambient_stream.ogg`     | Ambient bed — **Stream**                  | Layered water flow + clustered Minnaert bubbles + small splashes | CC0 1.0 |
+| `ambient_fireplace.ogg`  | Ambient bed — **Fireplace**               | Breathing roar + clustered crackle flurries + wood pops + sap hiss | CC0 1.0 |
 
-The ambient bed is toggleable and the track is selectable in **Settings → Audio → Ambience sound**. To add another bed: write a `make_ambient_*` function in `tool/generate_sounds.py`, save it as `assets/sounds/ambient_<name>.wav`, then add a value to the `AmbientTrack` enum (label + asset path) in `lib/audio/audio_service.dart`.
+The ambient bed is toggleable and the track is selectable in **Settings → Audio → Ambience sound**. To add another bed: write a `make_*` function in `tool/generate_ambient.py`, add it to `BEDS` (it saves as `assets/sounds/ambient_<name>.ogg`), then add a value to the `AmbientTrack` enum (label + asset path) in `lib/audio/audio_service.dart`.
 
 Playback uses [`flutter_soloud`](https://pub.dev/packages/flutter_soloud) for
 low latency and per-voice pitch control. Assets are preloaded at startup, so
