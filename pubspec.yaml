@@ -23,6 +23,8 @@ dependencies:
   # Cupertino icons (default Flutter asset).
   cupertino_icons: ^1.0.8
 
+  wakelock_plus: ^1.4.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

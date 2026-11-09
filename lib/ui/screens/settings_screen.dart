@@ -94,6 +94,13 @@ class SettingsScreen extends ConsumerWidget {
                       value: settings.hapticsEnabled,
                       onChanged: (_) => ctrl.toggleHaptics(),
                     ),
+                    _SwitchTile(
+                      label: 'Keep screen awake',
+                      subtitle: "Don't let the screen sleep while playing",
+                      icon: Icons.light_mode_rounded,
+                      value: settings.keepScreenOn,
+                      onChanged: (_) => ctrl.toggleKeepScreenOn(),
+                    ),
                     const SizedBox(height: 18),
                     const _SectionLabel('Accessibility'),
                     _SwitchTile(

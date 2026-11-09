@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../audio/audio_service.dart';
 import '../audio/haptic_service.dart';
@@ -17,6 +18,17 @@ class SettingsController extends StateNotifier<AppSettings> {
     // Apply the loaded settings immediately.
     _audio.applySettings(state.audio);
     _haptic.enabled = state.hapticsEnabled;
+    _applyKeepScreenOn(state.keepScreenOn);
+  }
+
+  /// The wakelock only holds while the app is in the foreground; the OS drops
+  /// it automatically when Decant is backgrounded.
+  void _applyKeepScreenOn(bool on) {
+    try {
+      WakelockPlus.toggle(enable: on).catchError((Object _) {});
+    } catch (_) {
+      // Plugin unavailable (tests / unsupported platform): ignore.
+    }
   }
 
   void _commit(AppSettings next) {
@@ -59,6 +71,11 @@ class SettingsController extends StateNotifier<AppSettings> {
 
   void toggleHaptics() =>
       _commit(state.copyWith(hapticsEnabled: !state.hapticsEnabled));
+
+  void toggleKeepScreenOn() {
+    _commit(state.copyWith(keepScreenOn: !state.keepScreenOn));
+    _applyKeepScreenOn(state.keepScreenOn);
+  }
 
   void toggleColorblind() =>
       _commit(state.copyWith(colorblindMode: !state.colorblindMode));
