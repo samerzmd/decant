@@ -41,7 +41,8 @@ Tighten the release and lay groundwork for the community.
 - [x] Move `MainActivity.kt` to its package-matching folder
 - [ ] Expand widget/golden tests; wire coverage reporting into CI
 - [ ] Settings: pour-animation speed, reduce-motion option
-- [ ] A simple **stats** screen (levels solved, total stars, best moves, streak)
+- [x] A simple **stats** screen (levels solved, stars, perfect levels, wins,
+      daily streak)
 - [x] In-app "how to play" / first-run tutorial overlay
 - [ ] App store assets (screenshots, feature graphic, store listing copy)
 
