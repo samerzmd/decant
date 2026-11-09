@@ -131,7 +131,10 @@ class AudioSettings {
 /// (e.g. in unit tests or on an unsupported platform) the calls become no-ops
 /// instead of throwing, so gameplay never breaks because of audio.
 class AudioService {
-  final SoLoud _soloud = SoLoud.instance;
+  // Lazy: SoLoud.instance loads the native library, which throws where it
+  // isn't available (e.g. tests on Linux CI). Every use is inside init()'s
+  // try, behind _ready, or wrapped in _safe, so that stays a no-op.
+  late final SoLoud _soloud = SoLoud.instance;
 
   final Map<Sfx, AudioSource> _sfx = {};
   // Only the selected ambient bed is loaded (54 beds ship; loading them all
