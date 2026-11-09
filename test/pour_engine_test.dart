@@ -115,14 +115,14 @@ void main() {
     test('undoAll returns to the start', () {
       var s = state([
         [0, 1],
-        [1, 0],
+        [0, 1],
         [],
       ]);
-      final a = PourEngine.applyPour(s, 0, 2)!.state; // move top 1
-      final b = PourEngine.applyPour(a, 1, 2)!.state; // move top 0
+      final a = PourEngine.applyPour(s, 0, 2)!.state; // move top 1 into empty
+      final b = PourEngine.applyPour(a, 1, 2)!.state; // move top 1 onto it
       final restored = PourEngine.undoAll(b);
       expect(restored.tubes[0].segments, [0, 1]);
-      expect(restored.tubes[1].segments, [1, 0]);
+      expect(restored.tubes[1].segments, [0, 1]);
       expect(restored.tubes[2].segments, isEmpty);
     });
   });

@@ -29,6 +29,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       if (settings.audio.ambientEnabled && !settings.audio.muted) {
         ref.read(audioServiceProvider).startAmbient();
       }
+      if (settings.audio.musicEnabled && !settings.audio.muted) {
+        ref.read(audioServiceProvider).startMusic();
+      }
     });
   }
 
@@ -101,7 +104,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   primary: false,
                   expand: true,
                   onPressed: () => Navigator.of(context).push(
-                    _route(const LevelSelectScreen()),
+                    _route(const LevelSelectScreen(), name: '/level_select'),
                   ),
                 ),
                 const SizedBox(height: 14),
@@ -111,7 +114,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   primary: false,
                   expand: true,
                   onPressed: () => Navigator.of(context).push(
-                    _route(const SettingsScreen()),
+                    _route(const SettingsScreen(), name: '/settings'),
                   ),
                 ),
                 const Spacer(),
@@ -133,10 +136,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   void _openLevel(BuildContext context, int levelId) {
-    Navigator.of(context).push(_route(GameScreen(levelId: levelId)));
+    Navigator.of(context)
+        .push(_route(GameScreen(levelId: levelId), name: '/game'));
   }
 
-  Route<T> _route<T>(Widget page) => PageRouteBuilder<T>(
+  Route<T> _route<T>(Widget page, {required String name}) => PageRouteBuilder<T>(
+        settings: RouteSettings(name: name),
         transitionDuration: const Duration(milliseconds: 350),
         pageBuilder: (_, __, ___) => page,
         transitionsBuilder: (_, anim, __, child) => FadeTransition(

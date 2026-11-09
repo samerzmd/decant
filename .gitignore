@@ -44,6 +44,11 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+# Release signing — never commit the upload keystore or its passwords.
+android/key.properties
+*.jks
+*.keystore
+
 # Python (asset generation scripts in tool/)
 __pycache__/
 *.egg-info/
@@ -53,3 +58,13 @@ venv/
 # NOTE: assets/sounds/*.wav and branding/*.png are intentionally committed —
 # they are the shipped, generated source assets (regenerable via tool/).
 
+
+# Firebase config — generated per project by `flutterfire configure`; kept out
+# of this public repo (see README → Firebase).
+lib/firebase_options.dart
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+firebase.json
+
+# fvm: local symlink to the pinned Flutter SDK (version lives in .fvmrc)
+.fvm/

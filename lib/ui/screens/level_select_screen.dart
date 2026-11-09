@@ -56,7 +56,10 @@ class LevelSelectScreen extends ConsumerWidget {
 
   void _open(BuildContext context, int levelId) {
     Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => GameScreen(levelId: levelId)),
+      MaterialPageRoute(
+        settings: const RouteSettings(name: '/game'),
+        builder: (_) => GameScreen(levelId: levelId),
+      ),
     );
   }
 }

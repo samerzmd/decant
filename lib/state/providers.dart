@@ -2,12 +2,14 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 
 import '../audio/audio_service.dart';
 import '../audio/haptic_service.dart';
 import '../logic/level_generator.dart';
 import '../models/app_settings.dart';
 import '../models/level.dart';
+import '../services/analytics_service.dart';
 import '../services/persistence_service.dart';
 import 'game_controller.dart';
 import 'game_session.dart';
@@ -25,6 +27,11 @@ final audioServiceProvider = Provider<AudioService>(
 );
 
 final hapticServiceProvider = Provider<HapticService>((_) => HapticService());
+
+/// Overridden in `main()` after `Firebase.initializeApp()` completes.
+final analyticsServiceProvider = Provider<AnalyticsService>(
+  (_) => throw UnimplementedError('analyticsServiceProvider must be overridden'),
+);
 
 final settingsProvider =
     StateNotifierProvider<SettingsController, AppSettings>((ref) {
@@ -60,7 +67,7 @@ final glassShaderProvider = FutureProvider<ui.FragmentShader?>((ref) async {
         await ui.FragmentProgram.fromAsset('shaders/glass.frag');
     return program.fragmentShader();
   } catch (e) {
-    debugPrint('Glass shader unavailable, using fallback: $e');
+    if (kDebugMode) debugPrint('Glass shader unavailable, using fallback: $e');
     return null;
   }
 });

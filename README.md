@@ -21,7 +21,7 @@ A calm, polished **water sort puzzle** for Android and iOS, built in Flutter. Ta
 - Auto-detection of **stuck** boards, with a prompt to undo / restart / add a tube.
 - **3D glass visuals**: rounded-bottom glass cylinders, rim and mouth lighting, soft drop shadows, layered liquid with a rounded **meniscus**, glossy reflections, rising bubbles, and a GLSL highlight overlay.
 - **Pour animation**: arcing liquid stream, source-tube tilt, rising liquid in the destination, splash droplets, and a settling wobble on landing.
-- **ASMR audio** (all synthesized, see below): looping water trickle (pitch rises as a tube fills), droplet plink, glass clink, glug, completion chime, combo cascade, win jingle, and a toggleable, **selectable ambient bed** (Twilight Pad, Rain, Ocean, Stream, Fireplace).
+- **ASMR audio** (all synthesized, see below): looping water trickle (pitch rises as a tube fills), droplet plink, glass clink, glug, completion chime, combo cascade, win jingle, a toggleable ambient bed chosen from a **library of 54 ambience sounds** in 10 categories (rain, water, wind, fire, nature, night, home, travel, noise colors, ASMR textures), and **background music** on top from a **library of 54 calm music loops** in 8 styles (piano, keys, bells, strings, mallets, ambient, lo-fi, flute).
 - **Haptics** synced to pour start, droplet landing, tube completion, and the win.
 - Settings: separate volume sliders for SFX / ambience / music, a mute toggle, ambient on/off, haptics toggle, and a **colorblind-friendly** mode (distinct symbols on every color).
 - Persistent progress, best stars, and settings via `shared_preferences`.
@@ -63,9 +63,13 @@ decant/
 │       ├── widgets/               #   tube, board, buttons, logo, win overlay, stars
 │       └── screens/               #   splash, home, level select, game, settings
 ├── shaders/glass.frag             # GLSL glass-cylinder highlight overlay
-├── assets/sounds/                 # 8 synthesized CC0 WAVs (see license table)
+├── assets/sounds/                 # synthesized CC0 SFX (WAV) + ambient beds (OGG)
 ├── tool/
-│   ├── generate_sounds.py         # regenerates every sound asset
+│   ├── generate_sounds.py         # regenerates the sound effects
+│   ├── generate_ambient.py        # regenerates the ambient beds + Dart catalog
+│   ├── ambient_library.py         # the 50 extra ambience recipes + catalog
+│   ├── generate_music.py          # regenerates the background music + Dart catalog
+│   ├── music_library.py           # instruments, composition engine, 50 extra tracks
 │   └── verify_algorithm.py        # Python port that proves the logic invariants
 ├── test/                          # unit + widget tests
 └── pubspec.yaml
@@ -104,6 +108,20 @@ flutter test
 missing native scaffolding. `flutter_soloud` builds its native audio engine
 automatically through the normal plugin build.
 
+### Firebase (analytics)
+
+Decant reports anonymous gameplay events (level start/complete, hints, extra
+tubes, screen views) to Google Analytics via Firebase. The Firebase config
+files are **not committed** (`lib/firebase_options.dart`,
+`android/app/google-services.json`, `ios/Runner/GoogleService-Info.plist`,
+`firebase.json`), so generate them for your own Firebase project before the
+first build:
+
+```bash
+dart pub global activate flutterfire_cli
+flutterfire configure --project=<your-firebase-project-id>
+```
+
 ---
 
 ## Branding (launcher icon & splash)
@@ -136,12 +154,18 @@ Re-run the two `dart run` commands whenever you change the art or colors.
 
 **Every sound in Decant is original and synthesized from scratch**, so the
 entire set is released into the public domain under **CC0 1.0**. There are no
-third-party samples. The generator is `tool/generate_sounds.py` (NumPy); re-run
-it to regenerate or tweak any sound:
+third-party samples. Two generators (NumPy; the ambient one also needs SciPy and
+`ffmpeg` with libvorbis) regenerate or tweak any sound:
 
 ```bash
-python3 tool/generate_sounds.py
+python3 tool/generate_sounds.py    # sound effects  → assets/sounds/*.wav
+python3 tool/generate_ambient.py   # ambient beds   → assets/sounds/ambient_*.ogg
+python3 tool/generate_music.py     # music loops    → assets/sounds/music_*.ogg
 ```
+
+The ambient beds are 48-second **stereo** loops (Ogg Vorbis, 44.1 kHz). Every
+layer, envelope and reverb tail is generated circularly, so they loop with no
+seam or click, and all five are mastered to the same loudness.
 
 | File                     | Trigger                                   | How it's synthesized                            | License |
 |--------------------------|-------------------------------------------|-------------------------------------------------|---------|
@@ -152,13 +176,36 @@ python3 tool/generate_sounds.py
 | `tube_complete.wav`      | A tube is solved                          | Two-note bell (C6→E6)                            | CC0 1.0 |
 | `combo.wav`              | Consecutive tube completions              | Ascending bell arpeggio (C6 E6 G6 C7)           | CC0 1.0 |
 | `win_jingle.wav`         | Puzzle solved                             | Bell melody over a soft pad                      | CC0 1.0 |
-| `ambient_loop.wav`       | Ambient bed — **Twilight Pad** (default)  | Slow detuned drone + airy shimmer, seamless loop | CC0 1.0 |
-| `ambient_rain.wav`       | Ambient bed — **Rain**                    | High-passed hiss + scattered droplet ticks + low rumble | CC0 1.0 |
-| `ambient_ocean.wav`      | Ambient bed — **Ocean**                   | Low-passed surf swelling in/out over a deep rumble | CC0 1.0 |
-| `ambient_stream.wav`     | Ambient bed — **Stream**                  | Soft mid-band water flow + lazy bubbles          | CC0 1.0 |
-| `ambient_fireplace.wav`  | Ambient bed — **Fireplace**               | Brown-noise rumble + airy hiss + random crackle pops | CC0 1.0 |
+| `ambient_*.ogg` (54)     | Ambient bed — chosen in the **Ambience** browser (Ocean by default) | Rain (6 kinds incl. window, tent, tin roof, thunder) · Water (ocean, stream, waterfall, lake, cave, fountain, underwater) · Wind (5) · Fire (4) · Nature (birds, meadow, cicadas, rainforest) · Night (crickets, frogs, owls) · Home (clock, fan, AC, washer, simmering pot, purring cat, keyboard) · Travel (train, airplane, night drive, sailboat) · Noise (white, pink, brown, green) · ASMR (tapping, brushing, paper, hourglass, heartbeat, chimes, singing bowl, rain stick). Each is a recipe in `tool/ambient_library.py` | CC0 1.0 |
+| `music_*.ogg` (54)       | Background music — chosen in the **Music** browser (Warm Keys by default) | Composed + synthesized: 4 originals (Twilight Pad, Music Box, Felt Piano, Warm Keys; 48–96 s) and 50 more 64 s loops from `tool/music_library.py` — felt piano, FM electric piano, music box, celesta, glockenspiel, modal-synth guitar/harp/koto, kalimba, marimba, vibraphone, handpan, flute, string & pad ensembles, soft lo-fi drums + vinyl. All in the C-major pitch set (different modal centers) with pentatonic melodies | CC0 1.0 |
 
-The ambient bed is toggleable and the track is selectable in **Settings → Audio → Ambience sound**. To add another bed: write a `make_ambient_*` function in `tool/generate_sounds.py`, save it as `assets/sounds/ambient_<name>.wav`, then add a value to the `AmbientTrack` enum (label + asset path) in `lib/audio/audio_service.dart`.
+The ambient bed is toggleable; tap **Settings → Audio → Ambience sound** to open the browser (search, category filters, tap a tile to hear it). **Background music** plays on top of the ambience (Warm Keys by default) — switch it off, or tap **Settings → Audio → Music track** to browse all 54 tracks by style. The music tracks share one key family and the ambient beds are unpitched nature sounds, so every track sits cleanly over every bed; the **Music** slider sets their level. To add another bed: write a recipe in `tool/ambient_library.py` and add a row to `CATALOG` (id, label, category, Material icon, recipe, seed, loudness), then run `python3 tool/generate_ambient.py <id>` — it renders `assets/sounds/ambient_<id>.ogg` and regenerates `lib/audio/ambient_catalog.g.dart`, so the app picks it up with no Dart changes.
+
+### Store-delivered sound packs
+
+Only the 8 original loops (4 ambience incl. the default Ocean, 4 music incl. the
+default Warm Keys) ship inside the app. The other 100 live in `sound_packs/`
+and are delivered by the stores **right after install**, so the download from
+the store stays small:
+
+| Platform | Mechanism | Where it's configured |
+|----------|-----------|-----------------------|
+| Android | Play Asset Delivery, two **fast-follow** packs (`ambient`, `music`) | `android/ambient_pack`, `android/music_pack` (their `src/main/assets` symlink to `sound_packs/…`), `assetPacks` in `android/app/build.gradle.kts`, bridge in `MainActivity.kt` |
+| iOS | On-Demand Resources tagged `ambient` / `music`, listed in `ON_DEMAND_RESOURCES_PREFETCH_ORDER` | `SoundPacks` group in `Runner.xcodeproj`, bridge in `AppDelegate.swift` |
+
+`lib/audio/sound_packs.dart` talks to both bridges. Until a pack arrives its
+sounds show a download badge in the browsers, and a selected pack sound plays
+the bundled default as a stand-in, switching over automatically when the pack
+lands. Packs only arrive from the stores: a sideloaded APK
+(`flutter build apk`) or `flutter run` build plays the bundled sounds only.
+Test delivery locally with `bundletool build-apks --local-testing` (Android)
+or by running from Xcode (iOS, which hosts On-Demand Resources itself).
+Upload an **app bundle** (`flutter build appbundle`) to Play, not an APK.
+
+After adding a sound to a pack, regenerate it
+(`tool/generate_ambient.py` / `tool/generate_music.py`) — Android picks new
+files up automatically; on iOS add the file to the `SoundPacks` group with the
+matching asset tag.
 
 Playback uses [`flutter_soloud`](https://pub.dev/packages/flutter_soloud) for
 low latency and per-voice pitch control. Assets are preloaded at startup, so

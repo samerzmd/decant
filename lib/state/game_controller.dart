@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 
 import '../audio/audio_service.dart';
 import '../audio/haptic_service.dart';
@@ -8,6 +9,7 @@ import '../logic/pour_engine.dart';
 import '../logic/solver.dart';
 import '../models/game_state.dart';
 import '../models/level.dart';
+import '../services/analytics_service.dart';
 import 'game_session.dart';
 import 'providers.dart';
 
@@ -24,10 +26,13 @@ class GameController extends StateNotifier<GameSession> {
   int _comboChain = 0;
   int _pourSeq = 0;
 
-  GameController(this._ref, this._level) : super(_initial(_level));
+  GameController(this._ref, this._level) : super(_initial(_level)) {
+    _analytics.logLevelStart(_level.id);
+  }
 
   AudioService get _audio => _ref.read(audioServiceProvider);
   HapticService get _haptic => _ref.read(hapticServiceProvider);
+  AnalyticsService get _analytics => _ref.read(analyticsServiceProvider);
 
   @override
   void dispose() {
@@ -166,6 +171,12 @@ class GameController extends StateNotifier<GameSession> {
     _ref
         .read(progressProvider.notifier)
         .recordWin(_level.id, stars, state.moves);
+    _analytics.logLevelComplete(
+      levelId: _level.id,
+      stars: stars,
+      moves: state.moves,
+      hintsUsed: state.state.hintsUsed,
+    );
   }
 
   int _computeStars() {
@@ -230,6 +241,7 @@ class GameController extends StateNotifier<GameSession> {
       state: state.state.copyWith(hintsUsed: state.state.hintsUsed + 1),
       clearSelected: true,
     );
+    _analytics.logHintUsed(_level.id);
     return true;
   }
 
@@ -250,6 +262,7 @@ class GameController extends StateNotifier<GameSession> {
       clearHint: true,
       stuck: false,
     );
+    _analytics.logAddTubeUsed(_level.id);
     return true;
   }
 }

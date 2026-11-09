@@ -9,27 +9,34 @@ class AppSettings {
   /// When true, segments also show a distinct symbol/pattern (not color alone).
   final bool colorblindMode;
 
+  /// Keep the display awake while Decant is in the foreground.
+  final bool keepScreenOn;
+
   const AppSettings({
     this.audio = const AudioSettings(),
     this.hapticsEnabled = true,
     this.colorblindMode = false,
+    this.keepScreenOn = false,
   });
 
   AppSettings copyWith({
     AudioSettings? audio,
     bool? hapticsEnabled,
     bool? colorblindMode,
+    bool? keepScreenOn,
   }) =>
       AppSettings(
         audio: audio ?? this.audio,
         hapticsEnabled: hapticsEnabled ?? this.hapticsEnabled,
         colorblindMode: colorblindMode ?? this.colorblindMode,
+        keepScreenOn: keepScreenOn ?? this.keepScreenOn,
       );
 
   Map<String, dynamic> toJson() => {
         'audio': audio.toJson(),
         'haptics': hapticsEnabled,
         'colorblind': colorblindMode,
+        'keepScreenOn': keepScreenOn,
       };
 
   factory AppSettings.fromJson(Map<String, dynamic> j) => AppSettings(
@@ -38,5 +45,6 @@ class AppSettings {
             : const AudioSettings(),
         hapticsEnabled: j['haptics'] as bool? ?? true,
         colorblindMode: j['colorblind'] as bool? ?? false,
+        keepScreenOn: j['keepScreenOn'] as bool? ?? false,
       );
 }

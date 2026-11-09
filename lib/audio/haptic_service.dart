@@ -25,6 +25,8 @@ class HapticService {
   void _run(Future<void> Function() fn) {
     if (!enabled) return;
     // Fire-and-forget; haptics are unsupported on some platforms/desktop.
-    fn().catchError((Object e) => debugPrint('Haptic failed: $e'));
+    fn().catchError((Object e) {
+      if (kDebugMode) debugPrint('Haptic failed: $e');
+    });
   }
 }

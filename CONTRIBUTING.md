@@ -62,8 +62,9 @@ re-run it, then register the asset:
 
 - One-shots: add to the `Sfx` enum + `_sfxAssets` map in
   `lib/audio/audio_service.dart` and trigger it from `GameController`.
-- Ambient beds: add an `ambient_<name>.wav`, then a value to the `AmbientTrack`
-  enum (label + asset path).
+- Ambient beds: add a recipe + a `CATALOG` row in `tool/ambient_library.py`,
+  then run `python3 tool/generate_ambient.py <id>`. That renders the `.ogg`
+  and regenerates `lib/audio/ambient_catalog.g.dart` (no Dart edits needed).
 
 All shipped sounds are synthesized originals released as CC0. If you contribute
 sourced audio instead, it must be CC0/public-domain and documented in the

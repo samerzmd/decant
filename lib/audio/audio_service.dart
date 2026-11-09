@@ -3,6 +3,18 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_soloud/flutter_soloud.dart';
 
+import 'ambient_track.dart';
+import 'music_track.dart';
+import 'sound_catalog.dart';
+import 'sound_packs.dart';
+
+// Ambient beds: the 54-bed catalog lives in `ambient_track.dart` (+ its
+// generated `ambient_catalog.g.dart`); re-exported for existing importers.
+export 'ambient_track.dart';
+export 'music_track.dart';
+export 'sound_catalog.dart';
+export 'sound_packs.dart';
+
 /// The discrete one-shot sound effects shipped with Decant.
 enum Sfx { droplet, clink, glug, complete, combo, win }
 
@@ -19,29 +31,6 @@ const Map<Sfx, String> _sfxAssets = {
 
 const String _pourAsset = 'assets/sounds/water_pour_loop.wav';
 
-/// Selectable ambient background beds (all synthesized, CC0).
-enum AmbientTrack { pad, rain, ocean, stream, fireplace }
-
-/// Asset path for each ambient bed. ([AmbientTrack.pad] keeps the original
-/// `ambient_loop.wav` filename for backward compatibility.)
-const Map<AmbientTrack, String> kAmbientAssets = {
-  AmbientTrack.pad: 'assets/sounds/ambient_loop.wav',
-  AmbientTrack.rain: 'assets/sounds/ambient_rain.wav',
-  AmbientTrack.ocean: 'assets/sounds/ambient_ocean.wav',
-  AmbientTrack.stream: 'assets/sounds/ambient_stream.wav',
-  AmbientTrack.fireplace: 'assets/sounds/ambient_fireplace.wav',
-};
-
-extension AmbientTrackLabel on AmbientTrack {
-  String get label => switch (this) {
-        AmbientTrack.pad => 'Twilight Pad',
-        AmbientTrack.rain => 'Rain',
-        AmbientTrack.ocean => 'Ocean',
-        AmbientTrack.stream => 'Stream',
-        AmbientTrack.fireplace => 'Fireplace',
-      };
-}
-
 /// Mixer volumes (0..1) for the three independent audio buses.
 @immutable
 class AudioSettings {
@@ -54,13 +43,20 @@ class AudioSettings {
   /// Which ambient bed plays when ambience is enabled.
   final AmbientTrack ambientTrack;
 
+  /// Optional background music on top of the ambience. On (Warm Keys) for
+  /// fresh installs; players with older saved settings keep it off.
+  final bool musicEnabled;
+  final MusicTrack musicTrack;
+
   const AudioSettings({
     this.sfxVolume = 0.9,
     this.ambientVolume = 0.5,
     this.musicVolume = 0.8,
     this.muted = false,
     this.ambientEnabled = true,
-    this.ambientTrack = AmbientTrack.pad,
+    this.ambientTrack = AmbientTrack.ocean,
+    this.musicEnabled = true,
+    this.musicTrack = MusicTrack.warmKeys,
   });
 
   AudioSettings copyWith({
@@ -70,6 +66,8 @@ class AudioSettings {
     bool? muted,
     bool? ambientEnabled,
     AmbientTrack? ambientTrack,
+    bool? musicEnabled,
+    MusicTrack? musicTrack,
   }) =>
       AudioSettings(
         sfxVolume: sfxVolume ?? this.sfxVolume,
@@ -78,6 +76,8 @@ class AudioSettings {
         muted: muted ?? this.muted,
         ambientEnabled: ambientEnabled ?? this.ambientEnabled,
         ambientTrack: ambientTrack ?? this.ambientTrack,
+        musicEnabled: musicEnabled ?? this.musicEnabled,
+        musicTrack: musicTrack ?? this.musicTrack,
       );
 
   Map<String, dynamic> toJson() => {
@@ -87,19 +87,35 @@ class AudioSettings {
         'muted': muted,
         'ambientEnabled': ambientEnabled,
         'ambientTrack': ambientTrack.name,
+        'musicEnabled': musicEnabled,
+        'musicTrack': musicTrack.name,
       };
 
-  factory AudioSettings.fromJson(Map<String, dynamic> j) => AudioSettings(
-        sfxVolume: (j['sfx'] as num?)?.toDouble() ?? 0.9,
-        ambientVolume: (j['ambient'] as num?)?.toDouble() ?? 0.5,
-        musicVolume: (j['music'] as num?)?.toDouble() ?? 0.8,
-        muted: j['muted'] as bool? ?? false,
-        ambientEnabled: j['ambientEnabled'] as bool? ?? true,
-        ambientTrack: AmbientTrack.values.firstWhere(
-          (t) => t.name == j['ambientTrack'],
-          orElse: () => AmbientTrack.pad,
-        ),
-      );
+  factory AudioSettings.fromJson(Map<String, dynamic> j) {
+    final ambientEnabled = j['ambientEnabled'] as bool? ?? true;
+    var musicEnabled = j['musicEnabled'] as bool? ?? false;
+    var musicTrack =
+        MusicTrack.byName(j['musicTrack'] as String?) ?? MusicTrack.warmKeys;
+    // Migration: Twilight Pad used to be an ambient bed (and the default, so a
+    // missing key means it too). It is now a music track: keep those players
+    // hearing it by moving them to Ocean with the pad playing as music.
+    final legacyPad = j['ambientTrack'] == null || j['ambientTrack'] == 'pad';
+    if (legacyPad && ambientEnabled && !musicEnabled) {
+      musicEnabled = true;
+      musicTrack = MusicTrack.twilightPad;
+    }
+    return AudioSettings(
+      sfxVolume: (j['sfx'] as num?)?.toDouble() ?? 0.9,
+      ambientVolume: (j['ambient'] as num?)?.toDouble() ?? 0.5,
+      musicVolume: (j['music'] as num?)?.toDouble() ?? 0.8,
+      muted: j['muted'] as bool? ?? false,
+      ambientEnabled: ambientEnabled,
+      ambientTrack:
+          AmbientTrack.byName(j['ambientTrack'] as String?) ?? AmbientTrack.ocean,
+      musicEnabled: musicEnabled,
+      musicTrack: musicTrack,
+    );
+  }
 }
 
 /// Low-latency audio engine wrapper around `flutter_soloud`.
@@ -118,15 +134,24 @@ class AudioService {
   final SoLoud _soloud = SoLoud.instance;
 
   final Map<Sfx, AudioSource> _sfx = {};
-  final Map<AmbientTrack, AudioSource> _ambient = {};
+  // Only the selected ambient bed is loaded (54 beds ship; loading them all
+  // up front would slow startup). Swapped on demand in [startAmbient].
+  AudioSource? _ambientSource;
+  AmbientTrack? _ambientSourceTrack;
+  int _ambientGen = 0; // bumps on every stop/switch to cancel stale starts
+  AudioSource? _musicSource;
+  MusicTrack? _musicSourceTrack;
+  int _musicGen = 0;
   AudioSource? _pourSource;
 
   SoundHandle? _pourHandle;
   SoundHandle? _ambientHandle;
+  SoundHandle? _musicHandle;
 
   bool _ready = false;
-  // Set if something asked for ambient before the engine finished loading.
+  // Set if something asked for ambient/music before the engine finished loading.
   bool _pendingAmbient = false;
+  bool _pendingMusic = false;
   AudioSettings _settings = const AudioSettings();
 
   AudioSettings get settings => _settings;
@@ -137,28 +162,70 @@ class AudioService {
   /// memory for low latency; the long ambient loops stream from disk so init
   /// stays fast and light.
   Future<void> init() async {
+    _watchPacks();
     try {
-      if (!_soloud.isInitialized) {
-        await _soloud.init();
-      }
+      // Always (re)initialise. After the app is exited with Back the Android
+      // process can be reused with a fresh Dart isolate while the native
+      // engine from the previous run is still alive. Skipping init() then
+      // leaves flutter_soloud's asset temp folder unset, so every loadAsset()
+      // fails and the app runs silent. init() resets a live native engine
+      // itself, so calling it unconditionally is safe.
+      await _soloud.init();
       for (final entry in _sfxAssets.entries) {
         _sfx[entry.key] = await _soloud.loadAsset(entry.value);
       }
       _pourSource = await _soloud.loadAsset(_pourAsset);
-      for (final entry in kAmbientAssets.entries) {
-        _ambient[entry.key] =
-            await _soloud.loadAsset(entry.value, mode: LoadMode.disk);
-      }
       _ready = true;
-      // If the ambient bed was requested while we were still loading, start it.
+      // If ambient/music was requested while we were still loading, start it.
       if (_pendingAmbient) {
         _pendingAmbient = false;
         await startAmbient();
       }
+      if (_pendingMusic) {
+        _pendingMusic = false;
+        await startMusic();
+      }
     } catch (e) {
-      debugPrint('AudioService init failed (continuing muted): $e');
+      if (kDebugMode) debugPrint('AudioService init failed (continuing muted): $e');
       _ready = false;
     }
+  }
+
+  // ---- Store-delivered packs ---------------------------------------------- //
+
+  bool _packListenersOn = false;
+  // True while a bundled default stands in for a pack sound still downloading.
+  bool _ambientStandIn = false;
+  bool _musicStandIn = false;
+
+  void _watchPacks() {
+    if (_packListenersOn) return;
+    _packListenersOn = true;
+    unawaited(SoundPacks.instance.start());
+    SoundPacks.instance.stateOf('ambient').addListener(() {
+      if (_ambientStandIn && SoundPacks.instance.stateOf('ambient').value.ready) {
+        _ambientStandIn = false;
+        if (_ambientHandle != null) switchAmbient(_settings.ambientTrack);
+      }
+    });
+    SoundPacks.instance.stateOf('music').addListener(() {
+      if (_musicStandIn && SoundPacks.instance.stateOf('music').value.ready) {
+        _musicStandIn = false;
+        if (_musicHandle != null) switchMusic(_settings.musicTrack);
+      }
+    });
+  }
+
+  /// Bundled sounds load from Flutter assets; pack sounds from the file the
+  /// store delivered (null while the pack is still on its way).
+  Future<AudioSource?> _loadSound(SoundItem t) async {
+    final pack = t.pack;
+    if (pack == null) {
+      return _soloud.loadAsset('assets/sounds/${t.fileName}', mode: LoadMode.disk);
+    }
+    final path = await SoundPacks.instance.resolve(pack, t.fileName);
+    if (path == null) return null;
+    return _soloud.loadFile(path, mode: LoadMode.disk);
   }
 
   void applySettings(AudioSettings settings) {
@@ -171,9 +238,15 @@ class AudioService {
       if (_pourHandle != null) {
         _soloud.setVolume(_pourHandle!, _sfxLevel * 0.6);
       }
+      if (_musicHandle != null) {
+        _soloud.setVolume(_musicHandle!, _musicBedLevel);
+      }
     });
     if (_settings.muted || !_settings.ambientEnabled) {
       stopAmbient();
+    }
+    if (_settings.muted || !_settings.musicEnabled) {
+      stopMusic();
     }
   }
 
@@ -181,6 +254,11 @@ class AudioService {
   double get _ambientLevel =>
       (_settings.muted || !_settings.ambientEnabled) ? 0 : _settings.ambientVolume;
   double get _musicLevel => _settings.muted ? 0 : _settings.musicVolume;
+
+  /// The music loop sits a little under the ambience so it never dominates;
+  /// the Music slider still scales it (and the win jingle) together.
+  double get _musicBedLevel =>
+      _settings.musicEnabled ? _musicLevel * 0.6 : 0;
 
   // ---- One-shots --------------------------------------------------------- //
 
@@ -219,10 +297,10 @@ class AudioService {
     final vol = _sfxLevel * 0.6;
     if (vol <= 0) return;
     try {
-      _pourHandle = await _soloud.play(_pourSource!, volume: vol, looping: true);
+      _pourHandle = _soloud.play(_pourSource!, volume: vol, looping: true);
       updatePourPitch(fillFraction);
     } catch (e) {
-      debugPrint('startPour failed: $e');
+      if (kDebugMode) debugPrint('startPour failed: $e');
     }
   }
 
@@ -251,17 +329,50 @@ class AudioService {
     }
     if (_ambientHandle != null) return;
     if (_ambientLevel <= 0) return;
-    final source = _ambient[_settings.ambientTrack] ?? _ambient[AmbientTrack.pad];
-    if (source == null) return;
+    final gen = ++_ambientGen;
     try {
-      _ambientHandle =
-          await _soloud.play(source, volume: _ambientLevel, looping: true);
+      var source = await _ambientSourceFor(_settings.ambientTrack);
+      _ambientStandIn = source == null;
+      if (source == null) {
+        unawaited(SoundPacks.instance.fetch(_settings.ambientTrack.pack ?? 'ambient'));
+        source = await _ambientSourceFor(AmbientTrack.ocean); // bundled stand-in
+      }
+      if (gen != _ambientGen || source == null) return; // superseded meanwhile
+      final h = _soloud.play(source, volume: _ambientLevel, looping: true);
+      if (gen != _ambientGen || _ambientLevel <= 0) {
+        _safe(() => _soloud.stop(h)); // stopped/switched while starting
+        return;
+      }
+      _ambientHandle = h;
     } catch (e) {
-      debugPrint('startAmbient failed: $e');
+      if (kDebugMode) debugPrint('startAmbient failed: $e');
     }
   }
 
+  /// Load [track]'s bed (streamed from disk), releasing the previous one.
+  Future<AudioSource?> _ambientSourceFor(AmbientTrack track) async {
+    if (_ambientSourceTrack == track && _ambientSource != null) {
+      return _ambientSource;
+    }
+    final old = _ambientSource;
+    _ambientSource = null;
+    _ambientSourceTrack = null;
+    _musicSource = null;
+    _musicSourceTrack = null;
+    if (old != null) {
+      try {
+        await _soloud.disposeSource(old);
+      } catch (_) {}
+    }
+    final src = await _loadSound(track);
+    if (src == null) return null;
+    _ambientSource = src;
+    _ambientSourceTrack = track;
+    return src;
+  }
+
   Future<void> stopAmbient() async {
+    _ambientGen++;
     final h = _ambientHandle;
     _ambientHandle = null;
     if (h == null) return;
@@ -272,10 +383,71 @@ class AudioService {
   /// restarts seamlessly with the new track.
   Future<void> switchAmbient(AmbientTrack track) async {
     _settings = _settings.copyWith(ambientTrack: track);
-    if (_ambientHandle != null) {
-      await stopAmbient();
-      await startAmbient();
+    await stopAmbient();
+    if (_ambientLevel > 0) await startAmbient();
+  }
+
+  // ---- Background music -------------------------------------------------- //
+
+  Future<void> startMusic() async {
+    if (!_ready) {
+      _pendingMusic = true; // start as soon as loading finishes
+      return;
     }
+    if (_musicHandle != null) return;
+    if (_musicBedLevel <= 0) return;
+    final gen = ++_musicGen;
+    try {
+      var source = await _musicSourceFor(_settings.musicTrack);
+      _musicStandIn = source == null;
+      if (source == null) {
+        unawaited(SoundPacks.instance.fetch(_settings.musicTrack.pack ?? 'music'));
+        source = await _musicSourceFor(MusicTrack.warmKeys); // bundled stand-in
+      }
+      if (gen != _musicGen || source == null) return; // superseded meanwhile
+      final h = _soloud.play(source, volume: _musicBedLevel, looping: true);
+      if (gen != _musicGen || _musicBedLevel <= 0) {
+        _safe(() => _soloud.stop(h));
+        return;
+      }
+      _musicHandle = h;
+    } catch (e) {
+      if (kDebugMode) debugPrint('startMusic failed: $e');
+    }
+  }
+
+  /// Load [track] (streamed from disk), releasing the previous one.
+  Future<AudioSource?> _musicSourceFor(MusicTrack track) async {
+    if (_musicSourceTrack == track && _musicSource != null) return _musicSource;
+    final old = _musicSource;
+    _musicSource = null;
+    _musicSourceTrack = null;
+    if (old != null) {
+      try {
+        await _soloud.disposeSource(old);
+      } catch (_) {}
+    }
+    final src = await _loadSound(track);
+    if (src == null) return null;
+    _musicSource = src;
+    _musicSourceTrack = track;
+    return src;
+  }
+
+  Future<void> stopMusic() async {
+    _pendingMusic = false;
+    _musicGen++;
+    final h = _musicHandle;
+    _musicHandle = null;
+    if (h == null) return;
+    _safe(() => _soloud.stop(h));
+  }
+
+  /// Switch the music to [track], restarting it if it is currently playing.
+  Future<void> switchMusic(MusicTrack track) async {
+    _settings = _settings.copyWith(musicTrack: track);
+    await stopMusic();
+    if (_musicBedLevel > 0) await startMusic();
   }
 
   // ---- App lifecycle ----------------------------------------------------- //
@@ -290,42 +462,67 @@ class AudioService {
     await stopPour();
     final h = _ambientHandle;
     if (h != null) _safe(() => _soloud.setPause(h, true));
+    final mh = _musicHandle;
+    if (mh != null) _safe(() => _soloud.setPause(mh, true));
     _safe(() => _soloud.setGlobalVolume(0));
-    debugPrint('Decant audio: paused & silenced (ready=$_ready)');
+    if (kDebugMode) debugPrint('Decant audio: paused & silenced (ready=$_ready)');
   }
 
   /// Called when the Activity is being destroyed. Tears the engine down fully
   /// so a recreated process can re-initialize from scratch (otherwise the stale
   /// native engine wedges the new isolate).
   Future<void> handleAppDetached() async {
-    await stopPour();
-    await stopAmbient();
-    _safe(_soloud.deinit);
+    // Release the native engine synchronously, before any await: Android can
+    // tear the Flutter engine down right after `detached`, so code after an
+    // await may never run (leaving the native engine alive for the next run).
+    _pourHandle = null;
+    _ambientHandle = null;
+    _musicHandle = null;
+    _ambientGen++;
+    _musicGen++;
+    _safe(_soloud.deinit); // also stops and disposes every voice/source
     _ready = false;
+    _ambientSource = null;
+    _ambientSourceTrack = null;
+    _musicSource = null;
+    _musicSourceTrack = null;
     _pendingAmbient = false;
-    debugPrint('Decant audio: engine released (detached)');
+    _pendingMusic = false;
+    if (kDebugMode) debugPrint('Decant audio: engine released (detached)');
   }
 
   /// Restore audio when the app returns from the background/history.
   Future<void> handleAppResumed() async {
+    final wantAmbient = !_settings.muted && _settings.ambientEnabled;
+    final wantMusic = !_settings.muted && _settings.musicEnabled;
     if (!_ready) {
-      // Engine was released (e.g. after a detach) — rebuild it. The ambient bed
-      // re-starts via _pendingAmbient once loading finishes.
-      if (!_settings.muted && _settings.ambientEnabled) _pendingAmbient = true;
+      // Engine was released (e.g. after a detach) — rebuild it. The loops
+      // re-start via the pending flags once loading finishes.
+      if (wantAmbient) _pendingAmbient = true;
+      if (wantMusic) _pendingMusic = true;
       await init();
       return;
     }
     _safe(() => _soloud.setGlobalVolume(1));
-    final wantAmbient = !_settings.muted && _settings.ambientEnabled;
-    if (!wantAmbient) return;
-    final h = _ambientHandle;
-    if (h != null && _isValidHandle(h)) {
-      // Just un-pause the still-loaded voice — no replay, no risk of a hang.
-      _safe(() => _soloud.setPause(h, false));
-    } else {
-      // Voice was reclaimed while away → safe to (re)start it.
-      _ambientHandle = null;
-      await startAmbient();
+    if (wantAmbient) {
+      final h = _ambientHandle;
+      if (h != null && _isValidHandle(h)) {
+        // Just un-pause the still-loaded voice — no replay, no risk of a hang.
+        _safe(() => _soloud.setPause(h, false));
+      } else {
+        // Voice was reclaimed while away → safe to (re)start it.
+        _ambientHandle = null;
+        await startAmbient();
+      }
+    }
+    if (wantMusic) {
+      final h = _musicHandle;
+      if (h != null && _isValidHandle(h)) {
+        _safe(() => _soloud.setPause(h, false));
+      } else {
+        _musicHandle = null;
+        await startMusic();
+      }
     }
   }
 
@@ -340,15 +537,20 @@ class AudioService {
   Future<void> dispose() async {
     await stopPour();
     await stopAmbient();
+    await stopMusic();
     _safe(_soloud.deinit);
     _ready = false;
+    _ambientSource = null;
+    _ambientSourceTrack = null;
+    _musicSource = null;
+    _musicSourceTrack = null;
   }
 
   void _safe(void Function() fn) {
     try {
       fn();
     } catch (e) {
-      debugPrint('AudioService op failed: $e');
+      if (kDebugMode) debugPrint('AudioService op failed: $e');
     }
   }
 }
