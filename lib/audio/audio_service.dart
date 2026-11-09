@@ -164,9 +164,13 @@ class AudioService {
   Future<void> init() async {
     _watchPacks();
     try {
-      if (!_soloud.isInitialized) {
-        await _soloud.init();
-      }
+      // Always (re)initialise. After the app is exited with Back the Android
+      // process can be reused with a fresh Dart isolate while the native
+      // engine from the previous run is still alive. Skipping init() then
+      // leaves flutter_soloud's asset temp folder unset, so every loadAsset()
+      // fails and the app runs silent. init() resets a live native engine
+      // itself, so calling it unconditionally is safe.
+      await _soloud.init();
       for (final entry in _sfxAssets.entries) {
         _sfx[entry.key] = await _soloud.loadAsset(entry.value);
       }
@@ -468,10 +472,15 @@ class AudioService {
   /// so a recreated process can re-initialize from scratch (otherwise the stale
   /// native engine wedges the new isolate).
   Future<void> handleAppDetached() async {
-    await stopPour();
-    await stopAmbient();
-    await stopMusic();
-    _safe(_soloud.deinit);
+    // Release the native engine synchronously, before any await: Android can
+    // tear the Flutter engine down right after `detached`, so code after an
+    // await may never run (leaving the native engine alive for the next run).
+    _pourHandle = null;
+    _ambientHandle = null;
+    _musicHandle = null;
+    _ambientGen++;
+    _musicGen++;
+    _safe(_soloud.deinit); // also stops and disposes every voice/source
     _ready = false;
     _ambientSource = null;
     _ambientSourceTrack = null;
