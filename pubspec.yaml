@@ -49,7 +49,9 @@ flutter:
 
 # ---------------------------------------------------------------------------
 # Launcher icon — run:  dart run flutter_launcher_icons
-# Teal gradient mark for legacy/iOS; teal background + white mark for adaptive.
+# branding/ images are rendered from the in-app logo painter:
+#   flutter test tool/render_branding_test.dart
+# Full icon for legacy/iOS; adaptive layers + monochrome for Android 8/13+.
 # ---------------------------------------------------------------------------
 flutter_launcher_icons:
   image_path: "branding/decant_icon.png"
@@ -57,14 +59,15 @@ flutter_launcher_icons:
   ios: true
   remove_alpha_ios: true
   min_sdk_android: 21
-  adaptive_icon_background: "#20294A"
+  adaptive_icon_background: "#243156"
   adaptive_icon_foreground: "branding/decant_foreground.png"
+  adaptive_icon_monochrome: "branding/decant_monochrome.png"
   web:
     generate: false
 
 # ---------------------------------------------------------------------------
 # Native splash / launch screen — run:  dart run flutter_native_splash:create
-# Solid brand background + the white Decant mark, matching the in-app splash.
+# Solid brand background + the Decant mark, matching the in-app splash.
 # ---------------------------------------------------------------------------
 flutter_native_splash:
   color: "#243156"
@@ -74,4 +77,4 @@ flutter_native_splash:
   fullscreen: true
   android_12:
     color: "#243156"
-    image: branding/decant_foreground.png
+    image: branding/decant_splash.png
