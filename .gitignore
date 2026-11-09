@@ -65,3 +65,6 @@ lib/firebase_options.dart
 android/app/google-services.json
 ios/Runner/GoogleService-Info.plist
 firebase.json
+
+# fvm: local symlink to the pinned Flutter SDK (version lives in .fvmrc)
+.fvm/

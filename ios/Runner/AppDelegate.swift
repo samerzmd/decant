@@ -2,7 +2,7 @@ import Flutter
 import UIKit
 
 @main
-@objc class AppDelegate: FlutterAppDelegate, FlutterStreamHandler {
+@objc class AppDelegate: FlutterAppDelegate, FlutterImplicitEngineDelegate, FlutterStreamHandler {
   // ---- Store-delivered sound packs (On-Demand Resources) ------------------ //
   // The extra ambience/music loops are tagged "ambient" / "music" in the
   // Xcode project and listed in ON_DEMAND_RESOURCES_PREFETCH_ORDER, so the
@@ -18,8 +18,14 @@ import UIKit
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-    GeneratedPluginRegistrant.register(with: self)
-    if let registrar = self.registrar(forPlugin: "DecantSoundPacks") {
+    return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+  }
+
+  /// UIScene lifecycle: the Flutter engine is created by the scene, so plugins
+  /// and our own channels are registered here rather than at launch.
+  func didInitializeImplicitFlutterEngine(_ engineBridge: FlutterImplicitEngineBridge) {
+    GeneratedPluginRegistrant.register(with: engineBridge.pluginRegistry)
+    if let registrar = engineBridge.pluginRegistry.registrar(forPlugin: "DecantSoundPacks") {
       let channel = FlutterMethodChannel(
         name: "decant/sound_packs", binaryMessenger: registrar.messenger())
       channel.setMethodCallHandler { [weak self] call, result in
@@ -29,7 +35,6 @@ import UIKit
         name: "decant/sound_packs/events", binaryMessenger: registrar.messenger()
       ).setStreamHandler(self)
     }
-    return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 
   func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink)

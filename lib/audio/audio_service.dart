@@ -297,7 +297,7 @@ class AudioService {
     final vol = _sfxLevel * 0.6;
     if (vol <= 0) return;
     try {
-      _pourHandle = await _soloud.play(_pourSource!, volume: vol, looping: true);
+      _pourHandle = _soloud.play(_pourSource!, volume: vol, looping: true);
       updatePourPitch(fillFraction);
     } catch (e) {
       if (kDebugMode) debugPrint('startPour failed: $e');
@@ -338,7 +338,7 @@ class AudioService {
         source = await _ambientSourceFor(AmbientTrack.ocean); // bundled stand-in
       }
       if (gen != _ambientGen || source == null) return; // superseded meanwhile
-      final h = await _soloud.play(source, volume: _ambientLevel, looping: true);
+      final h = _soloud.play(source, volume: _ambientLevel, looping: true);
       if (gen != _ambientGen || _ambientLevel <= 0) {
         _safe(() => _soloud.stop(h)); // stopped/switched while starting
         return;
@@ -405,7 +405,7 @@ class AudioService {
         source = await _musicSourceFor(MusicTrack.warmKeys); // bundled stand-in
       }
       if (gen != _musicGen || source == null) return; // superseded meanwhile
-      final h = await _soloud.play(source, volume: _musicBedLevel, looping: true);
+      final h = _soloud.play(source, volume: _musicBedLevel, looping: true);
       if (gen != _musicGen || _musicBedLevel <= 0) {
         _safe(() => _soloud.stop(h));
         return;

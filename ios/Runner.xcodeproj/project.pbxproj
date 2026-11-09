@@ -16,7 +16,6 @@
 		0EAA07B28E56E0F06D3FC947 /* music_first_snow.ogg in Resources */ = {isa = PBXBuildFile; fileRef = DEC3F10CD5CF06B2C8BB9C35 /* music_first_snow.ogg */; settings = {ASSET_TAGS = (music, ); }; };
 		142A5A2A28D607DEC1125E37 /* music_vibraphone_night.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 4AE41B524BDDA5D63D102321 /* music_vibraphone_night.ogg */; settings = {ASSET_TAGS = (music, ); }; };
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
-		26E89C082594AE5EC42661AE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 01E49222979C16CCD24D3FB6 /* GoogleService-Info.plist */; };
 		1E652F937A83D1F69DD78A95 /* ambient_brown_noise.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 5EC5C24BE0EFA3B9A666BA35 /* ambient_brown_noise.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
 		1EB268EB5810DAD0C75A83D0 /* music_kalimba_lullaby.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 3CB6A5323F56F60D569D30E7 /* music_kalimba_lullaby.ogg */; settings = {ASSET_TAGS = (music, ); }; };
 		1F5685ED8145A3250E577C03 /* music_handpan_meditation.ogg in Resources */ = {isa = PBXBuildFile; fileRef = A9609EFEF1211C9EFEAF8F43 /* music_handpan_meditation.ogg */; settings = {ASSET_TAGS = (music, ); }; };
@@ -24,6 +23,7 @@
 		22A480CBCD643ACDD70341EC /* music_study_session.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 549A56F41106DE52E8B8BDF7 /* music_study_session.ogg */; settings = {ASSET_TAGS = (music, ); }; };
 		2411573EA7E558985AFF71A7 /* ambient_candle.ogg in Resources */ = {isa = PBXBuildFile; fileRef = AECA5B5436A209D4B6102300 /* ambient_candle.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
 		255CE580089F4436E8F15AA0 /* music_floating.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 53E8EC42EE8FDC3695F0004E /* music_floating.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		26E89C082594AE5EC42661AE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 01E49222979C16CCD24D3FB6 /* GoogleService-Info.plist */; };
 		2A1373C7421E2423EDB58621 /* ambient_heartbeat.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 7EC87456BE32C4A40FF9BF71 /* ambient_heartbeat.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
 		2EF0FB9A147369D7C3E9DC38 /* music_kalimba_sunrise.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 5451357E72C2E838446B1F24 /* music_kalimba_sunrise.ogg */; settings = {ASSET_TAGS = (music, ); }; };
 		331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C807B294A618700263BE5 /* RunnerTests.swift */; };
@@ -33,8 +33,6 @@
 		3848BEEE7C399280112FA4CB /* ambient_purr.ogg in Resources */ = {isa = PBXBuildFile; fileRef = EA11DC9A5188566F3DCED986 /* ambient_purr.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
 		394CE10CDA691C44EF92835C /* music_shepherds_song.ogg in Resources */ = {isa = PBXBuildFile; fileRef = CD2816C0252BD1D86E9EFE6F /* music_shepherds_song.ogg */; settings = {ASSET_TAGS = (music, ); }; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
-		503A9D3BAE57AA1232C830B8 /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 723D0F52954CBAA59AC47B6D /* Pods_RunnerTests.framework */; };
-		6AA7583A9A98D77566038226 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EB2DFEDB241FA5A51FFACFB /* Pods_Runner.framework */; };
 		3CCA5E0913BD79492D444090 /* music_glass_garden.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 5E1315C5140BB96B966E34BF /* music_glass_garden.ogg */; settings = {ASSET_TAGS = (music, ); }; };
 		3E5650301EAFFECB76DC6748 /* ambient_sailboat.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 6EA06EF8E4AD4ED91B371018 /* ambient_sailboat.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
 		43028C1CB3545434C1EABFBC /* ambient_summer_night.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 1E564A5C400121CFD25C1385 /* ambient_summer_night.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
@@ -62,6 +60,7 @@
 		73BA642333BEA1E71EC545F1 /* music_evening_breeze.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 186A567903AC4A884CFD0960 /* music_evening_breeze.ogg */; settings = {ASSET_TAGS = (music, ); }; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		787F51E4BFC9719D75535D39 /* music_cozy_corner.ogg in Resources */ = {isa = PBXBuildFile; fileRef = C2476A8E31F5BEF8F85C3901 /* music_cozy_corner.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		78A318202AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */; };
 		791E6841A522555EB45B5070 /* ambient_washer.ogg in Resources */ = {isa = PBXBuildFile; fileRef = EFBF090BEBA3CB86711E8E6D /* ambient_washer.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
 		7B64C658EEA7E3C563D7CCCE /* music_lantern_light.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 3F554B3568DDEE9759A63627 /* music_lantern_light.ogg */; settings = {ASSET_TAGS = (music, ); }; };
 		825FAE01C063DADED5B8F1D4 /* music_starlit_lullaby.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 03F3B1AC3A1A7D3213A02ED1 /* music_starlit_lullaby.ogg */; settings = {ASSET_TAGS = (music, ); }; };
@@ -99,6 +98,7 @@
 		D2FEDF8805F2221ED843B099 /* ambient_airplane.ogg in Resources */ = {isa = PBXBuildFile; fileRef = A201A103649D7C9EB4993B85 /* ambient_airplane.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
 		D35027D8146CF5AFDAD1A71C /* ambient_fountain.ogg in Resources */ = {isa = PBXBuildFile; fileRef = F255EA12A79E41CF21604A61 /* ambient_fountain.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
 		D7B683F213BDF103BA07C10B /* ambient_night_forest.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 54132B673675AD6553A5DDB6 /* ambient_night_forest.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		DD44B6EB0409F3C6DC2D7E9C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C5BE33E376EC8089BC15B0 /* SceneDelegate.swift */; };
 		DF048A308F590A990B9B4ABB /* ambient_keyboard.ogg in Resources */ = {isa = PBXBuildFile; fileRef = ED3C54A1B596535407F3F773 /* ambient_keyboard.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
 		E6067C3A22A5A9FDC5688420 /* ambient_frog_pond.ogg in Resources */ = {isa = PBXBuildFile; fileRef = F104EE184E5CE19029A7271A /* ambient_frog_pond.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
 		E8A855956F3EC6DF61739B46 /* ambient_crickets.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 391499C9F4D64E0A333D4721 /* ambient_crickets.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
@@ -144,10 +144,6 @@
 
 /* Begin PBXFileReference section */
 		01E49222979C16CCD24D3FB6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Runner/GoogleService-Info.plist"; sourceTree = "<group>"; };
-		06C2B08D9F48196DA8888E1D /* Pods-RunnerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.release.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.release.xcconfig"; sourceTree = "<group>"; };
-		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
-		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
-		2D2E644F8DEFCF1AF0DD970F /* Pods-RunnerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.debug.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		03F3B1AC3A1A7D3213A02ED1 /* music_starlit_lullaby.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_starlit_lullaby.ogg; sourceTree = "<group>"; };
 		0AB2186B1F51931FBC09B526 /* ambient_trees.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_trees.ogg; sourceTree = "<group>"; };
 		0AECC5F6E5DDDC3816B279E1 /* music_coffee_break.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_coffee_break.ogg; sourceTree = "<group>"; };
@@ -164,6 +160,7 @@
 		1BF1A6DEA4CA6F058BD8431A /* music_midnight_tape.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_midnight_tape.ogg; sourceTree = "<group>"; };
 		1D8B5DC3E073347C4A3F12EB /* ambient_campfire.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_campfire.ogg; sourceTree = "<group>"; };
 		1E564A5C400121CFD25C1385 /* ambient_summer_night.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_summer_night.ogg; sourceTree = "<group>"; };
+		22C5BE33E376EC8089BC15B0 /* SceneDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		247DFCB6515B81BB4C2058C3 /* ambient_tapping.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_tapping.ogg; sourceTree = "<group>"; };
 		270BF860DFA6D15754967F98 /* music_silk_road.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_silk_road.ogg; sourceTree = "<group>"; };
 		2B6A4F03609320421E4EA467 /* ambient_train.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_train.ogg; sourceTree = "<group>"; };
@@ -176,8 +173,6 @@
 		37B9CE866158F40E68801858 /* music_nylon_afternoon.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_nylon_afternoon.ogg; sourceTree = "<group>"; };
 		391499C9F4D64E0A333D4721 /* ambient_crickets.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_crickets.ogg; sourceTree = "<group>"; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
-		6C77F77534D69A86E8435B35 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
-		723D0F52954CBAA59AC47B6D /* Pods_RunnerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RunnerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CB6A5323F56F60D569D30E7 /* music_kalimba_lullaby.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_kalimba_lullaby.ogg; sourceTree = "<group>"; };
 		3D12DDEB727E53D8D4FC1FEA /* ambient_green_noise.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_green_noise.ogg; sourceTree = "<group>"; };
 		3F1190DB1DF4D1C7DB6D7F14 /* music_handpan_flow.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_handpan_flow.ogg; sourceTree = "<group>"; };
@@ -212,11 +207,10 @@
 		73E606DD31A22858D4CFB6D1 /* music_still_water.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_still_water.ogg; sourceTree = "<group>"; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		78E0A7A72DC9AD7400C4905E /* FlutterGeneratedPluginSwiftPackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = FlutterGeneratedPluginSwiftPackage; path = Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage; sourceTree = "<group>"; };
 		7910008DC714F006BE08430D /* ambient_night_drive.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_night_drive.ogg; sourceTree = "<group>"; };
 		7982C0B08722506A803FF926 /* music_forest_spirit.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_forest_spirit.ogg; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
-		7D541C4AD257269B2256D885 /* Pods-RunnerTests.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.profile.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.profile.xcconfig"; sourceTree = "<group>"; };
-		8EB2DFEDB241FA5A51FFACFB /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EC87456BE32C4A40FF9BF71 /* ambient_heartbeat.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_heartbeat.ogg; sourceTree = "<group>"; };
 		83382B3B424843249ADF420E /* ambient_forest_birds.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_forest_birds.ogg; sourceTree = "<group>"; };
 		89EE69F23912322BFC074D4A /* ambient_paper.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_paper.ogg; sourceTree = "<group>"; };
@@ -231,8 +225,6 @@
 		97C146FD1CF9000F007C117D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DE1690E6EBC5DFEC0AAE39DD /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
-		FF9F4601E1263993769986E0 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
 		A201A103649D7C9EB4993B85 /* ambient_airplane.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_airplane.ogg; sourceTree = "<group>"; };
 		A426F85D18468F8F06603510 /* ambient_blizzard.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_blizzard.ogg; sourceTree = "<group>"; };
 		A630E29347FD2BA4B2833ABB /* ambient_tin_roof.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_tin_roof.ogg; sourceTree = "<group>"; };
@@ -276,7 +268,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6AA7583A9A98D77566038226 /* Pods_Runner.framework in Frameworks */,
+				78A318202AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,27 +276,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				503A9D3BAE57AA1232C830B8 /* Pods_RunnerTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		27556AFAA3DD44724F1B7F9D /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				FF9F4601E1263993769986E0 /* Pods-Runner.debug.xcconfig */,
-				DE1690E6EBC5DFEC0AAE39DD /* Pods-Runner.release.xcconfig */,
-				6C77F77534D69A86E8435B35 /* Pods-Runner.profile.xcconfig */,
-				2D2E644F8DEFCF1AF0DD970F /* Pods-RunnerTests.debug.xcconfig */,
-				06C2B08D9F48196DA8888E1D /* Pods-RunnerTests.release.xcconfig */,
-				7D541C4AD257269B2256D885 /* Pods-RunnerTests.profile.xcconfig */,
-			);
-			name = Pods;
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		331C8082294A63A400263BE5 /* RunnerTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -442,6 +419,7 @@
 		9740EEB11CF90186004384FC /* Flutter */ = {
 			isa = PBXGroup;
 			children = (
+				78E0A7A72DC9AD7400C4905E /* FlutterGeneratedPluginSwiftPackage */,
 				3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */,
 				9740EEB21CF90195004384FC /* Debug.xcconfig */,
 				7AFA3C8E1D35360C0083082E /* Release.xcconfig */,
@@ -458,8 +436,6 @@
 				97C146EF1CF9000F007C117D /* Products */,
 				331C8082294A63A400263BE5 /* RunnerTests */,
 				01E49222979C16CCD24D3FB6 /* GoogleService-Info.plist */,
-				27556AFAA3DD44724F1B7F9D /* Pods */,
-				F5ABFE0C45403B01F931EC31 /* Frameworks */,
 				3FEC9325D09F2731FFFE99BF /* SoundPacks */,
 			);
 			sourceTree = "<group>";
@@ -484,17 +460,9 @@
 				1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */,
 				74858FAE1ED2DC5600515810 /* AppDelegate.swift */,
 				74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */,
+				22C5BE33E376EC8089BC15B0 /* SceneDelegate.swift */,
 			);
 			path = Runner;
-			sourceTree = "<group>";
-		};
-		F5ABFE0C45403B01F931EC31 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				8EB2DFEDB241FA5A51FFACFB /* Pods_Runner.framework */,
-				723D0F52954CBAA59AC47B6D /* Pods_RunnerTests.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -504,7 +472,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 331C8087294A63A400263BE5 /* Build configuration list for PBXNativeTarget "RunnerTests" */;
 			buildPhases = (
-				E6028295FF1010FE6C71E3DB /* [CP] Check Pods Manifest.lock */,
 				331C807D294A63A400263BE5 /* Sources */,
 				331C807F294A63A400263BE5 /* Resources */,
 				FEFBD7F7BC5F6232110CA386 /* Frameworks */,
@@ -523,20 +490,21 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 97C147051CF9000F007C117D /* Build configuration list for PBXNativeTarget "Runner" */;
 			buildPhases = (
-				4472E6B39F857F7D3CA285D2 /* [CP] Check Pods Manifest.lock */,
 				9740EEB61CF901F6004384FC /* Run Script */,
 				97C146EA1CF9000F007C117D /* Sources */,
 				97C146EB1CF9000F007C117D /* Frameworks */,
 				97C146EC1CF9000F007C117D /* Resources */,
 				9705A1C41CF9048500538489 /* Embed Frameworks */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
-				BA168A72199486C79D55D9A0 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = Runner;
+			packageProductDependencies = (
+				78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */,
+			);
 			productName = Runner;
 			productReference = 97C146EE1CF9000F007C117D /* Runner.app */;
 			productType = "com.apple.product-type.application";
@@ -574,6 +542,9 @@
 				Base,
 			);
 			mainGroup = 97C146E51CF9000F007C117D;
+			packageReferences = (
+				781AD8BC2B33823900A9FFBB /* XCLocalSwiftPackageReference "FlutterGeneratedPluginSwiftPackage" */,
+			);
 			productRefGroup = 97C146EF1CF9000F007C117D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -723,28 +694,6 @@
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin";
 		};
-		4472E6B39F857F7D3CA285D2 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Runner-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		9740EEB61CF901F6004384FC /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -759,45 +708,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build";
-		};
-		BA168A72199486C79D55D9A0 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E6028295FF1010FE6C71E3DB /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-RunnerTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -816,6 +726,7 @@
 			files = (
 				74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
+				DD44B6EB0409F3C6DC2D7E9C /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -892,7 +803,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -927,7 +838,6 @@
 		};
 		331C8088294A63A400263BE5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2D2E644F8DEFCF1AF0DD970F /* Pods-RunnerTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -945,7 +855,6 @@
 		};
 		331C8089294A63A400263BE5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 06C2B08D9F48196DA8888E1D /* Pods-RunnerTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -961,7 +870,6 @@
 		};
 		331C808A294A63A400263BE5 /* Profile */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7D541C4AD257269B2256D885 /* Pods-RunnerTests.profile.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -1024,7 +932,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1075,7 +983,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -1169,6 +1077,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		781AD8BC2B33823900A9FFBB /* XCLocalSwiftPackageReference "FlutterGeneratedPluginSwiftPackage" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FlutterGeneratedPluginSwiftPackage;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 97C146E61CF9000F007C117D /* Project object */;
 }
