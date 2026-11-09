@@ -10,6 +10,7 @@ import '../widgets/decant_logo.dart';
 import 'game_screen.dart';
 import 'level_select_screen.dart';
 import 'settings_screen.dart';
+import 'stats_screen.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -108,14 +109,32 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                   ),
                   const SizedBox(height: 14),
-                  DecantButton(
-                    label: 'Settings',
-                    icon: Icons.tune_rounded,
-                    primary: false,
-                    expand: true,
-                    onPressed: () => Navigator.of(context).push(
-                      _route(const SettingsScreen(), name: '/settings'),
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: DecantButton(
+                          label: 'Stats',
+                          icon: Icons.insights_rounded,
+                          primary: false,
+                          expand: true,
+                          onPressed: () => Navigator.of(context).push(
+                            _route(const StatsScreen(), name: '/stats'),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 14),
+                      Expanded(
+                        child: DecantButton(
+                          label: 'Settings',
+                          icon: Icons.tune_rounded,
+                          primary: false,
+                          expand: true,
+                          onPressed: () => Navigator.of(context).push(
+                            _route(const SettingsScreen(), name: '/settings'),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   const Spacer(),
                   Text(

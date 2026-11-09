@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/app_settings.dart';
 import '../models/level_result.dart';
+import '../models/play_stats.dart';
 
 /// Persists settings and progress with `shared_preferences`.
 ///
@@ -11,10 +12,12 @@ import '../models/level_result.dart';
 ///  * `decant.settings`        — JSON of [AppSettings]
 ///  * `decant.unlocked`        — int, highest unlocked level (1-based)
 ///  * `decant.result.<id>`     — JSON of [LevelResult] per level
+///  * `decant.stats`           — JSON of [PlayStats] (wins, daily streak)
 class PersistenceService {
   static const _kSettings = 'decant.settings';
   static const _kUnlocked = 'decant.unlocked';
   static const _kResultPrefix = 'decant.result.';
+  static const _kStats = 'decant.stats';
 
   final SharedPreferences _prefs;
   PersistenceService(this._prefs);
@@ -88,4 +91,21 @@ class PersistenceService {
 
   int levelsCompleted() =>
       _prefs.getKeys().where((k) => k.startsWith(_kResultPrefix)).length;
+
+  // ---- Lifetime stats ---------------------------------------------------- //
+
+  /// Lifetime counters. Players from before stats existed get their wins
+  /// backfilled from levels solved, so the screen doesn't start at zero.
+  PlayStats loadStats() {
+    final raw = _prefs.getString(_kStats);
+    if (raw != null) {
+      try {
+        return PlayStats.fromJson(jsonDecode(raw) as Map<String, dynamic>);
+      } catch (_) {}
+    }
+    return PlayStats(wins: levelsCompleted());
+  }
+
+  Future<void> saveStats(PlayStats stats) =>
+      _prefs.setString(_kStats, jsonEncode(stats.toJson()));
 }
