@@ -79,7 +79,7 @@ class _SplashScreenState extends State<SplashScreen>
                     style: TextStyle(
                       fontSize: 15,
                       letterSpacing: 1.8,
-                      color: DecantColors.accent.withOpacity(0.95),
+                      color: DecantColors.accent.withValues(alpha: 0.95),
                     ),
                   ),
                 ],

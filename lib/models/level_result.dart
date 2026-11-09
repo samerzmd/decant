@@ -15,6 +15,7 @@ class LevelResult {
   /// Merge a new attempt, keeping the better star count and lower move count.
   LevelResult mergedWith(int stars, int moves) => LevelResult(
         stars: stars > this.stars ? stars : this.stars,
-        bestMoves: bestMoves == 0 ? moves : (moves < bestMoves ? moves : bestMoves),
+        bestMoves:
+            bestMoves == 0 ? moves : (moves < bestMoves ? moves : bestMoves),
       );
 }

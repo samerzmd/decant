@@ -109,7 +109,8 @@ void main() {
     expect(analytics.events, ['begin', 'complete:skipped']);
   });
 
-  testWidgets('returning players skip it but can replay it from the help button',
+  testWidgets(
+      'returning players skip it but can replay it from the help button',
       (tester) async {
     SharedPreferences.setMockInitialValues({
       'decant.unlocked': 3,

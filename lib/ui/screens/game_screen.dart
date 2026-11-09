@@ -62,7 +62,9 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       _guide = move;
       _step = move == null
           ? TutorialStep.goal // stuck board: just explain the tools
-          : (session.selected == move.from ? TutorialStep.pour : TutorialStep.pick);
+          : (session.selected == move.from
+              ? TutorialStep.pour
+              : TutorialStep.pick);
     });
   }
 
@@ -141,95 +143,96 @@ class _GameScreenState extends ConsumerState<GameScreen> {
         attemptLeave();
       },
       child: Scaffold(
-      body: DecantBackground(
-        child: SafeArea(
-          child: Stack(
-            children: [
-              Column(
-                children: [
-                  _Header(
-                    levelId: levelId,
-                    moves: session.moves,
-                    difficulty: session.level.difficulty,
-                    muted: muted,
-                    onBack: attemptLeave,
-                    onRestart: controller.restart,
-                    onToggleMute: () =>
-                        ref.read(settingsProvider.notifier).toggleMute(),
-                  ),
-                  // In the layout (not floating) so it never hides a tube.
-                  AnimatedSize(
-                    duration: const Duration(milliseconds: 220),
-                    curve: Curves.easeOut,
-                    child: _step == null
-                        ? const SizedBox(width: double.infinity)
-                        : TutorialCard(
-                            step: _step!,
-                            onSkip: () => _finishGuide(skipped: true),
-                            onDone: () => _finishGuide(skipped: false),
-                          ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                      child: GameBoard(levelId: levelId, guide: _guide),
+        body: DecantBackground(
+          child: SafeArea(
+            child: Stack(
+              children: [
+                Column(
+                  children: [
+                    _Header(
+                      levelId: levelId,
+                      moves: session.moves,
+                      difficulty: session.level.difficulty,
+                      muted: muted,
+                      onBack: attemptLeave,
+                      onRestart: controller.restart,
+                      onToggleMute: () =>
+                          ref.read(settingsProvider.notifier).toggleMute(),
                     ),
-                  ),
-                  if (session.stuck && session.status == GameStatus.playing)
-                    const _StuckBanner(),
-                  _ControlBar(
-                    canUndo: session.canUndo,
-                    extraTubes: session.state.extraTubesRemaining,
-                    onUndo: controller.undo,
-                    onHint: () {
-                      final ok = controller.requestHint();
-                      if (!ok) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('No moves left — try undo or restart'),
-                            duration: Duration(seconds: 2),
-                          ),
-                        );
-                      }
-                    },
-                    onAddTube: () {
-                      final ok = controller.addEmptyTube();
-                      if (!ok) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('No extra tubes left'),
-                            duration: Duration(seconds: 2),
-                          ),
-                        );
-                      }
-                    },
-                    onHelp: _step == null
-                        ? () => _startGuide(replay: true)
-                        : null,
-                  ),
-                  const SizedBox(height: 8),
-                ],
-              ),
-              if (session.status == GameStatus.won)
-                Positioned.fill(
-                  child: WinOverlay(
-                    levelId: levelId,
-                    stars: session.stars,
-                    moves: session.moves,
-                    onNext: () => Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        settings: const RouteSettings(name: '/game'),
-                        builder: (_) => GameScreen(levelId: levelId + 1),
+                    // In the layout (not floating) so it never hides a tube.
+                    AnimatedSize(
+                      duration: const Duration(milliseconds: 220),
+                      curve: Curves.easeOut,
+                      child: _step == null
+                          ? const SizedBox(width: double.infinity)
+                          : TutorialCard(
+                              step: _step!,
+                              onSkip: () => _finishGuide(skipped: true),
+                              onDone: () => _finishGuide(skipped: false),
+                            ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                        child: GameBoard(levelId: levelId, guide: _guide),
                       ),
                     ),
-                    onReplay: controller.restart,
-                    onLevels: () => Navigator.of(context).pop(),
-                  ),
+                    if (session.stuck && session.status == GameStatus.playing)
+                      const _StuckBanner(),
+                    _ControlBar(
+                      canUndo: session.canUndo,
+                      extraTubes: session.state.extraTubesRemaining,
+                      onUndo: controller.undo,
+                      onHint: () {
+                        final ok = controller.requestHint();
+                        if (!ok) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content:
+                                  Text('No moves left — try undo or restart'),
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                        }
+                      },
+                      onAddTube: () {
+                        final ok = controller.addEmptyTube();
+                        if (!ok) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('No extra tubes left'),
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                        }
+                      },
+                      onHelp: _step == null
+                          ? () => _startGuide(replay: true)
+                          : null,
+                    ),
+                    const SizedBox(height: 8),
+                  ],
                 ),
-            ],
+                if (session.status == GameStatus.won)
+                  Positioned.fill(
+                    child: WinOverlay(
+                      levelId: levelId,
+                      stars: session.stars,
+                      moves: session.moves,
+                      onNext: () => Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          settings: const RouteSettings(name: '/game'),
+                          builder: (_) => GameScreen(levelId: levelId + 1),
+                        ),
+                      ),
+                      onReplay: controller.restart,
+                      onLevels: () => Navigator.of(context).pop(),
+                    ),
+                  ),
+              ],
+            ),
           ),
         ),
-      ),
       ),
     );
   }
@@ -287,7 +290,7 @@ class _Header extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: 11,
-                    color: DecantColors.subtle.withOpacity(0.8),
+                    color: DecantColors.subtle.withValues(alpha: 0.8),
                   ),
                 ),
               ],
@@ -296,7 +299,7 @@ class _Header extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.06),
+              color: Colors.white.withValues(alpha: 0.06),
               borderRadius: BorderRadius.circular(16),
             ),
             child: Text(
@@ -308,7 +311,8 @@ class _Header extends StatelessWidget {
             ),
           ),
           IconButton(
-            icon: Icon(muted ? Icons.volume_off_rounded : Icons.volume_up_rounded,
+            icon: Icon(
+                muted ? Icons.volume_off_rounded : Icons.volume_up_rounded,
                 color: DecantColors.onSurface),
             onPressed: onToggleMute,
           ),
@@ -384,9 +388,10 @@ class _StuckBanner extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       decoration: BoxDecoration(
-        color: const Color(0xFFE2425B).withOpacity(0.18),
+        color: const Color(0xFFE2425B).withValues(alpha: 0.18),
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: const Color(0xFFE2425B).withOpacity(0.5)),
+        border:
+            Border.all(color: const Color(0xFFE2425B).withValues(alpha: 0.5)),
       ),
       child: const Row(
         children: [

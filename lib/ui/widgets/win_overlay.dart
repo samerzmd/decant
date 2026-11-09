@@ -34,7 +34,7 @@ class WinOverlay extends StatelessWidget {
         child: child,
       ),
       child: Container(
-        color: Colors.black.withOpacity(0.55),
+        color: Colors.black.withValues(alpha: 0.55),
         alignment: Alignment.center,
         child: TweenAnimationBuilder<double>(
           tween: Tween(begin: 0.7, end: 1),
@@ -52,10 +52,10 @@ class WinOverlay extends StatelessWidget {
                 colors: [Color(0xFF2A3766), Color(0xFF31265C)],
               ),
               borderRadius: BorderRadius.circular(28),
-              border: Border.all(color: Colors.white.withOpacity(0.12)),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.12)),
               boxShadow: [
                 BoxShadow(
-                  color: DecantColors.accent.withOpacity(0.25),
+                  color: DecantColors.accent.withValues(alpha: 0.25),
                   blurRadius: 40,
                   spreadRadius: 2,
                 ),
@@ -76,7 +76,7 @@ class WinOverlay extends StatelessWidget {
                 Text(
                   'Beautifully done.',
                   style: TextStyle(
-                    color: DecantColors.accent.withOpacity(0.95),
+                    color: DecantColors.accent.withValues(alpha: 0.95),
                     fontSize: 14,
                     letterSpacing: 0.5,
                   ),

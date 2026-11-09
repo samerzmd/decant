@@ -52,7 +52,8 @@ class SoundPacks {
   static const _events = EventChannel('decant/sound_packs/events');
 
   final Map<String, ValueNotifier<PackState>> _states = {
-    for (final p in packs) p: ValueNotifier(const PackState(PackStatus.unknown)),
+    for (final p in packs)
+      p: ValueNotifier(const PackState(PackStatus.unknown)),
   };
   final Map<String, String> _paths = {};
   StreamSubscription<dynamic>? _sub;
@@ -85,7 +86,8 @@ class SoundPacks {
 
   Future<void> refresh(String pack) async {
     try {
-      final m = await _channel.invokeMapMethod<String, dynamic>('state', {'pack': pack});
+      final m = await _channel
+          .invokeMapMethod<String, dynamic>('state', {'pack': pack});
       if (m != null) _apply(m);
     } catch (_) {
       _states[pack]?.value = const PackState(PackStatus.unavailable);
@@ -109,8 +111,8 @@ class SoundPacks {
     if (cached != null) return cached;
     if (!_supported) return null;
     try {
-      final path =
-          await _channel.invokeMethod<String>('resolve', {'pack': pack, 'file': file});
+      final path = await _channel
+          .invokeMethod<String>('resolve', {'pack': pack, 'file': file});
       if (path != null) {
         _paths[key] = path;
         if (!_states[pack]!.value.ready) {

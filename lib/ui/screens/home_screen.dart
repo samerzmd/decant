@@ -55,82 +55,82 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         if (exit) await SystemNavigator.pop();
       },
       child: Scaffold(
-      body: DecantBackground(
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 28),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Spacer(),
-                const DecantLogo(size: 96),
-                const SizedBox(height: 18),
-                const Text(
-                  'Decant',
-                  style: TextStyle(
-                    fontSize: 40,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: 1.2,
-                    color: DecantColors.onSurface,
+        body: DecantBackground(
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 28),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Spacer(),
+                  const DecantLogo(size: 96),
+                  const SizedBox(height: 18),
+                  const Text(
+                    'Decant',
+                    style: TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 1.2,
+                      color: DecantColors.onSurface,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  'Pour. Sort. Unwind.',
-                  style: TextStyle(
-                    fontSize: 15,
-                    letterSpacing: 1.8,
-                    color: DecantColors.accent.withOpacity(0.95),
+                  const SizedBox(height: 6),
+                  Text(
+                    'Pour. Sort. Unwind.',
+                    style: TextStyle(
+                      fontSize: 15,
+                      letterSpacing: 1.8,
+                      color: DecantColors.accent.withValues(alpha: 0.95),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 14),
-                _StatPill(
-                  stars: progress.totalStars,
-                  completed: progress.levelsCompleted,
-                ),
-                const Spacer(),
-                DecantButton(
-                  label: continueLevel > 1
-                      ? 'Continue · Level $continueLevel'
-                      : 'Play',
-                  icon: Icons.play_arrow_rounded,
-                  expand: true,
-                  onPressed: () => _openLevel(context, continueLevel),
-                ),
-                const SizedBox(height: 14),
-                DecantButton(
-                  label: 'Levels',
-                  icon: Icons.grid_view_rounded,
-                  primary: false,
-                  expand: true,
-                  onPressed: () => Navigator.of(context).push(
-                    _route(const LevelSelectScreen(), name: '/level_select'),
+                  const SizedBox(height: 14),
+                  _StatPill(
+                    stars: progress.totalStars,
+                    completed: progress.levelsCompleted,
                   ),
-                ),
-                const SizedBox(height: 14),
-                DecantButton(
-                  label: 'Settings',
-                  icon: Icons.tune_rounded,
-                  primary: false,
-                  expand: true,
-                  onPressed: () => Navigator.of(context).push(
-                    _route(const SettingsScreen(), name: '/settings'),
+                  const Spacer(),
+                  DecantButton(
+                    label: continueLevel > 1
+                        ? 'Continue · Level $continueLevel'
+                        : 'Play',
+                    icon: Icons.play_arrow_rounded,
+                    expand: true,
+                    onPressed: () => _openLevel(context, continueLevel),
                   ),
-                ),
-                const Spacer(),
-                Text(
-                  'A calm sorting game',
-                  style: TextStyle(
-                    color: DecantColors.subtle.withOpacity(0.7),
-                    fontSize: 12,
+                  const SizedBox(height: 14),
+                  DecantButton(
+                    label: 'Levels',
+                    icon: Icons.grid_view_rounded,
+                    primary: false,
+                    expand: true,
+                    onPressed: () => Navigator.of(context).push(
+                      _route(const LevelSelectScreen(), name: '/level_select'),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 12),
-              ],
+                  const SizedBox(height: 14),
+                  DecantButton(
+                    label: 'Settings',
+                    icon: Icons.tune_rounded,
+                    primary: false,
+                    expand: true,
+                    onPressed: () => Navigator.of(context).push(
+                      _route(const SettingsScreen(), name: '/settings'),
+                    ),
+                  ),
+                  const Spacer(),
+                  Text(
+                    'A calm sorting game',
+                    style: TextStyle(
+                      color: DecantColors.subtle.withValues(alpha: 0.7),
+                      fontSize: 12,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                ],
+              ),
             ),
           ),
         ),
-      ),
       ),
     );
   }
@@ -140,7 +140,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         .push(_route(GameScreen(levelId: levelId), name: '/game'));
   }
 
-  Route<T> _route<T>(Widget page, {required String name}) => PageRouteBuilder<T>(
+  Route<T> _route<T>(Widget page, {required String name}) =>
+      PageRouteBuilder<T>(
         settings: RouteSettings(name: name),
         transitionDuration: const Duration(milliseconds: 350),
         pageBuilder: (_, __, ___) => page,
@@ -161,7 +162,7 @@ class _StatPill extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.06),
+        color: Colors.white.withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(

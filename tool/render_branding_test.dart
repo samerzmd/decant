@@ -38,7 +38,11 @@ Future<void> _render(
         ..shader = const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [DecantColors.bgTop, DecantColors.bgMid, DecantColors.bgBottom],
+          colors: [
+            DecantColors.bgTop,
+            DecantColors.bgMid,
+            DecantColors.bgBottom
+          ],
         ).createShader(full),
     );
   }
@@ -46,9 +50,11 @@ Future<void> _render(
   final h = _size * markHeight;
   final w = h / DecantMarkPainter.aspect;
   canvas.translate((_size - w) / 2, (_size - h) / 2);
-  DecantMarkPainter(glow: glow, monochrome: monochrome).paint(canvas, Size(w, h));
+  DecantMarkPainter(glow: glow, monochrome: monochrome)
+      .paint(canvas, Size(w, h));
 
-  final image = await recorder.endRecording().toImage(_size.toInt(), _size.toInt());
+  final image =
+      await recorder.endRecording().toImage(_size.toInt(), _size.toInt());
   final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
   File('branding/$name').writeAsBytesSync(bytes!.buffer.asUint8List());
 }
@@ -57,11 +63,13 @@ void main() {
   testWidgets('render branding images', (tester) async {
     await tester.runAsync(() async {
       // Full-bleed icon: the OS masks it, so the mark can be large.
-      await _render('decant_icon.png', markHeight: 0.74, background: true, glow: true);
+      await _render('decant_icon.png',
+          markHeight: 0.74, background: true, glow: true);
       // Adaptive layers: flutter_launcher_icons insets these by 16%, which
       // already matches the visible area, so the mark can fill most of it.
       await _render('decant_foreground.png', markHeight: 0.84);
-      await _render('decant_monochrome.png', markHeight: 0.84, monochrome: true);
+      await _render('decant_monochrome.png',
+          markHeight: 0.84, monochrome: true);
       // Splash (incl. the Android 12 icon, masked to the middle 2/3 circle).
       await _render('decant_splash.png', markHeight: 0.56);
     });

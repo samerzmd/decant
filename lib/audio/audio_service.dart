@@ -110,8 +110,8 @@ class AudioSettings {
       musicVolume: (j['music'] as num?)?.toDouble() ?? 0.8,
       muted: j['muted'] as bool? ?? false,
       ambientEnabled: ambientEnabled,
-      ambientTrack:
-          AmbientTrack.byName(j['ambientTrack'] as String?) ?? AmbientTrack.ocean,
+      ambientTrack: AmbientTrack.byName(j['ambientTrack'] as String?) ??
+          AmbientTrack.ocean,
       musicEnabled: musicEnabled,
       musicTrack: musicTrack,
     );
@@ -186,7 +186,9 @@ class AudioService {
         await startMusic();
       }
     } catch (e) {
-      if (kDebugMode) debugPrint('AudioService init failed (continuing muted): $e');
+      if (kDebugMode) {
+        debugPrint('AudioService init failed (continuing muted): $e');
+      }
       _ready = false;
     }
   }
@@ -203,7 +205,8 @@ class AudioService {
     _packListenersOn = true;
     unawaited(SoundPacks.instance.start());
     SoundPacks.instance.stateOf('ambient').addListener(() {
-      if (_ambientStandIn && SoundPacks.instance.stateOf('ambient').value.ready) {
+      if (_ambientStandIn &&
+          SoundPacks.instance.stateOf('ambient').value.ready) {
         _ambientStandIn = false;
         if (_ambientHandle != null) switchAmbient(_settings.ambientTrack);
       }
@@ -221,7 +224,8 @@ class AudioService {
   Future<AudioSource?> _loadSound(SoundItem t) async {
     final pack = t.pack;
     if (pack == null) {
-      return _soloud.loadAsset('assets/sounds/${t.fileName}', mode: LoadMode.disk);
+      return _soloud.loadAsset('assets/sounds/${t.fileName}',
+          mode: LoadMode.disk);
     }
     final path = await SoundPacks.instance.resolve(pack, t.fileName);
     if (path == null) return null;
@@ -251,14 +255,14 @@ class AudioService {
   }
 
   double get _sfxLevel => _settings.muted ? 0 : _settings.sfxVolume;
-  double get _ambientLevel =>
-      (_settings.muted || !_settings.ambientEnabled) ? 0 : _settings.ambientVolume;
+  double get _ambientLevel => (_settings.muted || !_settings.ambientEnabled)
+      ? 0
+      : _settings.ambientVolume;
   double get _musicLevel => _settings.muted ? 0 : _settings.musicVolume;
 
   /// The music loop sits a little under the ambience so it never dominates;
   /// the Music slider still scales it (and the win jingle) together.
-  double get _musicBedLevel =>
-      _settings.musicEnabled ? _musicLevel * 0.6 : 0;
+  double get _musicBedLevel => _settings.musicEnabled ? _musicLevel * 0.6 : 0;
 
   // ---- One-shots --------------------------------------------------------- //
 
@@ -334,8 +338,10 @@ class AudioService {
       var source = await _ambientSourceFor(_settings.ambientTrack);
       _ambientStandIn = source == null;
       if (source == null) {
-        unawaited(SoundPacks.instance.fetch(_settings.ambientTrack.pack ?? 'ambient'));
-        source = await _ambientSourceFor(AmbientTrack.ocean); // bundled stand-in
+        unawaited(SoundPacks.instance
+            .fetch(_settings.ambientTrack.pack ?? 'ambient'));
+        source =
+            await _ambientSourceFor(AmbientTrack.ocean); // bundled stand-in
       }
       if (gen != _ambientGen || source == null) return; // superseded meanwhile
       final h = _soloud.play(source, volume: _ambientLevel, looping: true);
@@ -401,7 +407,8 @@ class AudioService {
       var source = await _musicSourceFor(_settings.musicTrack);
       _musicStandIn = source == null;
       if (source == null) {
-        unawaited(SoundPacks.instance.fetch(_settings.musicTrack.pack ?? 'music'));
+        unawaited(
+            SoundPacks.instance.fetch(_settings.musicTrack.pack ?? 'music'));
         source = await _musicSourceFor(MusicTrack.warmKeys); // bundled stand-in
       }
       if (gen != _musicGen || source == null) return; // superseded meanwhile
@@ -465,7 +472,9 @@ class AudioService {
     final mh = _musicHandle;
     if (mh != null) _safe(() => _soloud.setPause(mh, true));
     _safe(() => _soloud.setGlobalVolume(0));
-    if (kDebugMode) debugPrint('Decant audio: paused & silenced (ready=$_ready)');
+    if (kDebugMode) {
+      debugPrint('Decant audio: paused & silenced (ready=$_ready)');
+    }
   }
 
   /// Called when the Activity is being destroyed. Tears the engine down fully

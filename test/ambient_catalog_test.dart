@@ -16,13 +16,16 @@ void main() {
       expect(cats, contains(t.category), reason: t.name);
     }
     for (final c in kAmbientCategories) {
-      expect(kAmbientCatalog.where((t) => t.category == c.id), isNotEmpty, reason: c.id);
+      expect(kAmbientCatalog.where((t) => t.category == c.id), isNotEmpty,
+          reason: c.id);
     }
   });
 
   test('every bed has its audio file (bundled or in its pack)', () {
     for (final t in kAmbientCatalog) {
-      final path = t.pack == null ? 'assets/sounds/${t.fileName}' : 'sound_packs/${t.pack}/${t.fileName}';
+      final path = t.pack == null
+          ? 'assets/sounds/${t.fileName}'
+          : 'sound_packs/${t.pack}/${t.fileName}';
       expect(File(path).existsSync(), isTrue, reason: path);
     }
   });
@@ -35,7 +38,7 @@ void main() {
   });
 
   test('only the originals are bundled; the rest ship in the ambient pack', () {
-    final catalog = kAmbientCatalog;
+    const catalog = kAmbientCatalog;
     expect(catalog.where((t) => t.pack == null).length, 4);
     expect(catalog.where((t) => t.pack == 'ambient').length, 50);
   });

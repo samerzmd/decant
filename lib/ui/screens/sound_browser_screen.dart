@@ -137,7 +137,7 @@ class _SoundBrowserScreenState extends ConsumerState<SoundBrowserScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(_isMusic ? 'Music' : 'Ambience',
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.w800,
                                   color: DecantColors.onSurface)),
@@ -148,7 +148,8 @@ class _SoundBrowserScreenState extends ConsumerState<SoundBrowserScreen> {
                                     ? 'Off · ${selected.label}'
                                     : 'Now playing · ${selected.label}',
                             style: TextStyle(
-                                color: DecantColors.accent.withOpacity(0.9),
+                                color:
+                                    DecantColors.accent.withValues(alpha: 0.9),
                                 fontSize: 12.5,
                                 fontWeight: FontWeight.w600),
                           ),
@@ -255,7 +256,7 @@ class _SectionHeader extends StatelessWidget {
           Text(
             category.label.toUpperCase(),
             style: TextStyle(
-              color: DecantColors.accent.withOpacity(0.9),
+              color: DecantColors.accent.withValues(alpha: 0.9),
               fontSize: 12,
               fontWeight: FontWeight.w800,
               letterSpacing: 1.5,
@@ -264,7 +265,8 @@ class _SectionHeader extends StatelessWidget {
           const SizedBox(width: 8),
           Text('$count',
               style: TextStyle(
-                  color: DecantColors.subtle.withOpacity(0.7), fontSize: 12)),
+                  color: DecantColors.subtle.withValues(alpha: 0.7),
+                  fontSize: 12)),
         ],
       ),
     );
@@ -306,13 +308,13 @@ class _SoundTile extends StatelessWidget {
             duration: const Duration(milliseconds: 180),
             decoration: BoxDecoration(
               color: active
-                  ? DecantColors.accent.withOpacity(0.18)
-                  : Colors.white.withOpacity(0.06),
+                  ? DecantColors.accent.withValues(alpha: 0.18)
+                  : Colors.white.withValues(alpha: 0.06),
               borderRadius: BorderRadius.circular(18),
               border: Border.all(
                 color: active
                     ? DecantColors.accent
-                    : Colors.white.withOpacity(0.08),
+                    : Colors.white.withValues(alpha: 0.08),
                 width: active ? 1.6 : 1.0,
               ),
             ),
@@ -330,7 +332,7 @@ class _SoundTile extends StatelessWidget {
                         shape: BoxShape.circle,
                         color: active
                             ? DecantColors.accent
-                            : DecantColors.accent.withOpacity(0.12),
+                            : DecantColors.accent.withValues(alpha: 0.12),
                       ),
                       child: Icon(track.icon,
                           size: 24,
@@ -413,12 +415,13 @@ class _FilterChip extends StatelessWidget {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             color: active
-                ? DecantColors.accent.withOpacity(0.22)
-                : Colors.white.withOpacity(0.05),
+                ? DecantColors.accent.withValues(alpha: 0.22)
+                : Colors.white.withValues(alpha: 0.05),
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color:
-                  active ? DecantColors.accent : Colors.white.withOpacity(0.12),
+              color: active
+                  ? DecantColors.accent
+                  : Colors.white.withValues(alpha: 0.12),
               width: 1.3,
             ),
           ),
@@ -467,7 +470,7 @@ class _SearchField extends StatelessWidget {
       textInputAction: TextInputAction.search,
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: TextStyle(color: DecantColors.subtle.withOpacity(0.7)),
+        hintStyle: TextStyle(color: DecantColors.subtle.withValues(alpha: 0.7)),
         prefixIcon:
             const Icon(Icons.search_rounded, color: DecantColors.subtle),
         suffixIcon: controller.text.isEmpty
@@ -478,7 +481,7 @@ class _SearchField extends StatelessWidget {
                 onPressed: onClear,
               ),
         filled: true,
-        fillColor: Colors.white.withOpacity(0.07),
+        fillColor: Colors.white.withValues(alpha: 0.07),
         contentPadding: const EdgeInsets.symmetric(vertical: 12),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
@@ -526,7 +529,7 @@ class _PackBanner extends StatelessWidget {
               Expanded(
                 child: Text(text,
                     style: TextStyle(
-                        color: DecantColors.subtle.withOpacity(0.9),
+                        color: DecantColors.subtle.withValues(alpha: 0.9),
                         fontSize: 12)),
               ),
             ],
@@ -539,7 +542,7 @@ class _PackBanner extends StatelessWidget {
                 minHeight: 3,
                 value: pack.total > 0 ? pack.progress : null,
                 color: DecantColors.accent,
-                backgroundColor: Colors.white.withOpacity(0.08),
+                backgroundColor: Colors.white.withValues(alpha: 0.08),
               ),
             ),
           ],

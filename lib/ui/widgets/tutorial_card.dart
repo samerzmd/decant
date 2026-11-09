@@ -70,7 +70,8 @@ class TutorialCard extends StatelessWidget {
               TutorialStep.pour => _Instruction(
                   icon: Icons.water_drop_rounded,
                   title: 'Now tap the other glowing tube',
-                  body: 'Colors pour onto the same color or into an empty tube.',
+                  body:
+                      'Colors pour onto the same color or into an empty tube.',
                   step: 1,
                   onSkip: onSkip,
                 ),
@@ -131,7 +132,8 @@ class _Instruction extends StatelessWidget {
                   const SizedBox(height: 3),
                   Text(
                     body,
-                    style: const TextStyle(fontSize: 13.5, color: DecantColors.subtle),
+                    style: const TextStyle(
+                        fontSize: 13.5, color: DecantColors.subtle),
                   ),
                 ],
               ),
@@ -188,7 +190,8 @@ class _Goal extends StatelessWidget {
           label: 'Show a hint (costs a star)',
           tint: DecantColors.star,
         ),
-        const _Tool(icon: Icons.add_circle_outline_rounded, label: 'Add an empty tube'),
+        const _Tool(
+            icon: Icons.add_circle_outline_rounded, label: 'Add an empty tube'),
         const SizedBox(height: 8),
         Row(
           children: [
@@ -196,7 +199,8 @@ class _Goal extends StatelessWidget {
             const Spacer(),
             SizedBox(
               width: 132,
-              child: DecantButton(label: 'Got it', primary: true, onPressed: onDone),
+              child: DecantButton(
+                  label: 'Got it', primary: true, onPressed: onDone),
             ),
           ],
         ),
@@ -221,7 +225,8 @@ class _Tool extends StatelessWidget {
           const SizedBox(width: 12),
           Flexible(
             child: Text(label,
-                style: const TextStyle(fontSize: 14, color: DecantColors.onSurface)),
+                style: const TextStyle(
+                    fontSize: 14, color: DecantColors.onSurface)),
           ),
         ],
       ),

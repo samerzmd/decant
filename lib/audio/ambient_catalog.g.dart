@@ -19,59 +19,162 @@ const List<SoundCategory> kAmbientCategories = [
 ];
 
 const ambientRain = AmbientTrack('rain', 'Rain', 'rain', Icons.grain_rounded);
-const ambientDrizzle = AmbientTrack('drizzle', 'Drizzle', 'rain', Icons.umbrella_rounded, pack: 'ambient');
-const ambientDownpour = AmbientTrack('downpour', 'Downpour', 'rain', Icons.water_rounded, pack: 'ambient');
-const ambientWindowRain = AmbientTrack('window_rain', 'Rain on Window', 'rain', Icons.window_rounded, pack: 'ambient');
-const ambientTentRain = AmbientTrack('tent_rain', 'Rain on Tent', 'rain', Icons.holiday_village_rounded, pack: 'ambient');
-const ambientTinRoof = AmbientTrack('tin_roof', 'Tin Roof Rain', 'rain', Icons.roofing_rounded, pack: 'ambient');
-const ambientThunderstorm = AmbientTrack('thunderstorm', 'Thunderstorm', 'rain', Icons.thunderstorm_rounded, pack: 'ambient');
-const ambientOcean = AmbientTrack('ocean', 'Ocean', 'water', Icons.waves_rounded);
-const ambientStream = AmbientTrack('stream', 'Stream', 'water', Icons.water_drop_rounded);
-const ambientWaterfall = AmbientTrack('waterfall', 'Waterfall', 'water', Icons.landscape_rounded, pack: 'ambient');
-const ambientLake = AmbientTrack('lake', 'Lake Shore', 'water', Icons.kayaking_rounded, pack: 'ambient');
-const ambientCave = AmbientTrack('cave', 'Cave Drips', 'water', Icons.terrain_rounded, pack: 'ambient');
-const ambientFountain = AmbientTrack('fountain', 'Fountain', 'water', Icons.shower_rounded, pack: 'ambient');
-const ambientUnderwater = AmbientTrack('underwater', 'Underwater', 'water', Icons.scuba_diving_rounded, pack: 'ambient');
-const ambientBreeze = AmbientTrack('breeze', 'Gentle Breeze', 'wind', Icons.air_rounded, pack: 'ambient');
-const ambientTrees = AmbientTrack('trees', 'Wind in Trees', 'wind', Icons.park_rounded, pack: 'ambient');
-const ambientHowling = AmbientTrack('howling', 'Howling Wind', 'wind', Icons.storm_rounded, pack: 'ambient');
-const ambientDesert = AmbientTrack('desert', 'Desert Wind', 'wind', Icons.wb_sunny_rounded, pack: 'ambient');
-const ambientBlizzard = AmbientTrack('blizzard', 'Blizzard', 'wind', Icons.ac_unit_rounded, pack: 'ambient');
-const ambientFireplace = AmbientTrack('fireplace', 'Fireplace', 'fire', Icons.fireplace_rounded);
-const ambientCampfire = AmbientTrack('campfire', 'Campfire', 'fire', Icons.local_fire_department_rounded, pack: 'ambient');
-const ambientCandle = AmbientTrack('candle', 'Candle Flame', 'fire', Icons.light_rounded, pack: 'ambient');
-const ambientWoodStove = AmbientTrack('wood_stove', 'Wood Stove', 'fire', Icons.whatshot_rounded, pack: 'ambient');
-const ambientForestBirds = AmbientTrack('forest_birds', 'Forest Birds', 'nature', Icons.forest_rounded, pack: 'ambient');
-const ambientMeadow = AmbientTrack('meadow', 'Spring Meadow', 'nature', Icons.local_florist_rounded, pack: 'ambient');
-const ambientCicadas = AmbientTrack('cicadas', 'Summer Cicadas', 'nature', Icons.wb_twilight_rounded, pack: 'ambient');
-const ambientRainforest = AmbientTrack('rainforest', 'Rainforest', 'nature', Icons.eco_rounded, pack: 'ambient');
-const ambientCrickets = AmbientTrack('crickets', 'Crickets', 'night', Icons.nightlight_round, pack: 'ambient');
-const ambientFrogPond = AmbientTrack('frog_pond', 'Frog Pond', 'night', Icons.pest_control_rounded, pack: 'ambient');
-const ambientNightForest = AmbientTrack('night_forest', 'Night Forest', 'night', Icons.nights_stay_rounded, pack: 'ambient');
-const ambientSummerNight = AmbientTrack('summer_night', 'Summer Night', 'night', Icons.bedtime_rounded, pack: 'ambient');
-const ambientClock = AmbientTrack('clock', 'Clock Ticking', 'home', Icons.schedule_rounded, pack: 'ambient');
-const ambientFan = AmbientTrack('fan', 'Ceiling Fan', 'home', Icons.wind_power_rounded, pack: 'ambient');
-const ambientAirConditioner = AmbientTrack('air_conditioner', 'Air Conditioner', 'home', Icons.mode_fan_off_rounded, pack: 'ambient');
-const ambientWasher = AmbientTrack('washer', 'Washing Machine', 'home', Icons.local_laundry_service_rounded, pack: 'ambient');
-const ambientSimmer = AmbientTrack('simmer', 'Simmering Pot', 'home', Icons.soup_kitchen_rounded, pack: 'ambient');
-const ambientPurr = AmbientTrack('purr', 'Purring Cat', 'home', Icons.pets_rounded, pack: 'ambient');
-const ambientKeyboard = AmbientTrack('keyboard', 'Keyboard Typing', 'home', Icons.keyboard_rounded, pack: 'ambient');
-const ambientTrain = AmbientTrack('train', 'Train Journey', 'travel', Icons.train_rounded, pack: 'ambient');
-const ambientAirplane = AmbientTrack('airplane', 'Airplane Cabin', 'travel', Icons.flight_rounded, pack: 'ambient');
-const ambientNightDrive = AmbientTrack('night_drive', 'Night Drive', 'travel', Icons.directions_car_rounded, pack: 'ambient');
-const ambientSailboat = AmbientTrack('sailboat', 'Sailboat', 'travel', Icons.sailing_rounded, pack: 'ambient');
-const ambientWhiteNoise = AmbientTrack('white_noise', 'White Noise', 'noise', Icons.blur_on_rounded, pack: 'ambient');
-const ambientPinkNoise = AmbientTrack('pink_noise', 'Pink Noise', 'noise', Icons.blur_circular_rounded, pack: 'ambient');
-const ambientBrownNoise = AmbientTrack('brown_noise', 'Brown Noise', 'noise', Icons.lens_blur_rounded, pack: 'ambient');
-const ambientGreenNoise = AmbientTrack('green_noise', 'Green Noise', 'noise', Icons.grass_rounded, pack: 'ambient');
-const ambientTapping = AmbientTrack('tapping', 'Gentle Tapping', 'asmr', Icons.touch_app_rounded, pack: 'ambient');
-const ambientBrushing = AmbientTrack('brushing', 'Soft Brushing', 'asmr', Icons.brush_rounded, pack: 'ambient');
-const ambientPaper = AmbientTrack('paper', 'Paper Crinkle', 'asmr', Icons.description_rounded, pack: 'ambient');
-const ambientHourglass = AmbientTrack('hourglass', 'Sand Hourglass', 'asmr', Icons.hourglass_bottom_rounded, pack: 'ambient');
-const ambientHeartbeat = AmbientTrack('heartbeat', 'Heartbeat', 'asmr', Icons.favorite_rounded, pack: 'ambient');
-const ambientWindChimes = AmbientTrack('wind_chimes', 'Wind Chimes', 'asmr', Icons.notifications_rounded, pack: 'ambient');
-const ambientSingingBowl = AmbientTrack('singing_bowl', 'Singing Bowl', 'asmr', Icons.self_improvement_rounded, pack: 'ambient');
-const ambientRainStick = AmbientTrack('rain_stick', 'Rain Stick', 'asmr', Icons.auto_awesome_rounded, pack: 'ambient');
+const ambientDrizzle = AmbientTrack(
+    'drizzle', 'Drizzle', 'rain', Icons.umbrella_rounded,
+    pack: 'ambient');
+const ambientDownpour = AmbientTrack(
+    'downpour', 'Downpour', 'rain', Icons.water_rounded,
+    pack: 'ambient');
+const ambientWindowRain = AmbientTrack(
+    'window_rain', 'Rain on Window', 'rain', Icons.window_rounded,
+    pack: 'ambient');
+const ambientTentRain = AmbientTrack(
+    'tent_rain', 'Rain on Tent', 'rain', Icons.holiday_village_rounded,
+    pack: 'ambient');
+const ambientTinRoof = AmbientTrack(
+    'tin_roof', 'Tin Roof Rain', 'rain', Icons.roofing_rounded,
+    pack: 'ambient');
+const ambientThunderstorm = AmbientTrack(
+    'thunderstorm', 'Thunderstorm', 'rain', Icons.thunderstorm_rounded,
+    pack: 'ambient');
+const ambientOcean =
+    AmbientTrack('ocean', 'Ocean', 'water', Icons.waves_rounded);
+const ambientStream =
+    AmbientTrack('stream', 'Stream', 'water', Icons.water_drop_rounded);
+const ambientWaterfall = AmbientTrack(
+    'waterfall', 'Waterfall', 'water', Icons.landscape_rounded,
+    pack: 'ambient');
+const ambientLake = AmbientTrack(
+    'lake', 'Lake Shore', 'water', Icons.kayaking_rounded,
+    pack: 'ambient');
+const ambientCave = AmbientTrack(
+    'cave', 'Cave Drips', 'water', Icons.terrain_rounded,
+    pack: 'ambient');
+const ambientFountain = AmbientTrack(
+    'fountain', 'Fountain', 'water', Icons.shower_rounded,
+    pack: 'ambient');
+const ambientUnderwater = AmbientTrack(
+    'underwater', 'Underwater', 'water', Icons.scuba_diving_rounded,
+    pack: 'ambient');
+const ambientBreeze = AmbientTrack(
+    'breeze', 'Gentle Breeze', 'wind', Icons.air_rounded,
+    pack: 'ambient');
+const ambientTrees = AmbientTrack(
+    'trees', 'Wind in Trees', 'wind', Icons.park_rounded,
+    pack: 'ambient');
+const ambientHowling = AmbientTrack(
+    'howling', 'Howling Wind', 'wind', Icons.storm_rounded,
+    pack: 'ambient');
+const ambientDesert = AmbientTrack(
+    'desert', 'Desert Wind', 'wind', Icons.wb_sunny_rounded,
+    pack: 'ambient');
+const ambientBlizzard = AmbientTrack(
+    'blizzard', 'Blizzard', 'wind', Icons.ac_unit_rounded,
+    pack: 'ambient');
+const ambientFireplace =
+    AmbientTrack('fireplace', 'Fireplace', 'fire', Icons.fireplace_rounded);
+const ambientCampfire = AmbientTrack(
+    'campfire', 'Campfire', 'fire', Icons.local_fire_department_rounded,
+    pack: 'ambient');
+const ambientCandle = AmbientTrack(
+    'candle', 'Candle Flame', 'fire', Icons.light_rounded,
+    pack: 'ambient');
+const ambientWoodStove = AmbientTrack(
+    'wood_stove', 'Wood Stove', 'fire', Icons.whatshot_rounded,
+    pack: 'ambient');
+const ambientForestBirds = AmbientTrack(
+    'forest_birds', 'Forest Birds', 'nature', Icons.forest_rounded,
+    pack: 'ambient');
+const ambientMeadow = AmbientTrack(
+    'meadow', 'Spring Meadow', 'nature', Icons.local_florist_rounded,
+    pack: 'ambient');
+const ambientCicadas = AmbientTrack(
+    'cicadas', 'Summer Cicadas', 'nature', Icons.wb_twilight_rounded,
+    pack: 'ambient');
+const ambientRainforest = AmbientTrack(
+    'rainforest', 'Rainforest', 'nature', Icons.eco_rounded,
+    pack: 'ambient');
+const ambientCrickets = AmbientTrack(
+    'crickets', 'Crickets', 'night', Icons.nightlight_round,
+    pack: 'ambient');
+const ambientFrogPond = AmbientTrack(
+    'frog_pond', 'Frog Pond', 'night', Icons.pest_control_rounded,
+    pack: 'ambient');
+const ambientNightForest = AmbientTrack(
+    'night_forest', 'Night Forest', 'night', Icons.nights_stay_rounded,
+    pack: 'ambient');
+const ambientSummerNight = AmbientTrack(
+    'summer_night', 'Summer Night', 'night', Icons.bedtime_rounded,
+    pack: 'ambient');
+const ambientClock = AmbientTrack(
+    'clock', 'Clock Ticking', 'home', Icons.schedule_rounded,
+    pack: 'ambient');
+const ambientFan = AmbientTrack(
+    'fan', 'Ceiling Fan', 'home', Icons.wind_power_rounded,
+    pack: 'ambient');
+const ambientAirConditioner = AmbientTrack(
+    'air_conditioner', 'Air Conditioner', 'home', Icons.mode_fan_off_rounded,
+    pack: 'ambient');
+const ambientWasher = AmbientTrack(
+    'washer', 'Washing Machine', 'home', Icons.local_laundry_service_rounded,
+    pack: 'ambient');
+const ambientSimmer = AmbientTrack(
+    'simmer', 'Simmering Pot', 'home', Icons.soup_kitchen_rounded,
+    pack: 'ambient');
+const ambientPurr = AmbientTrack(
+    'purr', 'Purring Cat', 'home', Icons.pets_rounded,
+    pack: 'ambient');
+const ambientKeyboard = AmbientTrack(
+    'keyboard', 'Keyboard Typing', 'home', Icons.keyboard_rounded,
+    pack: 'ambient');
+const ambientTrain = AmbientTrack(
+    'train', 'Train Journey', 'travel', Icons.train_rounded,
+    pack: 'ambient');
+const ambientAirplane = AmbientTrack(
+    'airplane', 'Airplane Cabin', 'travel', Icons.flight_rounded,
+    pack: 'ambient');
+const ambientNightDrive = AmbientTrack(
+    'night_drive', 'Night Drive', 'travel', Icons.directions_car_rounded,
+    pack: 'ambient');
+const ambientSailboat = AmbientTrack(
+    'sailboat', 'Sailboat', 'travel', Icons.sailing_rounded,
+    pack: 'ambient');
+const ambientWhiteNoise = AmbientTrack(
+    'white_noise', 'White Noise', 'noise', Icons.blur_on_rounded,
+    pack: 'ambient');
+const ambientPinkNoise = AmbientTrack(
+    'pink_noise', 'Pink Noise', 'noise', Icons.blur_circular_rounded,
+    pack: 'ambient');
+const ambientBrownNoise = AmbientTrack(
+    'brown_noise', 'Brown Noise', 'noise', Icons.lens_blur_rounded,
+    pack: 'ambient');
+const ambientGreenNoise = AmbientTrack(
+    'green_noise', 'Green Noise', 'noise', Icons.grass_rounded,
+    pack: 'ambient');
+const ambientTapping = AmbientTrack(
+    'tapping', 'Gentle Tapping', 'asmr', Icons.touch_app_rounded,
+    pack: 'ambient');
+const ambientBrushing = AmbientTrack(
+    'brushing', 'Soft Brushing', 'asmr', Icons.brush_rounded,
+    pack: 'ambient');
+const ambientPaper = AmbientTrack(
+    'paper', 'Paper Crinkle', 'asmr', Icons.description_rounded,
+    pack: 'ambient');
+const ambientHourglass = AmbientTrack(
+    'hourglass', 'Sand Hourglass', 'asmr', Icons.hourglass_bottom_rounded,
+    pack: 'ambient');
+const ambientHeartbeat = AmbientTrack(
+    'heartbeat', 'Heartbeat', 'asmr', Icons.favorite_rounded,
+    pack: 'ambient');
+const ambientWindChimes = AmbientTrack(
+    'wind_chimes', 'Wind Chimes', 'asmr', Icons.notifications_rounded,
+    pack: 'ambient');
+const ambientSingingBowl = AmbientTrack(
+    'singing_bowl', 'Singing Bowl', 'asmr', Icons.self_improvement_rounded,
+    pack: 'ambient');
+const ambientRainStick = AmbientTrack(
+    'rain_stick', 'Rain Stick', 'asmr', Icons.auto_awesome_rounded,
+    pack: 'ambient');
 
 const List<AmbientTrack> kAmbientCatalog = [
   ambientRain,

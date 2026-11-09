@@ -77,7 +77,8 @@ class SettingsController extends StateNotifier<AppSettings> {
 
   void toggleAmbient() {
     final next = state.copyWith(
-        audio: state.audio.copyWith(ambientEnabled: !state.audio.ambientEnabled));
+        audio:
+            state.audio.copyWith(ambientEnabled: !state.audio.ambientEnabled));
     _commit(next);
     if (next.audio.ambientEnabled && !next.audio.muted) {
       _audio.startAmbient();

@@ -88,9 +88,10 @@ class SettingsScreen extends ConsumerWidget {
                         detail:
                             '${audio.ambientTrack.categoryInfo.label} · ${kAmbientCatalog.length} sounds',
                         icon: audio.ambientTrack.icon,
-                        onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) =>
-                                const SoundBrowserScreen(kind: SoundKind.ambient))),
+                        onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (_) => const SoundBrowserScreen(
+                                    kind: SoundKind.ambient))),
                       ),
                     _SwitchTile(
                       label: 'Background music',
@@ -106,9 +107,10 @@ class SettingsScreen extends ConsumerWidget {
                         detail:
                             '${audio.musicTrack.categoryInfo.label} · ${kMusicCatalog.length} tracks',
                         icon: audio.musicTrack.icon,
-                        onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) =>
-                                const SoundBrowserScreen(kind: SoundKind.music))),
+                        onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (_) => const SoundBrowserScreen(
+                                    kind: SoundKind.music))),
                       ),
                     const SizedBox(height: 18),
                     const _SectionLabel('Feel'),
@@ -156,7 +158,7 @@ class _SectionLabel extends StatelessWidget {
       child: Text(
         text.toUpperCase(),
         style: TextStyle(
-          color: DecantColors.accent.withOpacity(0.9),
+          color: DecantColors.accent.withValues(alpha: 0.9),
           fontSize: 12,
           fontWeight: FontWeight.w800,
           letterSpacing: 1.5,
@@ -187,7 +189,7 @@ class _SwitchTile extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.06),
+        color: Colors.white.withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
@@ -206,14 +208,14 @@ class _SwitchTile extends StatelessWidget {
                 if (subtitle != null)
                   Text(subtitle!,
                       style: TextStyle(
-                          color: DecantColors.subtle.withOpacity(0.8),
+                          color: DecantColors.subtle.withValues(alpha: 0.8),
                           fontSize: 12)),
               ],
             ),
           ),
           Switch(
             value: value,
-            activeColor: DecantColors.accent,
+            activeThumbColor: DecantColors.accent,
             onChanged: onChanged,
           ),
         ],
@@ -245,7 +247,7 @@ class _SliderTile extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 10),
         padding: const EdgeInsets.fromLTRB(16, 8, 12, 8),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.06),
+          color: Colors.white.withValues(alpha: 0.06),
           borderRadius: BorderRadius.circular(16),
         ),
         child: Row(
@@ -271,7 +273,7 @@ class _SliderTile extends StatelessWidget {
               child: Text('${(value * 100).round()}',
                   textAlign: TextAlign.right,
                   style: TextStyle(
-                      color: DecantColors.subtle.withOpacity(0.9),
+                      color: DecantColors.subtle.withValues(alpha: 0.9),
                       fontSize: 13)),
             ),
           ],
@@ -308,7 +310,7 @@ class _NavTile extends StatelessWidget {
           margin: const EdgeInsets.only(bottom: 10),
           padding: const EdgeInsets.fromLTRB(14, 12, 10, 12),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.06),
+            color: Colors.white.withValues(alpha: 0.06),
             borderRadius: BorderRadius.circular(16),
           ),
           child: Row(
@@ -318,7 +320,7 @@ class _NavTile extends StatelessWidget {
                 height: 40,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: DecantColors.accent.withOpacity(0.15),
+                  color: DecantColors.accent.withValues(alpha: 0.15),
                 ),
                 child: Icon(icon, color: DecantColors.accent, size: 22),
               ),
@@ -329,7 +331,7 @@ class _NavTile extends StatelessWidget {
                   children: [
                     Text(title,
                         style: TextStyle(
-                            color: DecantColors.subtle.withOpacity(0.9),
+                            color: DecantColors.subtle.withValues(alpha: 0.9),
                             fontSize: 12,
                             fontWeight: FontWeight.w600)),
                     const SizedBox(height: 2),
@@ -340,12 +342,13 @@ class _NavTile extends StatelessWidget {
                             fontWeight: FontWeight.w700)),
                     Text(detail,
                         style: TextStyle(
-                            color: DecantColors.subtle.withOpacity(0.7),
+                            color: DecantColors.subtle.withValues(alpha: 0.7),
                             fontSize: 11.5)),
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right_rounded, color: DecantColors.subtle),
+              const Icon(Icons.chevron_right_rounded,
+                  color: DecantColors.subtle),
             ],
           ),
         ),

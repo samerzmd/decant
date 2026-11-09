@@ -42,7 +42,7 @@ ThemeData buildDecantTheme() {
     sliderTheme: base.sliderTheme.copyWith(
       activeTrackColor: DecantColors.accent,
       thumbColor: DecantColors.accent,
-      inactiveTrackColor: DecantColors.subtle.withOpacity(0.3),
+      inactiveTrackColor: DecantColors.subtle.withValues(alpha: 0.3),
     ),
   );
 }

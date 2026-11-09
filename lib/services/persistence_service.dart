@@ -62,7 +62,8 @@ class PersistenceService {
 
   /// Record a completed level, merging with any previous best.
   Future<LevelResult> recordResult(int levelId, int stars, int moves) async {
-    final prev = resultFor(levelId) ?? const LevelResult(stars: 0, bestMoves: 0);
+    final prev =
+        resultFor(levelId) ?? const LevelResult(stars: 0, bestMoves: 0);
     final merged = prev.mergedWith(stars, moves);
     await _prefs.setString(
         '$_kResultPrefix$levelId', jsonEncode(merged.toJson()));

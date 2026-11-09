@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [master]
   pull_request:
-    branches: [main]
+    branches: [master]
 
 jobs:
   analyze-and-test:
@@ -13,16 +13,27 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Use the same Flutter as local development (pinned in .fvmrc).
+      - name: Read Flutter version
+        id: fvm
+        run: echo "flutter=$(jq -r .flutter .fvmrc)" >> "$GITHUB_OUTPUT"
+
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
+          flutter-version: ${{ steps.fvm.outputs.flutter }}
           cache: true
 
       - name: Install dependencies
         run: flutter pub get
 
+      # lib/firebase_options.dart is git-ignored (real project config), so put
+      # a compile-only placeholder in its place.
+      - name: Add placeholder Firebase config
+        run: cp tool/ci/firebase_options_stub.dart lib/firebase_options.dart
+
       - name: Verify formatting
-        run: dart format --output=none --set-exit-if-changed .
+        run: dart format --output=none --set-exit-if-changed lib test tool
 
       - name: Analyze
         run: flutter analyze

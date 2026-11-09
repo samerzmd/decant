@@ -1,5 +1,3 @@
-import 'liquid_color.dart';
-
 /// A single glass tube holding a stack of colored liquid segments.
 ///
 /// Segments are stored bottom-to-top: `segments.first` is the bottom of the
@@ -60,8 +58,7 @@ class Tube {
   bool get isComplete => isEmpty || (isFull && isUniform);
 
   /// Whether this tube can currently receive a segment of [color].
-  bool canReceive(int color) =>
-      !isFull && (isEmpty || segments.last == color);
+  bool canReceive(int color) => !isFull && (isEmpty || segments.last == color);
 
   /// Return a copy with [count] segments of [color] added on top.
   Tube withAdded(int color, int count) {

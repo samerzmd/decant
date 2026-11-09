@@ -25,8 +25,7 @@ class LevelSelectScreen extends ConsumerWidget {
               Expanded(
                 child: GridView.builder(
                   padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
-                  gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 4,
                     mainAxisSpacing: 14,
                     crossAxisSpacing: 14,
@@ -124,13 +123,13 @@ class _LevelTile extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: locked
-              ? Colors.white.withOpacity(0.04)
-              : Colors.white.withOpacity(0.08),
+              ? Colors.white.withValues(alpha: 0.04)
+              : Colors.white.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
             color: locked
-                ? Colors.white.withOpacity(0.06)
-                : diffColor.withOpacity(0.55),
+                ? Colors.white.withValues(alpha: 0.06)
+                : diffColor.withValues(alpha: 0.55),
             width: 1.4,
           ),
         ),
@@ -139,7 +138,7 @@ class _LevelTile extends StatelessWidget {
           children: [
             if (locked)
               Icon(Icons.lock_rounded,
-                  color: DecantColors.subtle.withOpacity(0.6), size: 22)
+                  color: DecantColors.subtle.withValues(alpha: 0.6), size: 22)
             else
               Text(
                 '$levelId',
@@ -160,7 +159,7 @@ class _LevelTile extends StatelessWidget {
                     size: 12,
                     color: filled
                         ? DecantColors.star
-                        : DecantColors.subtle.withOpacity(0.4),
+                        : DecantColors.subtle.withValues(alpha: 0.4),
                   );
                 }),
               )
@@ -168,7 +167,7 @@ class _LevelTile extends StatelessWidget {
               Text('Lvl $levelId',
                   style: TextStyle(
                       fontSize: 11,
-                      color: DecantColors.subtle.withOpacity(0.6))),
+                      color: DecantColors.subtle.withValues(alpha: 0.6))),
           ],
         ),
       ),

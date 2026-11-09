@@ -24,7 +24,7 @@ The calm, complete core game.
 - [x] 8 synthesized CC0 SFX with fill-level pitch shift
 - [x] 5 selectable ambient beds + independent volume mixer
 - [x] Haptics, colorblind symbol mode, persistent progress & settings
-- [x] Branded icon / splash / in-app logo
+- [x] Branded icon / splash / in-app logo (layered-tube mark, themed icon)
 - [x] Lifecycle-aware audio, fast startup, single seamless splash
 - [x] Exit/leave confirmation dialogs
 
@@ -34,15 +34,15 @@ The calm, complete core game.
 
 Tighten the release and lay groundwork for the community.
 
-- [ ] Remove debug `debugPrint`s from the audio/lifecycle paths; add a proper
-      logging toggle
+- [x] Keep debug `debugPrint`s out of release builds (all behind `kDebugMode`)
+- [ ] A proper logging toggle
 - [ ] Re-evaluate Impeller vs Skia per-platform now that the freeze cause is
       fixed (currently forced to Skia on Android)
-- [ ] Move `MainActivity.kt` to its package-matching folder
+- [x] Move `MainActivity.kt` to its package-matching folder
 - [ ] Expand widget/golden tests; wire coverage reporting into CI
 - [ ] Settings: pour-animation speed, reduce-motion option
 - [ ] A simple **stats** screen (levels solved, total stars, best moves, streak)
-- [ ] In-app "how to play" / first-run tutorial overlay
+- [x] In-app "how to play" / first-run tutorial overlay
 - [ ] App store assets (screenshots, feature graphic, store listing copy)
 
 ## 🔜 v1.2 — Modes & replayability
@@ -81,8 +81,8 @@ Bigger bets, only if the community wants them.
 
 ## 🛠️ Ongoing / infrastructure
 
-- [ ] GitHub Actions CI: analyze + test + algorithm verifier (initial version
-      shipped in `.github/workflows/ci.yml`)
+- [x] GitHub Actions CI: format + analyze + test + algorithm verifier
+      (`.github/workflows/ci.yml`, Flutter pinned via `.fvmrc`)
 - [ ] Release automation (tagged builds, CHANGELOG enforcement)
 - [ ] Publish to Google Play and the App Store; explore F-Droid
 - [ ] Issue/PR templates and a `good first issue` set for newcomers

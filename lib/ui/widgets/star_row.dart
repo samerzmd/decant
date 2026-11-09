@@ -26,7 +26,9 @@ class StarRow extends StatelessWidget {
         final filled = i < earned;
         final star = Icon(
           filled ? Icons.star_rounded : Icons.star_outline_rounded,
-          color: filled ? DecantColors.star : DecantColors.subtle.withOpacity(0.5),
+          color: filled
+              ? DecantColors.star
+              : DecantColors.subtle.withValues(alpha: 0.5),
           size: size,
         );
         if (!animate || !filled) {

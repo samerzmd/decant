@@ -1,5 +1,4 @@
 import 'dart:math' as math;
-import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 
@@ -57,7 +56,7 @@ class PourStreamPainter extends CustomPainter {
         ..style = PaintingStyle.stroke
         ..strokeWidth = 7.5
         ..strokeCap = StrokeCap.round
-        ..color = liquidColor(colorId).withOpacity(0.92),
+        ..color = liquidColor(colorId).withValues(alpha: 0.92),
     );
     // Glossy core highlight.
     canvas.drawPath(
@@ -66,7 +65,7 @@ class PourStreamPainter extends CustomPainter {
         ..style = PaintingStyle.stroke
         ..strokeWidth = 2.6
         ..strokeCap = StrokeCap.round
-        ..color = liquidTint(colorId).withOpacity(0.85),
+        ..color = liquidTint(colorId).withValues(alpha: 0.85),
     );
 
     // Splash droplets at the destination once the stream has connected.
@@ -76,7 +75,7 @@ class PourStreamPainter extends CustomPainter {
   }
 
   void _paintSplash(Canvas canvas) {
-    final paint = Paint()..color = liquidColor(colorId).withOpacity(0.9);
+    final paint = Paint()..color = liquidColor(colorId).withValues(alpha: 0.9);
     final rng = math.Random(colorId * 31 + 7);
     final phase = ((progress - 0.4) / 0.6).clamp(0.0, 1.0);
     for (var i = 0; i < 5; i++) {

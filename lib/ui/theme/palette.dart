@@ -36,4 +36,5 @@ Color liquidTint(int id) {
   return Color.lerp(c, Colors.white, 0.42)!;
 }
 
-String liquidSymbol(int id) => kLiquidPalette[id % kLiquidPalette.length].symbol;
+String liquidSymbol(int id) =>
+    kLiquidPalette[id % kLiquidPalette.length].symbol;

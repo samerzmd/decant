@@ -105,7 +105,10 @@ class LevelGenerator {
   static void _reversePour(List<List<int>> segs, int capacity, Random rng) {
     final n = segs.length;
     // Candidate source tubes P: non-empty.
-    final sources = <int>[for (var i = 0; i < n; i++) if (segs[i].isNotEmpty) i];
+    final sources = <int>[
+      for (var i = 0; i < n; i++)
+        if (segs[i].isNotEmpty) i
+    ];
     if (sources.isEmpty) return;
     sources.shuffle(rng);
 

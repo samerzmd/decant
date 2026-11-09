@@ -120,10 +120,9 @@ class _GameBoardState extends ConsumerState<GameBoard>
                   selected: session.selected == i,
                   hintSource: session.hint?.from == i ||
                       (widget.guide?.from == i && session.selected != i),
-                  hintTarget:
-                      session.hint?.to == i ||
-                          (widget.guide?.to == i &&
-                              session.selected == widget.guide?.from),
+                  hintTarget: session.hint?.to == i ||
+                      (widget.guide?.to == i &&
+                          session.selected == widget.guide?.from),
                   risingCount: isDest ? pour.count : 0,
                   risingProgress: isDest ? pourP : 1.0,
                   risingColor: isDest ? pour.color : null,
@@ -169,8 +168,9 @@ class _GameBoardState extends ConsumerState<GameBoard>
     var rows = (n / perRow).ceil();
     perRow = (n / rows).ceil(); // rebalance
 
-    var tubeW =
-        ((size.width - (perRow - 1) * gap) / perRow).clamp(minW, maxW).toDouble();
+    var tubeW = ((size.width - (perRow - 1) * gap) / perRow)
+        .clamp(minW, maxW)
+        .toDouble();
     var tubeH = tubeW * (capacity * 0.6 + 0.6);
 
     // Shrink to fit vertically if needed.

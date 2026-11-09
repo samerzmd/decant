@@ -6,8 +6,8 @@ import 'package:decant/logic/solver.dart';
 import 'package:decant/models/game_state.dart';
 
 void main() {
-  GameState toState(level) =>
-      GameState(tubes: level.buildTubes(), extraTubesRemaining: level.extraTubeAllowance);
+  GameState toState(level) => GameState(
+      tubes: level.buildTubes(), extraTubesRemaining: level.extraTubeAllowance);
 
   test('every generated level is solvable and not already solved', () {
     for (var id = 1; id <= 25; id++) {

@@ -22,7 +22,8 @@ class MusicTrack implements SoundItem {
   @override
   final String? pack;
 
-  const MusicTrack(this.name, this.label, this.category, this.icon, this.fileName,
+  const MusicTrack(
+      this.name, this.label, this.category, this.icon, this.fileName,
       {this.pack});
 
   /// Flutter asset path — only valid for bundled tracks (`pack == null`).

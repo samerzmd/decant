@@ -48,7 +48,8 @@ class AppSettings {
 
   factory AppSettings.fromJson(Map<String, dynamic> j) => AppSettings(
         audio: j['audio'] is Map
-            ? AudioSettings.fromJson((j['audio'] as Map).cast<String, dynamic>())
+            ? AudioSettings.fromJson(
+                (j['audio'] as Map).cast<String, dynamic>())
             : const AudioSettings(),
         hapticsEnabled: j['haptics'] as bool? ?? true,
         colorblindMode: j['colorblind'] as bool? ?? false,

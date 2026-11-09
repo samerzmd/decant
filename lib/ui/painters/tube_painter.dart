@@ -77,7 +77,8 @@ class LiquidTubePainter extends CustomPainter {
     _paintGlassBody(canvas, bodyRRect, w, h);
 
     // Inner cavity that actually holds liquid.
-    final innerRect = Rect.fromLTWH(wall, wall * 0.4, w - 2 * wall, h - wall * 1.2);
+    final innerRect =
+        Rect.fromLTWH(wall, wall * 0.4, w - 2 * wall, h - wall * 1.2);
     final innerRRect = RRect.fromRectAndCorners(
       innerRect,
       topLeft: Radius.circular(w * 0.12),
@@ -101,7 +102,7 @@ class LiquidTubePainter extends CustomPainter {
 
   void _paintShadow(Canvas canvas, double w, double h, Radius botR) {
     final shadowPaint = Paint()
-      ..color = Colors.black.withOpacity(0.30)
+      ..color = Colors.black.withValues(alpha: 0.30)
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 9);
     final rect = Rect.fromCenter(
       center: Offset(w / 2 + w * 0.06, h - botR.y * 0.2),
@@ -202,7 +203,7 @@ class LiquidTubePainter extends CustomPainter {
 
     // Bright thin highlight crescent on the meniscus.
     final hi = Paint()
-      ..color = Colors.white.withOpacity(0.45)
+      ..color = Colors.white.withValues(alpha: 0.45)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.4
       ..strokeCap = StrokeCap.round;
@@ -220,7 +221,7 @@ class LiquidTubePainter extends CustomPainter {
       inner.height,
     );
     final paint = Paint()
-      ..color = Colors.white.withOpacity(0.16)
+      ..color = Colors.white.withValues(alpha: 0.16)
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 2);
     canvas.drawRRect(
       RRect.fromRectAndRadius(glossRect, Radius.circular(glossRect.width)),
@@ -236,21 +237,23 @@ class LiquidTubePainter extends CustomPainter {
         text: TextSpan(
           text: liquidSymbol(colorId),
           style: TextStyle(
-            color: Colors.white.withOpacity(0.82),
+            color: Colors.white.withValues(alpha: 0.82),
             fontSize: segH * 0.42,
             fontWeight: FontWeight.w700,
           ),
         ),
         textDirection: TextDirection.ltr,
       )..layout();
-      tp.paint(canvas, Offset(inner.center.dx - tp.width / 2, cy - tp.height / 2));
+      tp.paint(
+          canvas, Offset(inner.center.dx - tp.width / 2, cy - tp.height / 2));
     }
   }
 
   void _paintBubbles(Canvas canvas, Rect inner) {
     if (tube.isEmpty) return;
-    final liquidTop = inner.bottom - tube.segments.length * (inner.height / tube.capacity);
-    final paint = Paint()..color = Colors.white.withOpacity(0.18);
+    final liquidTop =
+        inner.bottom - tube.segments.length * (inner.height / tube.capacity);
+    final paint = Paint()..color = Colors.white.withValues(alpha: 0.18);
     // A handful of deterministic bubbles drifting upward and looping.
     const count = 4;
     for (var b = 0; b < count; b++) {
@@ -285,9 +288,9 @@ class LiquidTubePainter extends CustomPainter {
         begin: Alignment.centerLeft,
         end: Alignment.centerRight,
         colors: [
-          Colors.white.withOpacity(0.30),
-          Colors.white.withOpacity(0.0),
-          Colors.black.withOpacity(0.18),
+          Colors.white.withValues(alpha: 0.30),
+          Colors.white.withValues(alpha: 0.0),
+          Colors.black.withValues(alpha: 0.18),
         ],
         stops: const [0.0, 0.45, 1.0],
       ).createShader(body.outerRect);
@@ -304,7 +307,8 @@ class LiquidTubePainter extends CustomPainter {
         ..color = DecantColors.glassEdge,
     );
     // Bright mouth rim (ellipse at the opening) for a 3-D tube feel.
-    final mouth = Rect.fromLTWH(body.left + w * 0.07, -w * 0.02, w * 0.86, w * 0.22);
+    final mouth =
+        Rect.fromLTWH(body.left + w * 0.07, -w * 0.02, w * 0.86, w * 0.22);
     canvas.drawArc(
       mouth,
       math.pi,
@@ -313,7 +317,7 @@ class LiquidTubePainter extends CustomPainter {
       Paint()
         ..style = PaintingStyle.stroke
         ..strokeWidth = 2.0
-        ..color = Colors.white.withOpacity(0.55),
+        ..color = Colors.white.withValues(alpha: 0.55),
     );
   }
 
@@ -332,7 +336,7 @@ class LiquidTubePainter extends CustomPainter {
     final paint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 3.0
-      ..color = glow.withOpacity(0.9)
+      ..color = glow.withValues(alpha: 0.9)
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 6);
     canvas.drawRRect(body.inflate(2), paint);
   }

@@ -32,8 +32,9 @@ class _DecantButtonState extends State<DecantButton> {
     final enabled = widget.onPressed != null;
     final bg = widget.primary
         ? DecantColors.accent
-        : Colors.white.withOpacity(0.06);
-    final fg = widget.primary ? const Color(0xFF0E1530) : DecantColors.onSurface;
+        : Colors.white.withValues(alpha: 0.06);
+    final fg =
+        widget.primary ? const Color(0xFF0E1530) : DecantColors.onSurface;
 
     return Opacity(
       opacity: enabled ? 1 : 0.4,
@@ -48,18 +49,17 @@ class _DecantButtonState extends State<DecantButton> {
           curve: Curves.easeOut,
           child: Container(
             width: widget.expand ? double.infinity : null,
-            padding:
-                const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
             decoration: BoxDecoration(
               color: bg,
               borderRadius: BorderRadius.circular(18),
               border: widget.primary
                   ? null
-                  : Border.all(color: Colors.white.withOpacity(0.16)),
+                  : Border.all(color: Colors.white.withValues(alpha: 0.16)),
               boxShadow: widget.primary
                   ? [
                       BoxShadow(
-                        color: DecantColors.accent.withOpacity(0.35),
+                        color: DecantColors.accent.withValues(alpha: 0.35),
                         blurRadius: 18,
                         offset: const Offset(0, 6),
                       )
@@ -67,8 +67,7 @@ class _DecantButtonState extends State<DecantButton> {
                   : null,
             ),
             child: Row(
-              mainAxisSize:
-                  widget.expand ? MainAxisSize.max : MainAxisSize.min,
+              mainAxisSize: widget.expand ? MainAxisSize.max : MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 if (widget.icon != null) ...[
@@ -134,11 +133,13 @@ class DecantIconButton extends StatelessWidget {
                 width: 54,
                 height: 54,
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.07),
+                  color: Colors.white.withValues(alpha: 0.07),
                   shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white.withOpacity(0.12)),
+                  border:
+                      Border.all(color: Colors.white.withValues(alpha: 0.12)),
                 ),
-                child: Icon(icon, color: tint ?? DecantColors.onSurface, size: 24),
+                child:
+                    Icon(icon, color: tint ?? DecantColors.onSurface, size: 24),
               ),
               if (badge != null)
                 Positioned(

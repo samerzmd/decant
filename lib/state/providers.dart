@@ -30,7 +30,8 @@ final hapticServiceProvider = Provider<HapticService>((_) => HapticService());
 
 /// Overridden in `main()` after `Firebase.initializeApp()` completes.
 final analyticsServiceProvider = Provider<AnalyticsService>(
-  (_) => throw UnimplementedError('analyticsServiceProvider must be overridden'),
+  (_) =>
+      throw UnimplementedError('analyticsServiceProvider must be overridden'),
 );
 
 final settingsProvider =
@@ -63,8 +64,7 @@ final gameControllerProvider = StateNotifierProvider.autoDispose
 /// (the painter then falls back to a gradient-only glass look).
 final glassShaderProvider = FutureProvider<ui.FragmentShader?>((ref) async {
   try {
-    final program =
-        await ui.FragmentProgram.fromAsset('shaders/glass.frag');
+    final program = await ui.FragmentProgram.fromAsset('shaders/glass.frag');
     return program.fragmentShader();
   } catch (e) {
     if (kDebugMode) debugPrint('Glass shader unavailable, using fallback: $e');
