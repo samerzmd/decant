@@ -29,6 +29,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       if (settings.audio.ambientEnabled && !settings.audio.muted) {
         ref.read(audioServiceProvider).startAmbient();
       }
+      if (settings.audio.musicEnabled && !settings.audio.muted) {
+        ref.read(audioServiceProvider).startMusic();
+      }
     });
   }
 

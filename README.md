@@ -21,7 +21,7 @@ A calm, polished **water sort puzzle** for Android and iOS, built in Flutter. Ta
 - Auto-detection of **stuck** boards, with a prompt to undo / restart / add a tube.
 - **3D glass visuals**: rounded-bottom glass cylinders, rim and mouth lighting, soft drop shadows, layered liquid with a rounded **meniscus**, glossy reflections, rising bubbles, and a GLSL highlight overlay.
 - **Pour animation**: arcing liquid stream, source-tube tilt, rising liquid in the destination, splash droplets, and a settling wobble on landing.
-- **ASMR audio** (all synthesized, see below): looping water trickle (pitch rises as a tube fills), droplet plink, glass clink, glug, completion chime, combo cascade, win jingle, and a toggleable, **selectable ambient bed** (Twilight Pad, Rain, Ocean, Stream, Fireplace).
+- **ASMR audio** (all synthesized, see below): looping water trickle (pitch rises as a tube fills), droplet plink, glass clink, glug, completion chime, combo cascade, win jingle, a toggleable ambient bed chosen from a **library of 54 ambience sounds** in 10 categories (rain, water, wind, fire, nature, night, home, travel, noise colors, ASMR textures), and **background music** on top from a **library of 54 calm music loops** in 8 styles (piano, keys, bells, strings, mallets, ambient, lo-fi, flute).
 - **Haptics** synced to pour start, droplet landing, tube completion, and the win.
 - Settings: separate volume sliders for SFX / ambience / music, a mute toggle, ambient on/off, haptics toggle, and a **colorblind-friendly** mode (distinct symbols on every color).
 - Persistent progress, best stars, and settings via `shared_preferences`.
@@ -66,7 +66,10 @@ decant/
 ├── assets/sounds/                 # synthesized CC0 SFX (WAV) + ambient beds (OGG)
 ├── tool/
 │   ├── generate_sounds.py         # regenerates the sound effects
-│   ├── generate_ambient.py        # regenerates the ambient beds
+│   ├── generate_ambient.py        # regenerates the ambient beds + Dart catalog
+│   ├── ambient_library.py         # the 50 extra ambience recipes + catalog
+│   ├── generate_music.py          # regenerates the background music + Dart catalog
+│   ├── music_library.py           # instruments, composition engine, 50 extra tracks
 │   └── verify_algorithm.py        # Python port that proves the logic invariants
 ├── test/                          # unit + widget tests
 └── pubspec.yaml
@@ -143,6 +146,7 @@ third-party samples. Two generators (NumPy; the ambient one also needs SciPy and
 ```bash
 python3 tool/generate_sounds.py    # sound effects  → assets/sounds/*.wav
 python3 tool/generate_ambient.py   # ambient beds   → assets/sounds/ambient_*.ogg
+python3 tool/generate_music.py     # music loops    → assets/sounds/music_*.ogg
 ```
 
 The ambient beds are 48-second **stereo** loops (Ogg Vorbis, 44.1 kHz). Every
@@ -158,13 +162,36 @@ seam or click, and all five are mastered to the same loudness.
 | `tube_complete.wav`      | A tube is solved                          | Two-note bell (C6→E6)                            | CC0 1.0 |
 | `combo.wav`              | Consecutive tube completions              | Ascending bell arpeggio (C6 E6 G6 C7)           | CC0 1.0 |
 | `win_jingle.wav`         | Puzzle solved                             | Bell melody over a soft pad                      | CC0 1.0 |
-| `ambient_pad.ogg`        | Ambient bed — **Twilight Pad** (default)  | Four-chord detuned additive pad, bell shimmer, large reverb | CC0 1.0 |
-| `ambient_rain.ogg`       | Ambient bed — **Rain**                    | Shaped stereo wash + thousands of individual drops + near puddle drips | CC0 1.0 |
-| `ambient_ocean.ogg`      | Ambient bed — **Ocean**                   | Irregular waves (rise → crash → foam fizz) drifting along the shore | CC0 1.0 |
-| `ambient_stream.ogg`     | Ambient bed — **Stream**                  | Layered water flow + clustered Minnaert bubbles + small splashes | CC0 1.0 |
-| `ambient_fireplace.ogg`  | Ambient bed — **Fireplace**               | Breathing roar + clustered crackle flurries + wood pops + sap hiss | CC0 1.0 |
+| `ambient_*.ogg` (54)     | Ambient bed — chosen in the **Ambience** browser (Ocean by default) | Rain (6 kinds incl. window, tent, tin roof, thunder) · Water (ocean, stream, waterfall, lake, cave, fountain, underwater) · Wind (5) · Fire (4) · Nature (birds, meadow, cicadas, rainforest) · Night (crickets, frogs, owls) · Home (clock, fan, AC, washer, simmering pot, purring cat, keyboard) · Travel (train, airplane, night drive, sailboat) · Noise (white, pink, brown, green) · ASMR (tapping, brushing, paper, hourglass, heartbeat, chimes, singing bowl, rain stick). Each is a recipe in `tool/ambient_library.py` | CC0 1.0 |
+| `music_*.ogg` (54)       | Background music — chosen in the **Music** browser (Warm Keys by default) | Composed + synthesized: 4 originals (Twilight Pad, Music Box, Felt Piano, Warm Keys; 48–96 s) and 50 more 64 s loops from `tool/music_library.py` — felt piano, FM electric piano, music box, celesta, glockenspiel, modal-synth guitar/harp/koto, kalimba, marimba, vibraphone, handpan, flute, string & pad ensembles, soft lo-fi drums + vinyl. All in the C-major pitch set (different modal centers) with pentatonic melodies | CC0 1.0 |
 
-The ambient bed is toggleable and the track is selectable in **Settings → Audio → Ambience sound**. To add another bed: write a `make_*` function in `tool/generate_ambient.py`, add it to `BEDS` (it saves as `assets/sounds/ambient_<name>.ogg`), then add a value to the `AmbientTrack` enum (label + asset path) in `lib/audio/audio_service.dart`.
+The ambient bed is toggleable; tap **Settings → Audio → Ambience sound** to open the browser (search, category filters, tap a tile to hear it). **Background music** plays on top of the ambience (Warm Keys by default) — switch it off, or tap **Settings → Audio → Music track** to browse all 54 tracks by style. The music tracks share one key family and the ambient beds are unpitched nature sounds, so every track sits cleanly over every bed; the **Music** slider sets their level. To add another bed: write a recipe in `tool/ambient_library.py` and add a row to `CATALOG` (id, label, category, Material icon, recipe, seed, loudness), then run `python3 tool/generate_ambient.py <id>` — it renders `assets/sounds/ambient_<id>.ogg` and regenerates `lib/audio/ambient_catalog.g.dart`, so the app picks it up with no Dart changes.
+
+### Store-delivered sound packs
+
+Only the 8 original loops (4 ambience incl. the default Ocean, 4 music incl. the
+default Warm Keys) ship inside the app. The other 100 live in `sound_packs/`
+and are delivered by the stores **right after install**, so the download from
+the store stays small:
+
+| Platform | Mechanism | Where it's configured |
+|----------|-----------|-----------------------|
+| Android | Play Asset Delivery, two **fast-follow** packs (`ambient`, `music`) | `android/ambient_pack`, `android/music_pack` (their `src/main/assets` symlink to `sound_packs/…`), `assetPacks` in `android/app/build.gradle.kts`, bridge in `MainActivity.kt` |
+| iOS | On-Demand Resources tagged `ambient` / `music`, listed in `ON_DEMAND_RESOURCES_PREFETCH_ORDER` | `SoundPacks` group in `Runner.xcodeproj`, bridge in `AppDelegate.swift` |
+
+`lib/audio/sound_packs.dart` talks to both bridges. Until a pack arrives its
+sounds show a download badge in the browsers, and a selected pack sound plays
+the bundled default as a stand-in, switching over automatically when the pack
+lands. Packs only arrive from the stores: a sideloaded APK
+(`flutter build apk`) or `flutter run` build plays the bundled sounds only.
+Test delivery locally with `bundletool build-apks --local-testing` (Android)
+or by running from Xcode (iOS, which hosts On-Demand Resources itself).
+Upload an **app bundle** (`flutter build appbundle`) to Play, not an APK.
+
+After adding a sound to a pack, regenerate it
+(`tool/generate_ambient.py` / `tool/generate_music.py`) — Android picks new
+files up automatically; on iOS add the file to the `SoundPacks` group with the
+matching asset tag.
 
 Playback uses [`flutter_soloud`](https://pub.dev/packages/flutter_soloud) for
 low latency and per-voice pitch control. Assets are preloaded at startup, so

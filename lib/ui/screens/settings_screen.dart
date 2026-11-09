@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../audio/audio_service.dart';
 import '../../state/providers.dart';
 import '../theme/app_theme.dart';
+import 'sound_browser_screen.dart';
 
 /// Audio mixer (SFX / ambience / music), mute, ambient toggle, haptics and the
 /// colorblind-friendly rendering option. All changes persist immediately.
@@ -81,10 +82,33 @@ class SettingsScreen extends ConsumerWidget {
                       onChanged: (_) => ctrl.toggleAmbient(),
                     ),
                     if (audio.ambientEnabled)
-                      _AmbientPicker(
-                        selected: audio.ambientTrack,
-                        enabled: !audio.muted,
-                        onSelect: ctrl.setAmbientTrack,
+                      _NavTile(
+                        title: 'Ambience sound',
+                        value: audio.ambientTrack.label,
+                        detail:
+                            '${audio.ambientTrack.categoryInfo.label} · ${kAmbientCatalog.length} sounds',
+                        icon: audio.ambientTrack.icon,
+                        onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) =>
+                                const SoundBrowserScreen(kind: SoundKind.ambient))),
+                      ),
+                    _SwitchTile(
+                      label: 'Background music',
+                      subtitle: 'Calm music on top of the ambience',
+                      icon: Icons.library_music_rounded,
+                      value: audio.musicEnabled,
+                      onChanged: (_) => ctrl.toggleMusic(),
+                    ),
+                    if (audio.musicEnabled)
+                      _NavTile(
+                        title: 'Music track',
+                        value: audio.musicTrack.label,
+                        detail:
+                            '${audio.musicTrack.categoryInfo.label} · ${kMusicCatalog.length} tracks',
+                        icon: audio.musicTrack.icon,
+                        onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) =>
+                                const SoundBrowserScreen(kind: SoundKind.music))),
                       ),
                     const SizedBox(height: 18),
                     const _SectionLabel('Feel'),
@@ -257,114 +281,73 @@ class _SliderTile extends StatelessWidget {
   }
 }
 
-/// Selectable chips for the ambient bed (Twilight Pad / Rain / Ocean / …).
-class _AmbientPicker extends StatelessWidget {
-  final AmbientTrack selected;
-  final bool enabled;
-  final ValueChanged<AmbientTrack> onSelect;
-
-  const _AmbientPicker({
-    required this.selected,
-    required this.enabled,
-    required this.onSelect,
-  });
-
-  static const Map<AmbientTrack, IconData> _icons = {
-    AmbientTrack.pad: Icons.nightlight_round,
-    AmbientTrack.rain: Icons.grain_rounded,
-    AmbientTrack.ocean: Icons.water_rounded,
-    AmbientTrack.stream: Icons.water_drop_rounded,
-    AmbientTrack.fireplace: Icons.local_fire_department_rounded,
-  };
-
-  @override
-  Widget build(BuildContext context) {
-    return Opacity(
-      opacity: enabled ? 1 : 0.45,
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 10),
-        padding: const EdgeInsets.fromLTRB(16, 12, 16, 14),
-        decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.06),
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Ambience sound',
-                style: TextStyle(
-                    color: DecantColors.subtle.withOpacity(0.9),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600)),
-            const SizedBox(height: 10),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                for (final track in AmbientTrack.values)
-                  _AmbientChip(
-                    label: track.label,
-                    icon: _icons[track] ?? Icons.music_note_rounded,
-                    active: track == selected,
-                    onTap: enabled ? () => onSelect(track) : null,
-                  ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _AmbientChip extends StatelessWidget {
-  final String label;
+/// A row showing the current choice; tapping opens a full picker screen.
+class _NavTile extends StatelessWidget {
+  final String title;
+  final String value;
+  final String detail;
   final IconData icon;
-  final bool active;
-  final VoidCallback? onTap;
+  final VoidCallback onTap;
 
-  const _AmbientChip({
-    required this.label,
+  const _NavTile({
+    required this.title,
+    required this.value,
+    required this.detail,
     required this.icon,
-    required this.active,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 160),
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
-        decoration: BoxDecoration(
-          color: active
-              ? DecantColors.accent.withOpacity(0.22)
-              : Colors.white.withOpacity(0.05),
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(
-            color: active
-                ? DecantColors.accent
-                : Colors.white.withOpacity(0.12),
-            width: 1.4,
+    return Semantics(
+      button: true,
+      label: '$title: $value',
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          margin: const EdgeInsets.only(bottom: 10),
+          padding: const EdgeInsets.fromLTRB(14, 12, 10, 12),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.06),
+            borderRadius: BorderRadius.circular(16),
           ),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon,
-                size: 16,
-                color: active ? DecantColors.accent : DecantColors.subtle),
-            const SizedBox(width: 7),
-            Text(
-              label,
-              style: TextStyle(
-                color: active ? DecantColors.onSurface : DecantColors.subtle,
-                fontSize: 13,
-                fontWeight: active ? FontWeight.w700 : FontWeight.w600,
+          child: Row(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: DecantColors.accent.withOpacity(0.15),
+                ),
+                child: Icon(icon, color: DecantColors.accent, size: 22),
               ),
-            ),
-          ],
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(title,
+                        style: TextStyle(
+                            color: DecantColors.subtle.withOpacity(0.9),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600)),
+                    const SizedBox(height: 2),
+                    Text(value,
+                        style: const TextStyle(
+                            color: DecantColors.onSurface,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700)),
+                    Text(detail,
+                        style: TextStyle(
+                            color: DecantColors.subtle.withOpacity(0.7),
+                            fontSize: 11.5)),
+                  ],
+                ),
+              ),
+              const Icon(Icons.chevron_right_rounded, color: DecantColors.subtle),
+            ],
+          ),
         ),
       ),
     );

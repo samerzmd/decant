@@ -7,13 +7,113 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0078DB0DFADDDB05CC8AD7C9 /* music_riverside_guitar.ogg in Resources */ = {isa = PBXBuildFile; fileRef = F3AFFB5E5247310363E44F7B /* music_riverside_guitar.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		010C5D9F89B9C6B8951952AA /* ambient_paper.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 89EE69F23912322BFC074D4A /* ambient_paper.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		05FDD555D521F2406F16C24E /* ambient_air_conditioner.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 4D8A91AB63366E7E8D490557 /* ambient_air_conditioner.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		06FE4F8EECCC384A6B05C36D /* music_handpan_flow.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 3F1190DB1DF4D1C7DB6D7F14 /* music_handpan_flow.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		08C3991760C3A99F6B979640 /* ambient_wind_chimes.ogg in Resources */ = {isa = PBXBuildFile; fileRef = C1D249A90CF7300387F83D1B /* ambient_wind_chimes.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		0ABF5AED30E789D3A72C7FFD /* ambient_breeze.ogg in Resources */ = {isa = PBXBuildFile; fileRef = DED518BE3074793CC3761EC4 /* ambient_breeze.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		0EAA07B28E56E0F06D3FC947 /* music_first_snow.ogg in Resources */ = {isa = PBXBuildFile; fileRef = DEC3F10CD5CF06B2C8BB9C35 /* music_first_snow.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		142A5A2A28D607DEC1125E37 /* music_vibraphone_night.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 4AE41B524BDDA5D63D102321 /* music_vibraphone_night.ogg */; settings = {ASSET_TAGS = (music, ); }; };
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
+		1E652F937A83D1F69DD78A95 /* ambient_brown_noise.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 5EC5C24BE0EFA3B9A666BA35 /* ambient_brown_noise.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		1EB268EB5810DAD0C75A83D0 /* music_kalimba_lullaby.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 3CB6A5323F56F60D569D30E7 /* music_kalimba_lullaby.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		1F5685ED8145A3250E577C03 /* music_handpan_meditation.ogg in Resources */ = {isa = PBXBuildFile; fileRef = A9609EFEF1211C9EFEAF8F43 /* music_handpan_meditation.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		206023602D64B6ED965FADE0 /* ambient_howling.ogg in Resources */ = {isa = PBXBuildFile; fileRef = EF9641BB6D711C590A028C35 /* ambient_howling.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		22A480CBCD643ACDD70341EC /* music_study_session.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 549A56F41106DE52E8B8BDF7 /* music_study_session.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		2411573EA7E558985AFF71A7 /* ambient_candle.ogg in Resources */ = {isa = PBXBuildFile; fileRef = AECA5B5436A209D4B6102300 /* ambient_candle.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		255CE580089F4436E8F15AA0 /* music_floating.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 53E8EC42EE8FDC3695F0004E /* music_floating.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		2A1373C7421E2423EDB58621 /* ambient_heartbeat.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 7EC87456BE32C4A40FF9BF71 /* ambient_heartbeat.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		2EF0FB9A147369D7C3E9DC38 /* music_kalimba_sunrise.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 5451357E72C2E838446B1F24 /* music_kalimba_sunrise.ogg */; settings = {ASSET_TAGS = (music, ); }; };
 		331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C807B294A618700263BE5 /* RunnerTests.swift */; };
+		335C508632A04B1F5CDCACA5 /* ambient_fan.ogg in Resources */ = {isa = PBXBuildFile; fileRef = DB2931B9BF7345B169748056 /* ambient_fan.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		3577F844213DD7EE934DEEB3 /* music_cafe_window.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 8CA660AAAC41D4CFD61CCE46 /* music_cafe_window.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		3632E1955DF7EF9AC4F459C9 /* music_northern_lights.ogg in Resources */ = {isa = PBXBuildFile; fileRef = B9656A7B211300A62764BA05 /* music_northern_lights.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		3848BEEE7C399280112FA4CB /* ambient_purr.ogg in Resources */ = {isa = PBXBuildFile; fileRef = EA11DC9A5188566F3DCED986 /* ambient_purr.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		394CE10CDA691C44EF92835C /* music_shepherds_song.ogg in Resources */ = {isa = PBXBuildFile; fileRef = CD2816C0252BD1D86E9EFE6F /* music_shepherds_song.ogg */; settings = {ASSET_TAGS = (music, ); }; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
+		3CCA5E0913BD79492D444090 /* music_glass_garden.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 5E1315C5140BB96B966E34BF /* music_glass_garden.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		3E5650301EAFFECB76DC6748 /* ambient_sailboat.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 6EA06EF8E4AD4ED91B371018 /* ambient_sailboat.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		43028C1CB3545434C1EABFBC /* ambient_summer_night.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 1E564A5C400121CFD25C1385 /* ambient_summer_night.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		441F9CC6DFF05F40D3B35E51 /* ambient_rainforest.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 1843565FF675E42B6FBC5DF5 /* ambient_rainforest.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		445D7C17B3B145733154B5D2 /* music_snow_globe.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 474B0E044F410C9BCFD65C5F /* music_snow_globe.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		4629C4F97AF7FB2882EFBF58 /* music_late_bloom.ogg in Resources */ = {isa = PBXBuildFile; fileRef = E791BDD551FC115EE2B620FA /* music_late_bloom.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		49DBA8739015F0D2406CC830 /* ambient_trees.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 0AB2186B1F51931FBC09B526 /* ambient_trees.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		4CE613056798DB3C80FB766E /* music_sunday_morning.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 36072326AF240E354F4AEB59 /* music_sunday_morning.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		4E8EB8576F679C44D4D635A2 /* ambient_campfire.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 1D8B5DC3E073347C4A3F12EB /* ambient_campfire.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		536041CDC0EE799A5131F0F4 /* music_gentle_strum.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 68467BF4C816D7E9517AE835 /* music_gentle_strum.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		58541C9218DCAE98CC0A77C6 /* ambient_singing_bowl.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 11A5D9D3242DC8743812D4DD /* ambient_singing_bowl.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		5A371819612AE903357B366A /* music_deep_space.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 45692197F2B30BA75A2A85EE /* music_deep_space.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		5A3BC1BCC1B8A852E35E0E89 /* music_bamboo_flute.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 572848FFB094FE01477771F2 /* music_bamboo_flute.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		65DB068250159ACC80953D0E /* music_velvet_evening.ogg in Resources */ = {isa = PBXBuildFile; fileRef = E3E5D2B2DC947F52139CDA10 /* music_velvet_evening.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		66AA4226B68E1E54DFA6C480 /* music_soft_focus.ogg in Resources */ = {isa = PBXBuildFile; fileRef = E20D3432573034090AC0628C /* music_soft_focus.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		67D11636D073C6DBD877C4AC /* ambient_downpour.ogg in Resources */ = {isa = PBXBuildFile; fileRef = A7388ADC36F4AA1C373E4FDD /* ambient_downpour.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		6B447D986FA82EAA827ADD12 /* music_coffee_break.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 0AECC5F6E5DDDC3816B279E1 /* music_coffee_break.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		6C42E039FF84307CDEC484EE /* ambient_simmer.ogg in Resources */ = {isa = PBXBuildFile; fileRef = DD6888659BCF80EEC7F40D03 /* ambient_simmer.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		6C82BB48991A11A2314CB6CF /* music_slow_tide.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 43AF0EABEC26D2410DCC438C /* music_slow_tide.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		6D7213570F3D860DF7ED14B6 /* ambient_green_noise.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 3D12DDEB727E53D8D4FC1FEA /* ambient_green_noise.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		6DA88E2673E2EE6D45A3A917 /* music_wooden_dreams.ogg in Resources */ = {isa = PBXBuildFile; fileRef = E818F91B3B91BA2556D0E78F /* music_wooden_dreams.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		6EB95280BC37141E3C38672D /* music_blue_hour.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 4A2DADED08B4AB1E5A1BD45C /* music_blue_hour.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		6EE2C0747A35DB8597A9CC87 /* ambient_waterfall.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 6951A68EC071F1D462A9DC84 /* ambient_waterfall.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		70B0D597F4EAB3198C2AFAE3 /* music_night_bus.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 1BA3860ADBB91984CAC164FA /* music_night_bus.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		73BA642333BEA1E71EC545F1 /* music_evening_breeze.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 186A567903AC4A884CFD0960 /* music_evening_breeze.ogg */; settings = {ASSET_TAGS = (music, ); }; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
+		787F51E4BFC9719D75535D39 /* music_cozy_corner.ogg in Resources */ = {isa = PBXBuildFile; fileRef = C2476A8E31F5BEF8F85C3901 /* music_cozy_corner.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		791E6841A522555EB45B5070 /* ambient_washer.ogg in Resources */ = {isa = PBXBuildFile; fileRef = EFBF090BEBA3CB86711E8E6D /* ambient_washer.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		7B64C658EEA7E3C563D7CCCE /* music_lantern_light.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 3F554B3568DDEE9759A63627 /* music_lantern_light.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		825FAE01C063DADED5B8F1D4 /* music_starlit_lullaby.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 03F3B1AC3A1A7D3213A02ED1 /* music_starlit_lullaby.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		86155DF136FC32AEADCF402E /* ambient_blizzard.ogg in Resources */ = {isa = PBXBuildFile; fileRef = A426F85D18468F8F06603510 /* ambient_blizzard.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		87C53A2EF4511981A7968230 /* ambient_night_drive.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 7910008DC714F006BE08430D /* ambient_night_drive.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		885DCEA405B16240CD92C38B /* ambient_drizzle.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 71AC4FFD18FE7DB7B8F440FF /* ambient_drizzle.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		88A5D9CCBC9B2ECFA1E58F75 /* music_aurora.ogg in Resources */ = {isa = PBXBuildFile; fileRef = AB1E6F9C59E29A337753ADC4 /* music_aurora.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		8AFD54CBC3785F8E850EC66C /* music_harp_of_dawn.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 58E994566546A3F42C86CBCA /* music_harp_of_dawn.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		8BD2CC817B7EF0E1F20156B0 /* music_paper_moon.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 4649D875225204E309F2D1B9 /* music_paper_moon.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		9393F69C08EB114690A7A6C6 /* ambient_pink_noise.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 17938678B0FB7CAAE6CCFA75 /* ambient_pink_noise.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
+		9ACE2F82F11CD1AF6819762B /* music_midnight_tape.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 1BF1A6DEA4CA6F058BD8431A /* music_midnight_tape.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		9C124226F10F218937FAAB99 /* ambient_underwater.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 157460B6C52AEDAF9583808A /* ambient_underwater.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		9D724CA81A55A3131C75D729 /* music_weightless.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 5782A61EF7DB4748E8D58EF9 /* music_weightless.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		9E76701BF021C740DC4C0E22 /* music_nylon_afternoon.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 37B9CE866158F40E68801858 /* music_nylon_afternoon.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		9F6D4728BF0A92963A9263E2 /* music_quiet_hours.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 4EF8F2E912ECCBEB12287887 /* music_quiet_hours.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		A31ECFA1BD9B9812C925E3D5 /* music_crystal_steps.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 2B9C47C5C56E8D44FA1A3FC5 /* music_crystal_steps.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		A3A037421C9D20C2415837F6 /* music_morning_mist.ogg in Resources */ = {isa = PBXBuildFile; fileRef = B018DE13534B242C409E8788 /* music_morning_mist.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		A81932D6C0FECDD78FB69AAC /* ambient_lake.ogg in Resources */ = {isa = PBXBuildFile; fileRef = F85D39FDBB96B8F7970A2A61 /* ambient_lake.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		A9356D35E2CBE1377B0607D9 /* ambient_forest_birds.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 83382B3B424843249ADF420E /* ambient_forest_birds.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		AE0FA2504A4B09D555EB8A1F /* ambient_clock.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 915ECBC114D3C178FD4824CA /* ambient_clock.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		AECB41416E46A1D2F8B12919 /* ambient_hourglass.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 674DEA8ABB62B6DB41B17319 /* ambient_hourglass.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		AEFD3C5ADCA35AE1FA6B94E2 /* ambient_tapping.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 247DFCB6515B81BB4C2058C3 /* ambient_tapping.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		B072FF8E32E98BC01E4DE7F1 /* ambient_desert.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 575DD73A34031434E3E88BF5 /* ambient_desert.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		B20766C9E458FBDC27AF3913 /* music_mountain_air.ogg in Resources */ = {isa = PBXBuildFile; fileRef = DDD86D7BB22A1DA4E21C25E8 /* music_mountain_air.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		B53C5759033CE98841A33AA4 /* ambient_white_noise.ogg in Resources */ = {isa = PBXBuildFile; fileRef = EB0C8E469AB8C05956E3A071 /* ambient_white_noise.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		C22685CF91A1CCE3DD2E0653 /* ambient_rain_stick.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 1609FAF746007E5DBC536EB8 /* ambient_rain_stick.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		C27DB420A58AAF4B8C3C12A1 /* music_silk_road.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 270BF860DFA6D15754967F98 /* music_silk_road.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		C3C129DD2A4598B71532DE94 /* ambient_tent_rain.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 47D4B2C5D5ABB14EDF388724 /* ambient_tent_rain.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		C627EB5BB49F46319B2F9747 /* ambient_wood_stove.ogg in Resources */ = {isa = PBXBuildFile; fileRef = B404D2F2C2E95C217A18E996 /* ambient_wood_stove.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		CC1A2210C5C398C683A15A3D /* music_koto_garden.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 946E561278BB05D8418EE97C /* music_koto_garden.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		CCDAEF00FD85B0F4C17EED8F /* ambient_meadow.ogg in Resources */ = {isa = PBXBuildFile; fileRef = CFBCCA07B956F21BE9970791 /* ambient_meadow.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		D2FEDF8805F2221ED843B099 /* ambient_airplane.ogg in Resources */ = {isa = PBXBuildFile; fileRef = A201A103649D7C9EB4993B85 /* ambient_airplane.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		D35027D8146CF5AFDAD1A71C /* ambient_fountain.ogg in Resources */ = {isa = PBXBuildFile; fileRef = F255EA12A79E41CF21604A61 /* ambient_fountain.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		D7B683F213BDF103BA07C10B /* ambient_night_forest.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 54132B673675AD6553A5DDB6 /* ambient_night_forest.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		DF048A308F590A990B9B4ABB /* ambient_keyboard.ogg in Resources */ = {isa = PBXBuildFile; fileRef = ED3C54A1B596535407F3F773 /* ambient_keyboard.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		E6067C3A22A5A9FDC5688420 /* ambient_frog_pond.ogg in Resources */ = {isa = PBXBuildFile; fileRef = F104EE184E5CE19029A7271A /* ambient_frog_pond.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		E8A855956F3EC6DF61739B46 /* ambient_crickets.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 391499C9F4D64E0A333D4721 /* ambient_crickets.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		EA4A290C200286BB1DADAE7A /* ambient_cave.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 45551BC083EAB23E8B31E7B4 /* ambient_cave.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		EAECC7CFE599C9619F70B6AE /* ambient_thunderstorm.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 2F807246F294A4FDF1FF7F5F /* ambient_thunderstorm.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		EDC17C91DECA64509EF34E76 /* music_forest_spirit.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 7982C0B08722506A803FF926 /* music_forest_spirit.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		EDD11B04394FB7E672A1BB44 /* ambient_train.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 2B6A4F03609320421E4EA467 /* ambient_train.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		EFB783E7CF95EC2AA6DE52DE /* music_celesta_dreams.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 5E598A3B280717CBFFFB4E74 /* music_celesta_dreams.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		F091B09975FF38580C0CBA4C /* ambient_brushing.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 365F0F25353ACB61A4FB7224 /* ambient_brushing.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		F10DF28C8BB8E4C4F437FC4B /* music_marimba_breeze.ogg in Resources */ = {isa = PBXBuildFile; fileRef = B049642EC2C3FB40652CBB79 /* music_marimba_breeze.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		F15F611DF306C196DE9507D2 /* music_still_water.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 73E606DD31A22858D4CFB6D1 /* music_still_water.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		F2C60FC8CF3800A88327A1C1 /* ambient_window_rain.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 8C2BEBB8CE2C72254ABA427C /* ambient_window_rain.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		F2CA83A4D2C45EA0DB9D6239 /* music_harp_lullaby.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 5E6BC879A5975D5FC4AB4CE4 /* music_harp_lullaby.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		F387C18F64F0FE97CCCA33AB /* ambient_cicadas.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 0CC46F93F926D8791D5F56B8 /* ambient_cicadas.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		F545BDF88FE20A2A87BECA2C /* music_amber_glow.ogg in Resources */ = {isa = PBXBuildFile; fileRef = A7CEFE79153AB780C3C26F6F /* music_amber_glow.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		F632A65501EC0655A64640B5 /* music_zen_garden.ogg in Resources */ = {isa = PBXBuildFile; fileRef = C546C34E87C7F94EA4025834 /* music_zen_garden.ogg */; settings = {ASSET_TAGS = (music, ); }; };
+		FCB55F7694E07F39ECD4D96B /* ambient_tin_roof.ogg in Resources */ = {isa = PBXBuildFile; fileRef = A630E29347FD2BA4B2833ABB /* ambient_tin_roof.ogg */; settings = {ASSET_TAGS = (ambient, ); }; };
+		FCF0C4B64768386CAD9E67E3 /* music_tiny_lights.ogg in Resources */ = {isa = PBXBuildFile; fileRef = A917E13094A9DE8423FCA312 /* music_tiny_lights.ogg */; settings = {ASSET_TAGS = (music, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,14 +140,78 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		03F3B1AC3A1A7D3213A02ED1 /* music_starlit_lullaby.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_starlit_lullaby.ogg; sourceTree = "<group>"; };
+		0AB2186B1F51931FBC09B526 /* ambient_trees.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_trees.ogg; sourceTree = "<group>"; };
+		0AECC5F6E5DDDC3816B279E1 /* music_coffee_break.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_coffee_break.ogg; sourceTree = "<group>"; };
+		0CC46F93F926D8791D5F56B8 /* ambient_cicadas.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_cicadas.ogg; sourceTree = "<group>"; };
+		11A5D9D3242DC8743812D4DD /* ambient_singing_bowl.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_singing_bowl.ogg; sourceTree = "<group>"; };
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
+		157460B6C52AEDAF9583808A /* ambient_underwater.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_underwater.ogg; sourceTree = "<group>"; };
+		1609FAF746007E5DBC536EB8 /* ambient_rain_stick.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_rain_stick.ogg; sourceTree = "<group>"; };
+		17938678B0FB7CAAE6CCFA75 /* ambient_pink_noise.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_pink_noise.ogg; sourceTree = "<group>"; };
+		1843565FF675E42B6FBC5DF5 /* ambient_rainforest.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_rainforest.ogg; sourceTree = "<group>"; };
+		186A567903AC4A884CFD0960 /* music_evening_breeze.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_evening_breeze.ogg; sourceTree = "<group>"; };
+		1BA3860ADBB91984CAC164FA /* music_night_bus.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_night_bus.ogg; sourceTree = "<group>"; };
+		1BF1A6DEA4CA6F058BD8431A /* music_midnight_tape.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_midnight_tape.ogg; sourceTree = "<group>"; };
+		1D8B5DC3E073347C4A3F12EB /* ambient_campfire.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_campfire.ogg; sourceTree = "<group>"; };
+		1E564A5C400121CFD25C1385 /* ambient_summer_night.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_summer_night.ogg; sourceTree = "<group>"; };
+		247DFCB6515B81BB4C2058C3 /* ambient_tapping.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_tapping.ogg; sourceTree = "<group>"; };
+		270BF860DFA6D15754967F98 /* music_silk_road.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_silk_road.ogg; sourceTree = "<group>"; };
+		2B6A4F03609320421E4EA467 /* ambient_train.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_train.ogg; sourceTree = "<group>"; };
+		2B9C47C5C56E8D44FA1A3FC5 /* music_crystal_steps.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_crystal_steps.ogg; sourceTree = "<group>"; };
+		2F807246F294A4FDF1FF7F5F /* ambient_thunderstorm.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_thunderstorm.ogg; sourceTree = "<group>"; };
 		331C807B294A618700263BE5 /* RunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnerTests.swift; sourceTree = "<group>"; };
 		331C8081294A63A400263BE5 /* RunnerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RunnerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		36072326AF240E354F4AEB59 /* music_sunday_morning.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_sunday_morning.ogg; sourceTree = "<group>"; };
+		365F0F25353ACB61A4FB7224 /* ambient_brushing.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_brushing.ogg; sourceTree = "<group>"; };
+		37B9CE866158F40E68801858 /* music_nylon_afternoon.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_nylon_afternoon.ogg; sourceTree = "<group>"; };
+		391499C9F4D64E0A333D4721 /* ambient_crickets.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_crickets.ogg; sourceTree = "<group>"; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
+		3CB6A5323F56F60D569D30E7 /* music_kalimba_lullaby.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_kalimba_lullaby.ogg; sourceTree = "<group>"; };
+		3D12DDEB727E53D8D4FC1FEA /* ambient_green_noise.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_green_noise.ogg; sourceTree = "<group>"; };
+		3F1190DB1DF4D1C7DB6D7F14 /* music_handpan_flow.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_handpan_flow.ogg; sourceTree = "<group>"; };
+		3F554B3568DDEE9759A63627 /* music_lantern_light.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_lantern_light.ogg; sourceTree = "<group>"; };
+		43AF0EABEC26D2410DCC438C /* music_slow_tide.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_slow_tide.ogg; sourceTree = "<group>"; };
+		45551BC083EAB23E8B31E7B4 /* ambient_cave.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_cave.ogg; sourceTree = "<group>"; };
+		45692197F2B30BA75A2A85EE /* music_deep_space.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_deep_space.ogg; sourceTree = "<group>"; };
+		4649D875225204E309F2D1B9 /* music_paper_moon.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_paper_moon.ogg; sourceTree = "<group>"; };
+		474B0E044F410C9BCFD65C5F /* music_snow_globe.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_snow_globe.ogg; sourceTree = "<group>"; };
+		47D4B2C5D5ABB14EDF388724 /* ambient_tent_rain.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_tent_rain.ogg; sourceTree = "<group>"; };
+		4A2DADED08B4AB1E5A1BD45C /* music_blue_hour.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_blue_hour.ogg; sourceTree = "<group>"; };
+		4AE41B524BDDA5D63D102321 /* music_vibraphone_night.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_vibraphone_night.ogg; sourceTree = "<group>"; };
+		4D8A91AB63366E7E8D490557 /* ambient_air_conditioner.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_air_conditioner.ogg; sourceTree = "<group>"; };
+		4EF8F2E912ECCBEB12287887 /* music_quiet_hours.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_quiet_hours.ogg; sourceTree = "<group>"; };
+		53E8EC42EE8FDC3695F0004E /* music_floating.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_floating.ogg; sourceTree = "<group>"; };
+		54132B673675AD6553A5DDB6 /* ambient_night_forest.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_night_forest.ogg; sourceTree = "<group>"; };
+		5451357E72C2E838446B1F24 /* music_kalimba_sunrise.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_kalimba_sunrise.ogg; sourceTree = "<group>"; };
+		549A56F41106DE52E8B8BDF7 /* music_study_session.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_study_session.ogg; sourceTree = "<group>"; };
+		572848FFB094FE01477771F2 /* music_bamboo_flute.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_bamboo_flute.ogg; sourceTree = "<group>"; };
+		575DD73A34031434E3E88BF5 /* ambient_desert.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_desert.ogg; sourceTree = "<group>"; };
+		5782A61EF7DB4748E8D58EF9 /* music_weightless.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_weightless.ogg; sourceTree = "<group>"; };
+		58E994566546A3F42C86CBCA /* music_harp_of_dawn.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_harp_of_dawn.ogg; sourceTree = "<group>"; };
+		5E1315C5140BB96B966E34BF /* music_glass_garden.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_glass_garden.ogg; sourceTree = "<group>"; };
+		5E598A3B280717CBFFFB4E74 /* music_celesta_dreams.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_celesta_dreams.ogg; sourceTree = "<group>"; };
+		5E6BC879A5975D5FC4AB4CE4 /* music_harp_lullaby.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_harp_lullaby.ogg; sourceTree = "<group>"; };
+		5EC5C24BE0EFA3B9A666BA35 /* ambient_brown_noise.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_brown_noise.ogg; sourceTree = "<group>"; };
+		674DEA8ABB62B6DB41B17319 /* ambient_hourglass.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_hourglass.ogg; sourceTree = "<group>"; };
+		68467BF4C816D7E9517AE835 /* music_gentle_strum.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_gentle_strum.ogg; sourceTree = "<group>"; };
+		6951A68EC071F1D462A9DC84 /* ambient_waterfall.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_waterfall.ogg; sourceTree = "<group>"; };
+		6EA06EF8E4AD4ED91B371018 /* ambient_sailboat.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_sailboat.ogg; sourceTree = "<group>"; };
+		71AC4FFD18FE7DB7B8F440FF /* ambient_drizzle.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_drizzle.ogg; sourceTree = "<group>"; };
+		73E606DD31A22858D4CFB6D1 /* music_still_water.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_still_water.ogg; sourceTree = "<group>"; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		7910008DC714F006BE08430D /* ambient_night_drive.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_night_drive.ogg; sourceTree = "<group>"; };
+		7982C0B08722506A803FF926 /* music_forest_spirit.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_forest_spirit.ogg; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
+		7EC87456BE32C4A40FF9BF71 /* ambient_heartbeat.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_heartbeat.ogg; sourceTree = "<group>"; };
+		83382B3B424843249ADF420E /* ambient_forest_birds.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_forest_birds.ogg; sourceTree = "<group>"; };
+		89EE69F23912322BFC074D4A /* ambient_paper.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_paper.ogg; sourceTree = "<group>"; };
+		8C2BEBB8CE2C72254ABA427C /* ambient_window_rain.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_window_rain.ogg; sourceTree = "<group>"; };
+		8CA660AAAC41D4CFD61CCE46 /* music_cafe_window.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_cafe_window.ogg; sourceTree = "<group>"; };
+		915ECBC114D3C178FD4824CA /* ambient_clock.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_clock.ogg; sourceTree = "<group>"; };
+		946E561278BB05D8418EE97C /* music_koto_garden.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_koto_garden.ogg; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
 		9740EEB31CF90195004384FC /* Generated.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Generated.xcconfig; path = Flutter/Generated.xcconfig; sourceTree = "<group>"; };
 		97C146EE1CF9000F007C117D /* Runner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Runner.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -55,6 +219,42 @@
 		97C146FD1CF9000F007C117D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A201A103649D7C9EB4993B85 /* ambient_airplane.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_airplane.ogg; sourceTree = "<group>"; };
+		A426F85D18468F8F06603510 /* ambient_blizzard.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_blizzard.ogg; sourceTree = "<group>"; };
+		A630E29347FD2BA4B2833ABB /* ambient_tin_roof.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_tin_roof.ogg; sourceTree = "<group>"; };
+		A7388ADC36F4AA1C373E4FDD /* ambient_downpour.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_downpour.ogg; sourceTree = "<group>"; };
+		A7CEFE79153AB780C3C26F6F /* music_amber_glow.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_amber_glow.ogg; sourceTree = "<group>"; };
+		A917E13094A9DE8423FCA312 /* music_tiny_lights.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_tiny_lights.ogg; sourceTree = "<group>"; };
+		A9609EFEF1211C9EFEAF8F43 /* music_handpan_meditation.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_handpan_meditation.ogg; sourceTree = "<group>"; };
+		AB1E6F9C59E29A337753ADC4 /* music_aurora.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_aurora.ogg; sourceTree = "<group>"; };
+		AECA5B5436A209D4B6102300 /* ambient_candle.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_candle.ogg; sourceTree = "<group>"; };
+		B018DE13534B242C409E8788 /* music_morning_mist.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_morning_mist.ogg; sourceTree = "<group>"; };
+		B049642EC2C3FB40652CBB79 /* music_marimba_breeze.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_marimba_breeze.ogg; sourceTree = "<group>"; };
+		B404D2F2C2E95C217A18E996 /* ambient_wood_stove.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_wood_stove.ogg; sourceTree = "<group>"; };
+		B9656A7B211300A62764BA05 /* music_northern_lights.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_northern_lights.ogg; sourceTree = "<group>"; };
+		C1D249A90CF7300387F83D1B /* ambient_wind_chimes.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_wind_chimes.ogg; sourceTree = "<group>"; };
+		C2476A8E31F5BEF8F85C3901 /* music_cozy_corner.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_cozy_corner.ogg; sourceTree = "<group>"; };
+		C546C34E87C7F94EA4025834 /* music_zen_garden.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_zen_garden.ogg; sourceTree = "<group>"; };
+		CD2816C0252BD1D86E9EFE6F /* music_shepherds_song.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_shepherds_song.ogg; sourceTree = "<group>"; };
+		CFBCCA07B956F21BE9970791 /* ambient_meadow.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_meadow.ogg; sourceTree = "<group>"; };
+		DB2931B9BF7345B169748056 /* ambient_fan.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_fan.ogg; sourceTree = "<group>"; };
+		DD6888659BCF80EEC7F40D03 /* ambient_simmer.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_simmer.ogg; sourceTree = "<group>"; };
+		DDD86D7BB22A1DA4E21C25E8 /* music_mountain_air.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_mountain_air.ogg; sourceTree = "<group>"; };
+		DEC3F10CD5CF06B2C8BB9C35 /* music_first_snow.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_first_snow.ogg; sourceTree = "<group>"; };
+		DED518BE3074793CC3761EC4 /* ambient_breeze.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_breeze.ogg; sourceTree = "<group>"; };
+		E20D3432573034090AC0628C /* music_soft_focus.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_soft_focus.ogg; sourceTree = "<group>"; };
+		E3E5D2B2DC947F52139CDA10 /* music_velvet_evening.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_velvet_evening.ogg; sourceTree = "<group>"; };
+		E791BDD551FC115EE2B620FA /* music_late_bloom.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_late_bloom.ogg; sourceTree = "<group>"; };
+		E818F91B3B91BA2556D0E78F /* music_wooden_dreams.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_wooden_dreams.ogg; sourceTree = "<group>"; };
+		EA11DC9A5188566F3DCED986 /* ambient_purr.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_purr.ogg; sourceTree = "<group>"; };
+		EB0C8E469AB8C05956E3A071 /* ambient_white_noise.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_white_noise.ogg; sourceTree = "<group>"; };
+		ED3C54A1B596535407F3F773 /* ambient_keyboard.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_keyboard.ogg; sourceTree = "<group>"; };
+		EF9641BB6D711C590A028C35 /* ambient_howling.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_howling.ogg; sourceTree = "<group>"; };
+		EFBF090BEBA3CB86711E8E6D /* ambient_washer.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_washer.ogg; sourceTree = "<group>"; };
+		F104EE184E5CE19029A7271A /* ambient_frog_pond.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_frog_pond.ogg; sourceTree = "<group>"; };
+		F255EA12A79E41CF21604A61 /* ambient_fountain.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_fountain.ogg; sourceTree = "<group>"; };
+		F3AFFB5E5247310363E44F7B /* music_riverside_guitar.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = music_riverside_guitar.ogg; sourceTree = "<group>"; };
+		F85D39FDBB96B8F7970A2A61 /* ambient_lake.ogg */ = {isa = PBXFileReference; includeInIndex = 1; path = ambient_lake.ogg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +276,132 @@
 			path = RunnerTests;
 			sourceTree = "<group>";
 		};
+		3FEC9325D09F2731FFFE99BF /* SoundPacks */ = {
+			isa = PBXGroup;
+			children = (
+				840448425119DB519224D51C /* ambient */,
+				919228DF75204756BA20F067 /* music */,
+			);
+			name = SoundPacks;
+			path = ../sound_packs;
+			sourceTree = "<group>";
+		};
+		840448425119DB519224D51C /* ambient */ = {
+			isa = PBXGroup;
+			children = (
+				4D8A91AB63366E7E8D490557 /* ambient_air_conditioner.ogg */,
+				A201A103649D7C9EB4993B85 /* ambient_airplane.ogg */,
+				A426F85D18468F8F06603510 /* ambient_blizzard.ogg */,
+				DED518BE3074793CC3761EC4 /* ambient_breeze.ogg */,
+				5EC5C24BE0EFA3B9A666BA35 /* ambient_brown_noise.ogg */,
+				365F0F25353ACB61A4FB7224 /* ambient_brushing.ogg */,
+				1D8B5DC3E073347C4A3F12EB /* ambient_campfire.ogg */,
+				AECA5B5436A209D4B6102300 /* ambient_candle.ogg */,
+				45551BC083EAB23E8B31E7B4 /* ambient_cave.ogg */,
+				0CC46F93F926D8791D5F56B8 /* ambient_cicadas.ogg */,
+				915ECBC114D3C178FD4824CA /* ambient_clock.ogg */,
+				391499C9F4D64E0A333D4721 /* ambient_crickets.ogg */,
+				575DD73A34031434E3E88BF5 /* ambient_desert.ogg */,
+				A7388ADC36F4AA1C373E4FDD /* ambient_downpour.ogg */,
+				71AC4FFD18FE7DB7B8F440FF /* ambient_drizzle.ogg */,
+				DB2931B9BF7345B169748056 /* ambient_fan.ogg */,
+				83382B3B424843249ADF420E /* ambient_forest_birds.ogg */,
+				F255EA12A79E41CF21604A61 /* ambient_fountain.ogg */,
+				F104EE184E5CE19029A7271A /* ambient_frog_pond.ogg */,
+				3D12DDEB727E53D8D4FC1FEA /* ambient_green_noise.ogg */,
+				7EC87456BE32C4A40FF9BF71 /* ambient_heartbeat.ogg */,
+				674DEA8ABB62B6DB41B17319 /* ambient_hourglass.ogg */,
+				EF9641BB6D711C590A028C35 /* ambient_howling.ogg */,
+				ED3C54A1B596535407F3F773 /* ambient_keyboard.ogg */,
+				F85D39FDBB96B8F7970A2A61 /* ambient_lake.ogg */,
+				CFBCCA07B956F21BE9970791 /* ambient_meadow.ogg */,
+				7910008DC714F006BE08430D /* ambient_night_drive.ogg */,
+				54132B673675AD6553A5DDB6 /* ambient_night_forest.ogg */,
+				89EE69F23912322BFC074D4A /* ambient_paper.ogg */,
+				17938678B0FB7CAAE6CCFA75 /* ambient_pink_noise.ogg */,
+				EA11DC9A5188566F3DCED986 /* ambient_purr.ogg */,
+				1609FAF746007E5DBC536EB8 /* ambient_rain_stick.ogg */,
+				1843565FF675E42B6FBC5DF5 /* ambient_rainforest.ogg */,
+				6EA06EF8E4AD4ED91B371018 /* ambient_sailboat.ogg */,
+				DD6888659BCF80EEC7F40D03 /* ambient_simmer.ogg */,
+				11A5D9D3242DC8743812D4DD /* ambient_singing_bowl.ogg */,
+				1E564A5C400121CFD25C1385 /* ambient_summer_night.ogg */,
+				247DFCB6515B81BB4C2058C3 /* ambient_tapping.ogg */,
+				47D4B2C5D5ABB14EDF388724 /* ambient_tent_rain.ogg */,
+				2F807246F294A4FDF1FF7F5F /* ambient_thunderstorm.ogg */,
+				A630E29347FD2BA4B2833ABB /* ambient_tin_roof.ogg */,
+				2B6A4F03609320421E4EA467 /* ambient_train.ogg */,
+				0AB2186B1F51931FBC09B526 /* ambient_trees.ogg */,
+				157460B6C52AEDAF9583808A /* ambient_underwater.ogg */,
+				EFBF090BEBA3CB86711E8E6D /* ambient_washer.ogg */,
+				6951A68EC071F1D462A9DC84 /* ambient_waterfall.ogg */,
+				EB0C8E469AB8C05956E3A071 /* ambient_white_noise.ogg */,
+				C1D249A90CF7300387F83D1B /* ambient_wind_chimes.ogg */,
+				8C2BEBB8CE2C72254ABA427C /* ambient_window_rain.ogg */,
+				B404D2F2C2E95C217A18E996 /* ambient_wood_stove.ogg */,
+			);
+			name = ambient;
+			path = ambient;
+			sourceTree = "<group>";
+		};
+		919228DF75204756BA20F067 /* music */ = {
+			isa = PBXGroup;
+			children = (
+				A7CEFE79153AB780C3C26F6F /* music_amber_glow.ogg */,
+				AB1E6F9C59E29A337753ADC4 /* music_aurora.ogg */,
+				572848FFB094FE01477771F2 /* music_bamboo_flute.ogg */,
+				4A2DADED08B4AB1E5A1BD45C /* music_blue_hour.ogg */,
+				8CA660AAAC41D4CFD61CCE46 /* music_cafe_window.ogg */,
+				5E598A3B280717CBFFFB4E74 /* music_celesta_dreams.ogg */,
+				0AECC5F6E5DDDC3816B279E1 /* music_coffee_break.ogg */,
+				C2476A8E31F5BEF8F85C3901 /* music_cozy_corner.ogg */,
+				2B9C47C5C56E8D44FA1A3FC5 /* music_crystal_steps.ogg */,
+				45692197F2B30BA75A2A85EE /* music_deep_space.ogg */,
+				186A567903AC4A884CFD0960 /* music_evening_breeze.ogg */,
+				DEC3F10CD5CF06B2C8BB9C35 /* music_first_snow.ogg */,
+				53E8EC42EE8FDC3695F0004E /* music_floating.ogg */,
+				7982C0B08722506A803FF926 /* music_forest_spirit.ogg */,
+				68467BF4C816D7E9517AE835 /* music_gentle_strum.ogg */,
+				5E1315C5140BB96B966E34BF /* music_glass_garden.ogg */,
+				3F1190DB1DF4D1C7DB6D7F14 /* music_handpan_flow.ogg */,
+				A9609EFEF1211C9EFEAF8F43 /* music_handpan_meditation.ogg */,
+				5E6BC879A5975D5FC4AB4CE4 /* music_harp_lullaby.ogg */,
+				58E994566546A3F42C86CBCA /* music_harp_of_dawn.ogg */,
+				3CB6A5323F56F60D569D30E7 /* music_kalimba_lullaby.ogg */,
+				5451357E72C2E838446B1F24 /* music_kalimba_sunrise.ogg */,
+				946E561278BB05D8418EE97C /* music_koto_garden.ogg */,
+				3F554B3568DDEE9759A63627 /* music_lantern_light.ogg */,
+				E791BDD551FC115EE2B620FA /* music_late_bloom.ogg */,
+				B049642EC2C3FB40652CBB79 /* music_marimba_breeze.ogg */,
+				1BF1A6DEA4CA6F058BD8431A /* music_midnight_tape.ogg */,
+				B018DE13534B242C409E8788 /* music_morning_mist.ogg */,
+				DDD86D7BB22A1DA4E21C25E8 /* music_mountain_air.ogg */,
+				1BA3860ADBB91984CAC164FA /* music_night_bus.ogg */,
+				B9656A7B211300A62764BA05 /* music_northern_lights.ogg */,
+				37B9CE866158F40E68801858 /* music_nylon_afternoon.ogg */,
+				4649D875225204E309F2D1B9 /* music_paper_moon.ogg */,
+				4EF8F2E912ECCBEB12287887 /* music_quiet_hours.ogg */,
+				F3AFFB5E5247310363E44F7B /* music_riverside_guitar.ogg */,
+				CD2816C0252BD1D86E9EFE6F /* music_shepherds_song.ogg */,
+				270BF860DFA6D15754967F98 /* music_silk_road.ogg */,
+				43AF0EABEC26D2410DCC438C /* music_slow_tide.ogg */,
+				474B0E044F410C9BCFD65C5F /* music_snow_globe.ogg */,
+				E20D3432573034090AC0628C /* music_soft_focus.ogg */,
+				03F3B1AC3A1A7D3213A02ED1 /* music_starlit_lullaby.ogg */,
+				73E606DD31A22858D4CFB6D1 /* music_still_water.ogg */,
+				549A56F41106DE52E8B8BDF7 /* music_study_session.ogg */,
+				36072326AF240E354F4AEB59 /* music_sunday_morning.ogg */,
+				A917E13094A9DE8423FCA312 /* music_tiny_lights.ogg */,
+				E3E5D2B2DC947F52139CDA10 /* music_velvet_evening.ogg */,
+				4AE41B524BDDA5D63D102321 /* music_vibraphone_night.ogg */,
+				5782A61EF7DB4748E8D58EF9 /* music_weightless.ogg */,
+				E818F91B3B91BA2556D0E78F /* music_wooden_dreams.ogg */,
+				C546C34E87C7F94EA4025834 /* music_zen_garden.ogg */,
+			);
+			name = music;
+			path = music;
+			sourceTree = "<group>";
+		};
 		9740EEB11CF90186004384FC /* Flutter */ = {
 			isa = PBXGroup;
 			children = (
@@ -94,6 +420,7 @@
 				97C146F01CF9000F007C117D /* Runner */,
 				97C146EF1CF9000F007C117D /* Products */,
 				331C8082294A63A400263BE5 /* RunnerTests */,
+				3FEC9325D09F2731FFFE99BF /* SoundPacks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -168,6 +495,10 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
+				KnownAssetTags = (
+					ambient,
+					music,
+				);
 				LastUpgradeCheck = 1510;
 				ORGANIZATIONNAME = "";
 				TargetAttributes = {
@@ -216,6 +547,106 @@
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
+				05FDD555D521F2406F16C24E /* ambient_air_conditioner.ogg in Resources */,
+				D2FEDF8805F2221ED843B099 /* ambient_airplane.ogg in Resources */,
+				86155DF136FC32AEADCF402E /* ambient_blizzard.ogg in Resources */,
+				0ABF5AED30E789D3A72C7FFD /* ambient_breeze.ogg in Resources */,
+				1E652F937A83D1F69DD78A95 /* ambient_brown_noise.ogg in Resources */,
+				F091B09975FF38580C0CBA4C /* ambient_brushing.ogg in Resources */,
+				4E8EB8576F679C44D4D635A2 /* ambient_campfire.ogg in Resources */,
+				2411573EA7E558985AFF71A7 /* ambient_candle.ogg in Resources */,
+				EA4A290C200286BB1DADAE7A /* ambient_cave.ogg in Resources */,
+				F387C18F64F0FE97CCCA33AB /* ambient_cicadas.ogg in Resources */,
+				AE0FA2504A4B09D555EB8A1F /* ambient_clock.ogg in Resources */,
+				E8A855956F3EC6DF61739B46 /* ambient_crickets.ogg in Resources */,
+				B072FF8E32E98BC01E4DE7F1 /* ambient_desert.ogg in Resources */,
+				67D11636D073C6DBD877C4AC /* ambient_downpour.ogg in Resources */,
+				885DCEA405B16240CD92C38B /* ambient_drizzle.ogg in Resources */,
+				335C508632A04B1F5CDCACA5 /* ambient_fan.ogg in Resources */,
+				A9356D35E2CBE1377B0607D9 /* ambient_forest_birds.ogg in Resources */,
+				D35027D8146CF5AFDAD1A71C /* ambient_fountain.ogg in Resources */,
+				E6067C3A22A5A9FDC5688420 /* ambient_frog_pond.ogg in Resources */,
+				6D7213570F3D860DF7ED14B6 /* ambient_green_noise.ogg in Resources */,
+				2A1373C7421E2423EDB58621 /* ambient_heartbeat.ogg in Resources */,
+				AECB41416E46A1D2F8B12919 /* ambient_hourglass.ogg in Resources */,
+				206023602D64B6ED965FADE0 /* ambient_howling.ogg in Resources */,
+				DF048A308F590A990B9B4ABB /* ambient_keyboard.ogg in Resources */,
+				A81932D6C0FECDD78FB69AAC /* ambient_lake.ogg in Resources */,
+				CCDAEF00FD85B0F4C17EED8F /* ambient_meadow.ogg in Resources */,
+				87C53A2EF4511981A7968230 /* ambient_night_drive.ogg in Resources */,
+				D7B683F213BDF103BA07C10B /* ambient_night_forest.ogg in Resources */,
+				010C5D9F89B9C6B8951952AA /* ambient_paper.ogg in Resources */,
+				9393F69C08EB114690A7A6C6 /* ambient_pink_noise.ogg in Resources */,
+				3848BEEE7C399280112FA4CB /* ambient_purr.ogg in Resources */,
+				C22685CF91A1CCE3DD2E0653 /* ambient_rain_stick.ogg in Resources */,
+				441F9CC6DFF05F40D3B35E51 /* ambient_rainforest.ogg in Resources */,
+				3E5650301EAFFECB76DC6748 /* ambient_sailboat.ogg in Resources */,
+				6C42E039FF84307CDEC484EE /* ambient_simmer.ogg in Resources */,
+				58541C9218DCAE98CC0A77C6 /* ambient_singing_bowl.ogg in Resources */,
+				43028C1CB3545434C1EABFBC /* ambient_summer_night.ogg in Resources */,
+				AEFD3C5ADCA35AE1FA6B94E2 /* ambient_tapping.ogg in Resources */,
+				C3C129DD2A4598B71532DE94 /* ambient_tent_rain.ogg in Resources */,
+				EAECC7CFE599C9619F70B6AE /* ambient_thunderstorm.ogg in Resources */,
+				FCB55F7694E07F39ECD4D96B /* ambient_tin_roof.ogg in Resources */,
+				EDD11B04394FB7E672A1BB44 /* ambient_train.ogg in Resources */,
+				49DBA8739015F0D2406CC830 /* ambient_trees.ogg in Resources */,
+				9C124226F10F218937FAAB99 /* ambient_underwater.ogg in Resources */,
+				791E6841A522555EB45B5070 /* ambient_washer.ogg in Resources */,
+				6EE2C0747A35DB8597A9CC87 /* ambient_waterfall.ogg in Resources */,
+				B53C5759033CE98841A33AA4 /* ambient_white_noise.ogg in Resources */,
+				08C3991760C3A99F6B979640 /* ambient_wind_chimes.ogg in Resources */,
+				F2C60FC8CF3800A88327A1C1 /* ambient_window_rain.ogg in Resources */,
+				C627EB5BB49F46319B2F9747 /* ambient_wood_stove.ogg in Resources */,
+				F545BDF88FE20A2A87BECA2C /* music_amber_glow.ogg in Resources */,
+				88A5D9CCBC9B2ECFA1E58F75 /* music_aurora.ogg in Resources */,
+				5A3BC1BCC1B8A852E35E0E89 /* music_bamboo_flute.ogg in Resources */,
+				6EB95280BC37141E3C38672D /* music_blue_hour.ogg in Resources */,
+				3577F844213DD7EE934DEEB3 /* music_cafe_window.ogg in Resources */,
+				EFB783E7CF95EC2AA6DE52DE /* music_celesta_dreams.ogg in Resources */,
+				6B447D986FA82EAA827ADD12 /* music_coffee_break.ogg in Resources */,
+				787F51E4BFC9719D75535D39 /* music_cozy_corner.ogg in Resources */,
+				A31ECFA1BD9B9812C925E3D5 /* music_crystal_steps.ogg in Resources */,
+				5A371819612AE903357B366A /* music_deep_space.ogg in Resources */,
+				73BA642333BEA1E71EC545F1 /* music_evening_breeze.ogg in Resources */,
+				0EAA07B28E56E0F06D3FC947 /* music_first_snow.ogg in Resources */,
+				255CE580089F4436E8F15AA0 /* music_floating.ogg in Resources */,
+				EDC17C91DECA64509EF34E76 /* music_forest_spirit.ogg in Resources */,
+				536041CDC0EE799A5131F0F4 /* music_gentle_strum.ogg in Resources */,
+				3CCA5E0913BD79492D444090 /* music_glass_garden.ogg in Resources */,
+				06FE4F8EECCC384A6B05C36D /* music_handpan_flow.ogg in Resources */,
+				1F5685ED8145A3250E577C03 /* music_handpan_meditation.ogg in Resources */,
+				F2CA83A4D2C45EA0DB9D6239 /* music_harp_lullaby.ogg in Resources */,
+				8AFD54CBC3785F8E850EC66C /* music_harp_of_dawn.ogg in Resources */,
+				1EB268EB5810DAD0C75A83D0 /* music_kalimba_lullaby.ogg in Resources */,
+				2EF0FB9A147369D7C3E9DC38 /* music_kalimba_sunrise.ogg in Resources */,
+				CC1A2210C5C398C683A15A3D /* music_koto_garden.ogg in Resources */,
+				7B64C658EEA7E3C563D7CCCE /* music_lantern_light.ogg in Resources */,
+				4629C4F97AF7FB2882EFBF58 /* music_late_bloom.ogg in Resources */,
+				F10DF28C8BB8E4C4F437FC4B /* music_marimba_breeze.ogg in Resources */,
+				9ACE2F82F11CD1AF6819762B /* music_midnight_tape.ogg in Resources */,
+				A3A037421C9D20C2415837F6 /* music_morning_mist.ogg in Resources */,
+				B20766C9E458FBDC27AF3913 /* music_mountain_air.ogg in Resources */,
+				70B0D597F4EAB3198C2AFAE3 /* music_night_bus.ogg in Resources */,
+				3632E1955DF7EF9AC4F459C9 /* music_northern_lights.ogg in Resources */,
+				9E76701BF021C740DC4C0E22 /* music_nylon_afternoon.ogg in Resources */,
+				8BD2CC817B7EF0E1F20156B0 /* music_paper_moon.ogg in Resources */,
+				9F6D4728BF0A92963A9263E2 /* music_quiet_hours.ogg in Resources */,
+				0078DB0DFADDDB05CC8AD7C9 /* music_riverside_guitar.ogg in Resources */,
+				394CE10CDA691C44EF92835C /* music_shepherds_song.ogg in Resources */,
+				C27DB420A58AAF4B8C3C12A1 /* music_silk_road.ogg in Resources */,
+				6C82BB48991A11A2314CB6CF /* music_slow_tide.ogg in Resources */,
+				445D7C17B3B145733154B5D2 /* music_snow_globe.ogg in Resources */,
+				66AA4226B68E1E54DFA6C480 /* music_soft_focus.ogg in Resources */,
+				825FAE01C063DADED5B8F1D4 /* music_starlit_lullaby.ogg in Resources */,
+				F15F611DF306C196DE9507D2 /* music_still_water.ogg in Resources */,
+				22A480CBCD643ACDD70341EC /* music_study_session.ogg in Resources */,
+				4CE613056798DB3C80FB766E /* music_sunday_morning.ogg in Resources */,
+				FCF0C4B64768386CAD9E67E3 /* music_tiny_lights.ogg in Resources */,
+				65DB068250159ACC80953D0E /* music_velvet_evening.ogg in Resources */,
+				142A5A2A28D607DEC1125E37 /* music_vibraphone_night.ogg in Resources */,
+				9D724CA81A55A3131C75D729 /* music_weightless.ogg in Resources */,
+				6DA88E2673E2EE6D45A3A917 /* music_wooden_dreams.ogg in Resources */,
+				F632A65501EC0655A64640B5 /* music_zen_garden.ogg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -364,11 +795,13 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = W42ZCU5L99;
 				ENABLE_BITCODE = NO;
+				ENABLE_ON_DEMAND_RESOURCES = YES;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				ON_DEMAND_RESOURCES_PREFETCH_ORDER = "ambient music";
 				PRODUCT_BUNDLE_IDENTIFIER = com.decant.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -544,11 +977,13 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = W42ZCU5L99;
 				ENABLE_BITCODE = NO;
+				ENABLE_ON_DEMAND_RESOURCES = YES;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				ON_DEMAND_RESOURCES_PREFETCH_ORDER = "ambient music";
 				PRODUCT_BUNDLE_IDENTIFIER = com.decant.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -567,11 +1002,13 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = W42ZCU5L99;
 				ENABLE_BITCODE = NO;
+				ENABLE_ON_DEMAND_RESOURCES = YES;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				ON_DEMAND_RESOURCES_PREFETCH_ORDER = "ambient music";
 				PRODUCT_BUNDLE_IDENTIFIER = com.decant.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";

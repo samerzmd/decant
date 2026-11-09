@@ -30,6 +30,10 @@ android {
         versionName = flutter.versionName
     }
 
+    // 100 extra ambience/music loops ship as Play Asset Delivery packs that
+    // Google Play downloads right after install (see android/*_pack).
+    assetPacks += listOf(":ambient_pack", ":music_pack")
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
@@ -41,4 +45,8 @@ android {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    implementation("com.google.android.play:asset-delivery:2.2.2")
 }
