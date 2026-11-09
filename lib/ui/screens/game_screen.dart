@@ -111,6 +111,7 @@ class GameScreen extends ConsumerWidget {
                     moves: session.moves,
                     onNext: () => Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
+                        settings: const RouteSettings(name: '/game'),
                         builder: (_) => GameScreen(levelId: levelId + 1),
                       ),
                     ),

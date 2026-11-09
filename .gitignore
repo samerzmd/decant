@@ -58,3 +58,10 @@ venv/
 # NOTE: assets/sounds/*.wav and branding/*.png are intentionally committed —
 # they are the shipped, generated source assets (regenerable via tool/).
 
+
+# Firebase config — generated per project by `flutterfire configure`; kept out
+# of this public repo (see README → Firebase).
+lib/firebase_options.dart
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+firebase.json

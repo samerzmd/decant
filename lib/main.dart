@@ -1,9 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'audio/audio_service.dart';
+import 'firebase_options.dart';
+import 'services/analytics_service.dart';
 import 'services/persistence_service.dart';
 import 'state/providers.dart';
 import 'ui/screens/splash_screen.dart';
@@ -11,6 +14,9 @@ import 'ui/theme/app_theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  final analytics = AnalyticsService();
 
   // Portrait-only for a calm, focused layout.
   await SystemChrome.setPreferredOrientations(
@@ -38,6 +44,7 @@ Future<void> main() async {
       overrides: [
         persistenceProvider.overrideWithValue(persistence),
         audioServiceProvider.overrideWithValue(audio),
+        analyticsServiceProvider.overrideWithValue(analytics),
       ],
       child: const DecantApp(),
     ),
@@ -90,6 +97,7 @@ class _DecantAppState extends ConsumerState<DecantApp>
     return MaterialApp(
       title: 'Decant',
       debugShowCheckedModeBanner: false,
+      navigatorObservers: [ref.read(analyticsServiceProvider).observer],
       theme: buildDecantTheme(),
       // A brief splash that mirrors the native splash (same logo + background)
       // so the brand mark is reliably visible before Home.

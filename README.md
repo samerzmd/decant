@@ -108,6 +108,20 @@ flutter test
 missing native scaffolding. `flutter_soloud` builds its native audio engine
 automatically through the normal plugin build.
 
+### Firebase (analytics)
+
+Decant reports anonymous gameplay events (level start/complete, hints, extra
+tubes, screen views) to Google Analytics via Firebase. The Firebase config
+files are **not committed** (`lib/firebase_options.dart`,
+`android/app/google-services.json`, `ios/Runner/GoogleService-Info.plist`,
+`firebase.json`), so generate them for your own Firebase project before the
+first build:
+
+```bash
+dart pub global activate flutterfire_cli
+flutterfire configure --project=<your-firebase-project-id>
+```
+
 ---
 
 ## Branding (launcher icon & splash)
