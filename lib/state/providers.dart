@@ -60,7 +60,7 @@ final glassShaderProvider = FutureProvider<ui.FragmentShader?>((ref) async {
         await ui.FragmentProgram.fromAsset('shaders/glass.frag');
     return program.fragmentShader();
   } catch (e) {
-    debugPrint('Glass shader unavailable, using fallback: $e');
+    if (kDebugMode) debugPrint('Glass shader unavailable, using fallback: $e');
     return null;
   }
 });

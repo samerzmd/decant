@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -66,7 +67,7 @@ class _DecantAppState extends ConsumerState<DecantApp>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    debugPrint('Decant lifecycle → $state');
+    if (kDebugMode) debugPrint('Decant lifecycle → $state');
     final audio = ref.read(audioServiceProvider);
     switch (state) {
       case AppLifecycleState.resumed:

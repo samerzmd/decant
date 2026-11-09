@@ -182,7 +182,7 @@ class AudioService {
         await startMusic();
       }
     } catch (e) {
-      debugPrint('AudioService init failed (continuing muted): $e');
+      if (kDebugMode) debugPrint('AudioService init failed (continuing muted): $e');
       _ready = false;
     }
   }
@@ -296,7 +296,7 @@ class AudioService {
       _pourHandle = await _soloud.play(_pourSource!, volume: vol, looping: true);
       updatePourPitch(fillFraction);
     } catch (e) {
-      debugPrint('startPour failed: $e');
+      if (kDebugMode) debugPrint('startPour failed: $e');
     }
   }
 
@@ -341,7 +341,7 @@ class AudioService {
       }
       _ambientHandle = h;
     } catch (e) {
-      debugPrint('startAmbient failed: $e');
+      if (kDebugMode) debugPrint('startAmbient failed: $e');
     }
   }
 
@@ -461,7 +461,7 @@ class AudioService {
     final mh = _musicHandle;
     if (mh != null) _safe(() => _soloud.setPause(mh, true));
     _safe(() => _soloud.setGlobalVolume(0));
-    debugPrint('Decant audio: paused & silenced (ready=$_ready)');
+    if (kDebugMode) debugPrint('Decant audio: paused & silenced (ready=$_ready)');
   }
 
   /// Called when the Activity is being destroyed. Tears the engine down fully
@@ -479,7 +479,7 @@ class AudioService {
     _musicSourceTrack = null;
     _pendingAmbient = false;
     _pendingMusic = false;
-    debugPrint('Decant audio: engine released (detached)');
+    if (kDebugMode) debugPrint('Decant audio: engine released (detached)');
   }
 
   /// Restore audio when the app returns from the background/history.
@@ -541,7 +541,7 @@ class AudioService {
     try {
       fn();
     } catch (e) {
-      debugPrint('AudioService op failed: $e');
+      if (kDebugMode) debugPrint('AudioService op failed: $e');
     }
   }
 }

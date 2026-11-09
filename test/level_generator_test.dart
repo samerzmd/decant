@@ -49,7 +49,11 @@ void main() {
     expect(easy.colorCount, lessThanOrEqualTo(hard.colorCount));
 
     final level = LevelGenerator.generate(10);
-    expect(level.totalTubes, level.colorCount + level.emptyTubes);
+    // Reverse-shuffling can move a source tube's whole run out, or completely
+    // fill a starting-empty tube, so the *final* filled/empty split may not
+    // match the generator's recipe — only the total tube count is invariant.
+    final cfg = LevelGenerator.configFor(10);
+    expect(level.totalTubes, cfg.colorCount + cfg.emptyTubes);
     expect(level.difficulty, inInclusiveRange(1, 5));
   });
 
