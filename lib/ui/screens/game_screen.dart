@@ -1,22 +1,114 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../logic/solver.dart';
+import '../../models/move.dart';
 import '../../state/game_session.dart';
 import '../../state/providers.dart';
 import '../theme/app_theme.dart';
 import '../widgets/confirm_dialog.dart';
 import '../widgets/decant_button.dart';
 import '../widgets/game_board.dart';
+import '../widgets/tutorial_card.dart';
 import '../widgets/win_overlay.dart';
 
 /// The gameplay screen: header (level + moves), the tube board, the control
-/// bar (undo / hint / add-tube), a stuck banner, and the win overlay.
-class GameScreen extends ConsumerWidget {
+/// bar (undo / hint / add-tube / how-to-play), a stuck banner, the win overlay
+/// and the how-to-play guide.
+class GameScreen extends ConsumerStatefulWidget {
   final int levelId;
   const GameScreen({super.key, required this.levelId});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<GameScreen> createState() => _GameScreenState();
+}
+
+class _GameScreenState extends ConsumerState<GameScreen> {
+  /// Current guide step, or null when the guide isn't showing.
+  TutorialStep? _step;
+
+  /// The move the guide highlights (free, unlike a hint).
+  Move? _guide;
+
+  int get levelId => widget.levelId;
+
+  @override
+  void initState() {
+    super.initState();
+    // Brand-new players get the guide on their first level automatically.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final seen = ref.read(settingsProvider).tutorialSeen;
+      final played = ref.read(progressProvider).levelsCompleted > 0;
+      if (!seen && !played) _startGuide(replay: false);
+    });
+  }
+
+  void _startGuide({required bool replay}) {
+    final controller = ref.read(gameControllerProvider(levelId).notifier);
+    var session = ref.read(gameControllerProvider(levelId));
+    if (session.status != GameStatus.playing || session.isAnimating) return;
+    controller.clearHint();
+    final move = Solver.nextMove(session.state);
+    // Drop a selection that isn't the guide's source, so the first tap can't
+    // pour somewhere unexpected.
+    final sel = session.selected;
+    if (sel != null && sel != move?.from) {
+      controller.tapTube(sel);
+      session = ref.read(gameControllerProvider(levelId));
+    }
+    ref.read(analyticsServiceProvider).logTutorialBegin(replay: replay);
+    setState(() {
+      _guide = move;
+      _step = move == null
+          ? TutorialStep.goal // stuck board: just explain the tools
+          : (session.selected == move.from ? TutorialStep.pour : TutorialStep.pick);
+    });
+  }
+
+  void _finishGuide({required bool skipped}) {
+    if (_step == null) return;
+    ref.read(analyticsServiceProvider).logTutorialComplete(skipped: skipped);
+    ref.read(settingsProvider.notifier).markTutorialSeen();
+    setState(() {
+      _step = null;
+      _guide = null;
+    });
+  }
+
+  /// Advances the guide as the player follows it on the real board.
+  void _onSession(GameSession? prev, GameSession next) {
+    final step = _step;
+    if (step == null) return;
+    if (next.status == GameStatus.won) {
+      _finishGuide(skipped: false);
+      return;
+    }
+    if (step == TutorialStep.goal) return;
+    final prevMoves = prev?.moves ?? 0;
+    if (next.moves > prevMoves) {
+      // Any pour completes the hands-on part.
+      setState(() {
+        _step = TutorialStep.goal;
+        _guide = null;
+      });
+    } else if (next.moves < prevMoves) {
+      // Undo / restart: re-aim the guide at the new board.
+      final move = Solver.nextMove(next.state);
+      setState(() {
+        _guide = move;
+        _step = move == null ? TutorialStep.goal : TutorialStep.pick;
+      });
+    } else {
+      final picked = next.selected != null && next.selected == _guide?.from;
+      final want = picked ? TutorialStep.pour : TutorialStep.pick;
+      if (want != step) setState(() => _step = want);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    ref.listen(gameControllerProvider(levelId), _onSession);
     final session = ref.watch(gameControllerProvider(levelId));
     final controller = ref.read(gameControllerProvider(levelId).notifier);
     final muted = ref.watch(settingsProvider).audio.muted;
@@ -65,10 +157,22 @@ class GameScreen extends ConsumerWidget {
                     onToggleMute: () =>
                         ref.read(settingsProvider.notifier).toggleMute(),
                   ),
+                  // In the layout (not floating) so it never hides a tube.
+                  AnimatedSize(
+                    duration: const Duration(milliseconds: 220),
+                    curve: Curves.easeOut,
+                    child: _step == null
+                        ? const SizedBox(width: double.infinity)
+                        : TutorialCard(
+                            step: _step!,
+                            onSkip: () => _finishGuide(skipped: true),
+                            onDone: () => _finishGuide(skipped: false),
+                          ),
+                  ),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                      child: GameBoard(levelId: levelId),
+                      child: GameBoard(levelId: levelId, guide: _guide),
                     ),
                   ),
                   if (session.stuck && session.status == GameStatus.playing)
@@ -99,6 +203,9 @@ class GameScreen extends ConsumerWidget {
                         );
                       }
                     },
+                    onHelp: _step == null
+                        ? () => _startGuide(replay: true)
+                        : null,
                   ),
                   const SizedBox(height: 8),
                 ],
@@ -158,27 +265,34 @@ class _Header extends StatelessWidget {
                 color: DecantColors.onSurface),
             onPressed: onBack,
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Level $levelId',
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w800,
-                  color: DecantColors.onSurface,
+          // Takes the leftover width and truncates, so the header never
+          // overflows on narrow screens or with large system text.
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Level $levelId',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w800,
+                    color: DecantColors.onSurface,
+                  ),
                 ),
-              ),
-              Text(
-                'Difficulty ${'●' * difficulty}${'○' * (5 - difficulty)}',
-                style: TextStyle(
-                  fontSize: 11,
-                  color: DecantColors.subtle.withOpacity(0.8),
+                Text(
+                  'Difficulty ${'●' * difficulty}${'○' * (5 - difficulty)}',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: DecantColors.subtle.withOpacity(0.8),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-          const Spacer(),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
             decoration: BoxDecoration(
@@ -215,6 +329,7 @@ class _ControlBar extends StatelessWidget {
   final VoidCallback onUndo;
   final VoidCallback onHint;
   final VoidCallback onAddTube;
+  final VoidCallback? onHelp;
 
   const _ControlBar({
     required this.canUndo,
@@ -222,6 +337,7 @@ class _ControlBar extends StatelessWidget {
     required this.onUndo,
     required this.onHint,
     required this.onAddTube,
+    required this.onHelp,
   });
 
   @override
@@ -247,6 +363,11 @@ class _ControlBar extends StatelessWidget {
             tooltip: 'Add empty tube',
             badge: '$extraTubes',
             onPressed: extraTubes > 0 ? onAddTube : null,
+          ),
+          DecantIconButton(
+            icon: Icons.help_outline_rounded,
+            tooltip: 'How to play',
+            onPressed: onHelp,
           ),
         ],
       ),

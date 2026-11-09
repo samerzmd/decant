@@ -102,6 +102,10 @@ class SettingsController extends StateNotifier<AppSettings> {
     _applyKeepScreenOn(state.keepScreenOn);
   }
 
+  void markTutorialSeen() {
+    if (!state.tutorialSeen) _commit(state.copyWith(tutorialSeen: true));
+  }
+
   void toggleColorblind() =>
       _commit(state.copyWith(colorblindMode: !state.colorblindMode));
 }

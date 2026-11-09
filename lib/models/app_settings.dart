@@ -12,11 +12,15 @@ class AppSettings {
   /// Keep the display awake while Decant is in the foreground.
   final bool keepScreenOn;
 
+  /// The first-run how-to-play guide has been finished or skipped.
+  final bool tutorialSeen;
+
   const AppSettings({
     this.audio = const AudioSettings(),
     this.hapticsEnabled = true,
     this.colorblindMode = false,
     this.keepScreenOn = false,
+    this.tutorialSeen = false,
   });
 
   AppSettings copyWith({
@@ -24,12 +28,14 @@ class AppSettings {
     bool? hapticsEnabled,
     bool? colorblindMode,
     bool? keepScreenOn,
+    bool? tutorialSeen,
   }) =>
       AppSettings(
         audio: audio ?? this.audio,
         hapticsEnabled: hapticsEnabled ?? this.hapticsEnabled,
         colorblindMode: colorblindMode ?? this.colorblindMode,
         keepScreenOn: keepScreenOn ?? this.keepScreenOn,
+        tutorialSeen: tutorialSeen ?? this.tutorialSeen,
       );
 
   Map<String, dynamic> toJson() => {
@@ -37,6 +43,7 @@ class AppSettings {
         'haptics': hapticsEnabled,
         'colorblind': colorblindMode,
         'keepScreenOn': keepScreenOn,
+        'tutorialSeen': tutorialSeen,
       };
 
   factory AppSettings.fromJson(Map<String, dynamic> j) => AppSettings(
@@ -46,5 +53,6 @@ class AppSettings {
         hapticsEnabled: j['haptics'] as bool? ?? true,
         colorblindMode: j['colorblind'] as bool? ?? false,
         keepScreenOn: j['keepScreenOn'] as bool? ?? false,
+        tutorialSeen: j['tutorialSeen'] as bool? ?? false,
       );
 }

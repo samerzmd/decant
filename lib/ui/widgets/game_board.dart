@@ -23,7 +23,12 @@ class _Layout {
 /// bubble / wobble animations, and overlays the arc-stream painter.
 class GameBoard extends ConsumerStatefulWidget {
   final int levelId;
-  const GameBoard({super.key, required this.levelId});
+
+  /// Tutorial move to highlight (like a hint, but free). One tube glows at a
+  /// time: the source until it's picked up, then the target until the pour.
+  final Move? guide;
+
+  const GameBoard({super.key, required this.levelId, this.guide});
 
   @override
   ConsumerState<GameBoard> createState() => _GameBoardState();
@@ -113,8 +118,12 @@ class _GameBoardState extends ConsumerState<GameBoard>
                   time: time,
                   colorblind: colorblind,
                   selected: session.selected == i,
-                  hintSource: session.hint?.from == i,
-                  hintTarget: session.hint?.to == i,
+                  hintSource: session.hint?.from == i ||
+                      (widget.guide?.from == i && session.selected != i),
+                  hintTarget:
+                      session.hint?.to == i ||
+                          (widget.guide?.to == i &&
+                              session.selected == widget.guide?.from),
                   risingCount: isDest ? pour.count : 0,
                   risingProgress: isDest ? pourP : 1.0,
                   risingColor: isDest ? pour.color : null,

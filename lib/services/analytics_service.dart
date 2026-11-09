@@ -33,6 +33,13 @@ class AnalyticsService {
   void logAddTubeUsed(int levelId) =>
       _log('add_tube_used', {'level_id': levelId});
 
+  void logTutorialBegin({required bool replay}) =>
+      _log('tutorial_begin', {'replay': replay ? 1 : 0});
+
+  /// [skipped] is true when the player dismissed the guide early.
+  void logTutorialComplete({required bool skipped}) =>
+      _log('tutorial_complete', {'skipped': skipped ? 1 : 0});
+
   void _log(String name, Map<String, Object> params) {
     _analytics.logEvent(name: name, parameters: params);
   }
