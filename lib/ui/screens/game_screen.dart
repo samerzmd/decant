@@ -303,7 +303,7 @@ class _Header extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
             ),
             child: Text(
-              '$moves moves',
+              '$moves ${moves == 1 ? 'move' : 'moves'}',
               style: const TextStyle(
                 color: DecantColors.onSurface,
                 fontWeight: FontWeight.w700,

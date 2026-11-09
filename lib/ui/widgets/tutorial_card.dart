@@ -85,6 +85,11 @@ class TutorialCard extends StatelessWidget {
 }
 
 class _Instruction extends StatelessWidget {
+  static const _bodyStyle = TextStyle(
+    fontSize: 13.5,
+    color: DecantColors.subtle,
+  );
+
   final IconData icon;
   final String title;
   final String body;
@@ -130,10 +135,13 @@ class _Instruction extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 3),
-                  Text(
-                    body,
-                    style: const TextStyle(
-                        fontSize: 13.5, color: DecantColors.subtle),
+                  // Always two lines tall (the invisible '\n' reserves them),
+                  // so the board doesn't jump between the pick and pour steps.
+                  Stack(
+                    children: [
+                      const Text('\n', style: _bodyStyle),
+                      Text(body, style: _bodyStyle),
+                    ],
                   ),
                 ],
               ),

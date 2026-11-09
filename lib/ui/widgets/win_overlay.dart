@@ -85,7 +85,7 @@ class WinOverlay extends StatelessWidget {
                 StarRow(earned: stars, size: 40, animate: true),
                 const SizedBox(height: 18),
                 Text(
-                  '$moves moves',
+                  '$moves ${moves == 1 ? 'move' : 'moves'}',
                   style: const TextStyle(
                     color: DecantColors.subtle,
                     fontSize: 15,
