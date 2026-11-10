@@ -15,6 +15,9 @@ import '../services/analytics_service.dart';
 import 'game_session.dart';
 import 'providers.dart';
 
+/// What happened when the player asked for a hint.
+enum HintOutcome { shown, noMove, noHintsLeft }
+
 /// Drives a single play session: selection, pouring (with synced audio/haptics),
 /// undo, restart, hints, the add-tube power-up, win detection and scoring.
 class GameController extends StateNotifier<GameSession> {
@@ -325,11 +328,19 @@ class GameController extends StateNotifier<GameSession> {
     );
   }
 
-  /// Highlight the next optimal move. Returns false if none is available.
-  bool requestHint() {
-    if (state.isAnimating || state.status != GameStatus.playing) return false;
+  /// Highlights the next good move, using a hint from the pool (Zen mode has
+  /// unlimited hints).
+  HintOutcome requestHint() {
+    if (state.isAnimating || state.status != GameStatus.playing) {
+      return HintOutcome.noMove;
+    }
+    final zen = _ref.read(settingsProvider).zenMode;
+    if (!zen && _ref.read(progressProvider).hints <= 0) {
+      return HintOutcome.noHintsLeft;
+    }
     final move = Solver.nextMove(state.state);
-    if (move == null) return false;
+    if (move == null) return HintOutcome.noMove;
+    if (!zen) _ref.read(progressProvider.notifier).spendHint();
     _audio.tap();
     state = state.copyWith(
       hint: move,
@@ -337,7 +348,7 @@ class GameController extends StateNotifier<GameSession> {
       clearSelected: true,
     );
     _analytics.logHintUsed(_level.id);
-    return true;
+    return HintOutcome.shown;
   }
 
   void clearHint() {

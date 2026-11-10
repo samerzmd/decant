@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../logic/solver.dart';
 import '../../models/move.dart';
+import '../../state/game_controller.dart';
 import '../../state/game_session.dart';
 import '../../state/providers.dart';
 import '../theme/app_theme.dart';
@@ -195,14 +196,22 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                       canUndo: session.canUndo,
                       extraTubes: session.state.extraTubesRemaining,
                       onUndo: controller.undo,
+                      hints: ref.watch(settingsProvider).zenMode
+                          ? null
+                          : ref.watch(progressProvider).hints,
                       onHint: () {
-                        final ok = controller.requestHint();
-                        if (!ok) {
+                        final message = switch (controller.requestHint()) {
+                          HintOutcome.shown => null,
+                          HintOutcome.noMove =>
+                            'No moves left — try undo or restart',
+                          HintOutcome.noHintsLeft =>
+                            'No hints left. Solve a level to earn one.',
+                        };
+                        if (message != null) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content:
-                                  Text('No moves left — try undo or restart'),
-                              duration: Duration(seconds: 2),
+                            SnackBar(
+                              content: Text(message),
+                              duration: const Duration(seconds: 2),
                             ),
                           );
                         }
@@ -384,6 +393,9 @@ class _Header extends StatelessWidget {
 
 class _ControlBar extends StatelessWidget {
   final bool canUndo;
+
+  /// Hints in the pool, or null when unlimited (Zen mode).
+  final int? hints;
   final int extraTubes;
   final VoidCallback onUndo;
   final VoidCallback onHint;
@@ -392,6 +404,7 @@ class _ControlBar extends StatelessWidget {
 
   const _ControlBar({
     required this.canUndo,
+    required this.hints,
     required this.extraTubes,
     required this.onUndo,
     required this.onHint,
@@ -415,6 +428,7 @@ class _ControlBar extends StatelessWidget {
             icon: Icons.lightbulb_outline_rounded,
             tooltip: 'Hint',
             tint: DecantColors.star,
+            badge: hints == null ? null : '$hints',
             onPressed: onHint,
           ),
           DecantIconButton(

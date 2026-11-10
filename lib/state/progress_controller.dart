@@ -24,6 +24,10 @@ class ProgressData {
   /// Best stage cleared in each challenge mode.
   final ChallengeStats challenges;
 
+  /// Hints in the pool. Solving a level earns one back, up to
+  /// [PersistenceService.maxHints].
+  final int hints;
+
   const ProgressData({
     required this.unlockedLevel,
     required this.totalStars,
@@ -32,6 +36,7 @@ class ProgressData {
     this.stats = const PlayStats(),
     this.daily = const DailyStats(),
     this.challenges = const ChallengeStats(),
+    this.hints = PersistenceService.startHints,
   });
 
   LevelResult? resultFor(int levelId) => results[levelId];
@@ -79,6 +84,7 @@ class ProgressController extends StateNotifier<ProgressData> {
       stats: p.loadStats(),
       daily: p.loadDaily(),
       challenges: p.loadChallenges(),
+      hints: p.hints(),
     );
   }
 
@@ -89,12 +95,23 @@ class ProgressController extends StateNotifier<ProgressData> {
   ///
   /// A daily challenge win counts toward lifetime wins and the daily streak,
   /// but isn't a campaign level: it saves no level result and unlocks nothing.
+  /// Takes one hint from the pool. Returns false if it's empty.
+  Future<bool> spendHint() async {
+    final left = _persistence.hints();
+    if (left <= 0) return false;
+    await _persistence.saveHints(left - 1);
+    state = _read(_persistence);
+    return true;
+  }
+
   Future<void> recordWin(
     int levelId,
     int stars,
     int moves, {
     bool perfect = false,
   }) async {
+    // Every solve earns a hint back (the pool is capped).
+    await _persistence.saveHints(_persistence.hints() + 1);
     if (Challenge.isChallenge(levelId)) {
       final cleared = _persistence.loadChallenges().recordClear(
             Challenge.modeOf(levelId),

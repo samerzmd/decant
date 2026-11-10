@@ -17,6 +17,7 @@ import '../models/play_stats.dart';
 ///  * `decant.stats`           — JSON of [PlayStats] (wins, daily streak)
 ///  * `decant.daily`           — JSON of [DailyStats] (daily challenge)
 ///  * `decant.challenges`      — JSON of [ChallengeStats] (best stages)
+///  * `decant.hints`           — int, hints in the pool
 class PersistenceService {
   static const _kSettings = 'decant.settings';
   static const _kUnlocked = 'decant.unlocked';
@@ -24,6 +25,11 @@ class PersistenceService {
   static const _kStats = 'decant.stats';
   static const _kDaily = 'decant.daily';
   static const _kChallenges = 'decant.challenges';
+  static const _kHints = 'decant.hints';
+
+  /// Hints a new player starts with, and the most the pool holds.
+  static const startHints = 3;
+  static const maxHints = 5;
 
   final SharedPreferences _prefs;
   PersistenceService(this._prefs);
@@ -149,4 +155,11 @@ class PersistenceService {
 
   Future<void> saveChallenges(ChallengeStats stats) =>
       _prefs.setString(_kChallenges, jsonEncode(stats.toJson()));
+
+  // ---- Hints ------------------------------------------------------------- //
+
+  int hints() => (_prefs.getInt(_kHints) ?? startHints).clamp(0, maxHints);
+
+  Future<void> saveHints(int hints) =>
+      _prefs.setInt(_kHints, hints.clamp(0, maxHints));
 }

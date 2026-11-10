@@ -65,7 +65,8 @@ Give players reasons to come back.
       endless ladder of stages with the best stage saved
 - [x] Per-level star targets shown while playing, and a "perfect" badge for
       solving in par with no hints or extra tube
-- [ ] Hint economy / cooldown so hints feel earned (optional)
+- [x] Hint economy: a pool of hints (start 3, hold 5), one earned back per
+      solve; unlimited in Zen mode
 - [ ] Level packs / chapters with themed palettes
 
 ## 💡 v1.3 — Accessibility & reach
