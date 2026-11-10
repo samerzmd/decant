@@ -27,13 +27,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <!-- Use the Skia renderer instead of Impeller. Impeller (Vulkan) on some
-             Samsung devices fails to rebuild its GPU buffers when the Activity is
-             recreated (e.g. reopening from recents), causing a frozen/black screen.
-             Skia avoids that. -->
-        <meta-data
-            android:name="io.flutter.embedding.android.EnableImpeller"
-            android:value="false" />
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data
