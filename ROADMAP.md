@@ -36,15 +36,18 @@ Tighten the release and lay groundwork for the community.
 
 - [x] Keep debug `debugPrint`s out of release builds (all behind `kDebugMode`)
 - [ ] A proper logging toggle
-- [ ] Re-evaluate Impeller vs Skia per-platform now that the freeze cause is
-      fixed (currently forced to Skia on Android)
+- [x] Re-evaluate Impeller vs Skia now that the freeze cause is fixed:
+      Impeller (Vulkan) is back on for Android, since Flutter is removing the
+      Skia opt-out. Verified on a Galaxy S22 Ultra across resume, exit/reopen
+      and process death
 - [x] Move `MainActivity.kt` to its package-matching folder
 - [ ] Expand widget/golden tests; wire coverage reporting into CI
-- [ ] Settings: pour-animation speed, reduce-motion option
+- [x] Settings: pour-animation speed, reduce-motion option
 - [x] A simple **stats** screen (levels solved, stars, perfect levels, wins,
       daily streak)
 - [x] In-app "how to play" / first-run tutorial overlay
-- [ ] App store assets (screenshots, feature graphic, store listing copy)
+- [x] App store assets (screenshots, feature graphic, store listing copy) in
+      `store/`, plus a privacy policy (`PRIVACY.md`)
 
 ## 🔜 v1.2 — Modes & replayability
 
@@ -90,8 +93,9 @@ Bigger bets, only if the community wants them.
 
 ## ⚠️ Known limitations / tech debt
 
-- Impeller is disabled on Android (Skia fallback) to avoid a Samsung
-  surface-recreation freeze — revisit per device/OS.
+- Impeller was once disabled on Android over a Samsung surface-recreation
+  freeze. It's back on and passes on an S22 Ultra; watch for reports from
+  other devices (older Mali/PowerVR GPUs in particular).
 - `flutter_soloud` is fully torn down on `detached` to survive Activity
   recreation; verify this plays nicely across the OEM matrix.
 - Ambient loops use `LoadMode.disk`; if any device misbehaves on resume,
