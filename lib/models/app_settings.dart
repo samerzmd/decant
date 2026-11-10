@@ -1,7 +1,23 @@
 import '../audio/audio_service.dart';
 
-/// All user-tunable settings: the three audio buses plus haptics and the
-/// colorblind-friendly rendering option.
+/// How long a pour takes. Animation, sound and game logic all follow it.
+enum PourSpeed {
+  relaxed('Relaxed', Duration(milliseconds: 760)),
+  normal('Normal', Duration(milliseconds: 540)),
+  quick('Quick', Duration(milliseconds: 340));
+
+  final String label;
+  final Duration duration;
+  const PourSpeed(this.label, this.duration);
+
+  static PourSpeed fromName(String? name) => PourSpeed.values.firstWhere(
+        (s) => s.name == name,
+        orElse: () => PourSpeed.normal,
+      );
+}
+
+/// All user-tunable settings: the three audio buses, haptics, accessibility
+/// options (colorblind symbols, reduced motion) and pour speed.
 class AppSettings {
   final AudioSettings audio;
   final bool hapticsEnabled;
@@ -15,12 +31,21 @@ class AppSettings {
   /// The first-run how-to-play guide has been finished or skipped.
   final bool tutorialSeen;
 
+  /// How fast liquid pours.
+  final PourSpeed pourSpeed;
+
+  /// Calmer visuals: no idle bubbles, tube tilt or wobble. Also applied when
+  /// the system asks for fewer animations.
+  final bool reduceMotion;
+
   const AppSettings({
     this.audio = const AudioSettings(),
     this.hapticsEnabled = true,
     this.colorblindMode = false,
     this.keepScreenOn = false,
     this.tutorialSeen = false,
+    this.pourSpeed = PourSpeed.normal,
+    this.reduceMotion = false,
   });
 
   AppSettings copyWith({
@@ -29,6 +54,8 @@ class AppSettings {
     bool? colorblindMode,
     bool? keepScreenOn,
     bool? tutorialSeen,
+    PourSpeed? pourSpeed,
+    bool? reduceMotion,
   }) =>
       AppSettings(
         audio: audio ?? this.audio,
@@ -36,6 +63,8 @@ class AppSettings {
         colorblindMode: colorblindMode ?? this.colorblindMode,
         keepScreenOn: keepScreenOn ?? this.keepScreenOn,
         tutorialSeen: tutorialSeen ?? this.tutorialSeen,
+        pourSpeed: pourSpeed ?? this.pourSpeed,
+        reduceMotion: reduceMotion ?? this.reduceMotion,
       );
 
   Map<String, dynamic> toJson() => {
@@ -44,6 +73,8 @@ class AppSettings {
         'colorblind': colorblindMode,
         'keepScreenOn': keepScreenOn,
         'tutorialSeen': tutorialSeen,
+        'pourSpeed': pourSpeed.name,
+        'reduceMotion': reduceMotion,
       };
 
   factory AppSettings.fromJson(Map<String, dynamic> j) => AppSettings(
@@ -55,5 +86,7 @@ class AppSettings {
         colorblindMode: j['colorblind'] as bool? ?? false,
         keepScreenOn: j['keepScreenOn'] as bool? ?? false,
         tutorialSeen: j['tutorialSeen'] as bool? ?? false,
+        pourSpeed: PourSpeed.fromName(j['pourSpeed'] as String?),
+        reduceMotion: j['reduceMotion'] as bool? ?? false,
       );
 }

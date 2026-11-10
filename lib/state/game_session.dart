@@ -18,6 +18,10 @@ class PourAnim {
   /// animate "rising" on top of it).
   final int destFillBefore;
 
+  /// How long this pour takes (from the pour-speed setting). The board's
+  /// animation and the controller's timing both use it, so they stay in step.
+  final Duration duration;
+
   const PourAnim({
     required this.id,
     required this.from,
@@ -25,6 +29,7 @@ class PourAnim {
     required this.color,
     required this.count,
     required this.destFillBefore,
+    this.duration = const Duration(milliseconds: 540),
   });
 }
 

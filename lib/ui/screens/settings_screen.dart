@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../audio/audio_service.dart';
+import '../../models/app_settings.dart';
 import '../../state/providers.dart';
 import '../theme/app_theme.dart';
 import 'sound_browser_screen.dart';
@@ -127,6 +128,10 @@ class SettingsScreen extends ConsumerWidget {
                       value: settings.keepScreenOn,
                       onChanged: (_) => ctrl.toggleKeepScreenOn(),
                     ),
+                    _PourSpeedTile(
+                      value: settings.pourSpeed,
+                      onChanged: ctrl.setPourSpeed,
+                    ),
                     const SizedBox(height: 18),
                     const _SectionLabel('Accessibility'),
                     _SwitchTile(
@@ -136,12 +141,95 @@ class SettingsScreen extends ConsumerWidget {
                       value: settings.colorblindMode,
                       onChanged: (_) => ctrl.toggleColorblind(),
                     ),
+                    _SwitchTile(
+                      label: 'Reduce motion',
+                      subtitle: 'No bubbles, tilting or wobbling',
+                      icon: Icons.motion_photos_off_rounded,
+                      value: settings.reduceMotion,
+                      onChanged: (_) => ctrl.toggleReduceMotion(),
+                    ),
                   ],
                 ),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// Pour speed as three side-by-side choices.
+class _PourSpeedTile extends StatelessWidget {
+  final PourSpeed value;
+  final ValueChanged<PourSpeed> onChanged;
+  const _PourSpeedTile({required this.value, required this.onChanged});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.06),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Row(
+            children: [
+              Icon(Icons.speed_rounded, color: DecantColors.accent, size: 22),
+              SizedBox(width: 14),
+              Text(
+                'Pour speed',
+                style: TextStyle(
+                  color: DecantColors.onSurface,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              for (final speed in PourSpeed.values) ...[
+                if (speed != PourSpeed.values.first) const SizedBox(width: 8),
+                Expanded(
+                  child: Semantics(
+                    button: true,
+                    selected: speed == value,
+                    child: GestureDetector(
+                      onTap: () => onChanged(speed),
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 160),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: speed == value
+                              ? DecantColors.accent
+                              : Colors.white.withValues(alpha: 0.06),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          speed.label,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: speed == value
+                                ? DecantColors.bgTop
+                                : DecantColors.onSurface,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ],
       ),
     );
   }

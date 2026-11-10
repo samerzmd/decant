@@ -13,9 +13,6 @@ import '../services/analytics_service.dart';
 import 'game_session.dart';
 import 'providers.dart';
 
-/// How long a single pour animation runs. Audio sequencing is timed to match.
-const Duration kPourDuration = Duration(milliseconds: 540);
-
 /// Drives a single play session: selection, pouring (with synced audio/haptics),
 /// undo, restart, hints, the add-tube power-up, win detection and scoring.
 class GameController extends StateNotifier<GameSession> {
@@ -104,6 +101,8 @@ class GameController extends StateNotifier<GameSession> {
       color: outcome.move.color,
       count: outcome.move.count,
       destFillBefore: destBefore,
+      // Pour speed setting; audio sequencing below is timed to match.
+      duration: _ref.read(settingsProvider).pourSpeed.duration,
     );
 
     state = state.copyWith(
@@ -119,9 +118,9 @@ class GameController extends StateNotifier<GameSession> {
     await _audio.startPour(fillFraction: destBefore / capacity);
     // Ramp the pour pitch upward as the destination fills.
     final destAfter = destBefore + outcome.move.count;
-    unawaited(_rampPourPitch(destBefore, destAfter, capacity));
+    unawaited(_rampPourPitch(destBefore, destAfter, capacity, anim.duration));
 
-    await Future<void>.delayed(kPourDuration);
+    await Future<void>.delayed(anim.duration);
     if (!mounted) {
       // Screen left mid-pour: make sure the looping trickle doesn't linger.
       await _audio.stopPour();
@@ -153,13 +152,18 @@ class GameController extends StateNotifier<GameSession> {
     }
   }
 
-  Future<void> _rampPourPitch(int before, int after, int capacity) async {
+  Future<void> _rampPourPitch(
+    int before,
+    int after,
+    int capacity,
+    Duration duration,
+  ) async {
     const steps = 5;
     for (var i = 1; i <= steps; i++) {
       if (!mounted || state.pour == null) return;
       final f = (before + (after - before) * (i / steps)) / capacity;
       _audio.updatePourPitch(f);
-      await Future<void>.delayed(kPourDuration ~/ steps);
+      await Future<void>.delayed(duration ~/ steps);
     }
   }
 

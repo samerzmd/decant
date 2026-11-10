@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../models/move.dart';
 import '../../models/tube.dart';
-import '../../state/game_controller.dart';
 import '../../state/game_session.dart';
 import '../../state/providers.dart';
 import '../painters/pour_stream_painter.dart';
@@ -48,7 +47,8 @@ class _GameBoardState extends ConsumerState<GameBoard>
       vsync: this,
       duration: const Duration(seconds: 8),
     )..repeat();
-    _pour = AnimationController(vsync: this, duration: kPourDuration);
+    // Duration is set per pour from the pour-speed setting.
+    _pour = AnimationController(vsync: this);
     _wobble = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 700),
@@ -68,17 +68,29 @@ class _GameBoardState extends ConsumerState<GameBoard>
     final levelId = widget.levelId;
     final session = ref.watch(gameControllerProvider(levelId));
     final controller = ref.read(gameControllerProvider(levelId).notifier);
-    final colorblind = ref.watch(settingsProvider).colorblindMode;
+    final settings = ref.watch(settingsProvider);
+    final colorblind = settings.colorblindMode;
+    // Reduced motion: the in-app setting or the system's "remove animations".
+    final reduceMotion =
+        settings.reduceMotion || MediaQuery.of(context).disableAnimations;
+    if (reduceMotion && _bubble.isAnimating) {
+      _bubble.stop();
+    } else if (!reduceMotion && !_bubble.isAnimating) {
+      _bubble.repeat();
+    }
     final shader = ref.watch(glassShaderProvider).asData?.value;
 
     // Kick off animations when a new pour begins.
     final pour = session.pour;
     if (pour != null && pour.id != _lastPourId) {
       _lastPourId = pour.id;
+      _pour.duration = pour.duration;
       _pour.forward(from: 0);
-      Future.delayed(kPourDuration, () {
-        if (mounted) _wobble.forward(from: 0);
-      });
+      if (!reduceMotion) {
+        Future.delayed(pour.duration, () {
+          if (mounted) _wobble.forward(from: 0);
+        });
+      }
     }
 
     return LayoutBuilder(
@@ -102,7 +114,9 @@ class _GameBoardState extends ConsumerState<GameBoard>
               final isSource = pour != null && pour.from == i;
               final isDest = pour != null && pour.to == i;
 
-              final tilt = isSource ? _sourceTilt(layout, pour, pourP) : 0.0;
+              final tilt = (isSource && !reduceMotion)
+                  ? _sourceTilt(layout, pour, pourP)
+                  : 0.0;
               final wobble =
                   (isDest && _wobble.isAnimating) ? (1 - _wobble.value) : 0.0;
 

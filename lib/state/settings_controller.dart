@@ -103,6 +103,12 @@ class SettingsController extends StateNotifier<AppSettings> {
     _applyKeepScreenOn(state.keepScreenOn);
   }
 
+  void setPourSpeed(PourSpeed speed) =>
+      _commit(state.copyWith(pourSpeed: speed));
+
+  void toggleReduceMotion() =>
+      _commit(state.copyWith(reduceMotion: !state.reduceMotion));
+
   void markTutorialSeen() {
     if (!state.tutorialSeen) _commit(state.copyWith(tutorialSeen: true));
   }
