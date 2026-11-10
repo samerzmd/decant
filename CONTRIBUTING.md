@@ -46,6 +46,14 @@ CI runs the same checks on every PR (`.github/workflows/ci.yml`).
   level generator are covered — please keep them green.
 - For algorithm changes, the Python reference in `tool/verify_algorithm.py`
   should still pass (`python3 tool/verify_algorithm.py`).
+- Changed how tubes or the pour are drawn on purpose? Refresh the painter
+  goldens with `flutter test --update-goldens test/painter_golden_test.dart`
+  and check the new images in `test/goldens/` before committing them.
+- See coverage locally with `flutter test --coverage` then
+  `tool/ci/coverage_summary.sh`. CI posts the same summary on every run.
+- Log through `Log` (`lib/services/log.dart`), not `print`/`debugPrint`. It is
+  silent in release builds; build with `--dart-define=DECANT_LOG=true` to see
+  logs from a release build.
 - Match the existing style: small widgets, `const` where possible, single
   quotes, comments that explain *why* not *what*.
 

@@ -32,6 +32,8 @@ migrate_working_dir/
 .pub/
 /build/
 /coverage/
+# Diff images written when a golden test fails.
+/test/failures/
 
 # Symbolication related
 app.*.symbols

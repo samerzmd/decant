@@ -38,8 +38,30 @@ jobs:
       - name: Analyze
         run: flutter analyze
 
-      - name: Run tests
-        run: flutter test
+      # Includes the painter goldens in test/goldens (see
+      # test/flutter_test_config.dart for the cross-platform tolerance).
+      - name: Run tests with coverage
+        run: flutter test --coverage
+
+      - name: Coverage summary
+        if: always() && hashFiles('coverage/lcov.info') != ''
+        run: tool/ci/coverage_summary.sh coverage/lcov.info >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload coverage report
+        if: always() && hashFiles('coverage/lcov.info') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-lcov
+          path: coverage/lcov.info
+
+      # On a golden mismatch, keep the diff images so they can be inspected.
+      - name: Upload golden failures
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: golden-failures
+          path: test/failures/
+          if-no-files-found: ignore
 
   verify-algorithm:
     name: Verify level/solver algorithm (Python reference)

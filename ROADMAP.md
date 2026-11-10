@@ -30,22 +30,26 @@ The calm, complete core game.
 
 ---
 
-## 🔜 v1.1 — Polish & foundations
+## ✅ v1.1 — Polish & foundations
 
 Tighten the release and lay groundwork for the community.
 
 - [x] Keep debug `debugPrint`s out of release builds (all behind `kDebugMode`)
-- [ ] A proper logging toggle
+- [x] A proper logging toggle (`Log`: on in debug, off in release, back on
+      with `--dart-define=DECANT_LOG=true`)
 - [x] Re-evaluate Impeller vs Skia now that the freeze cause is fixed:
       Impeller (Vulkan) is back on for Android, since Flutter is removing the
       Skia opt-out. Verified on a Galaxy S22 Ultra across resume, exit/reopen
       and process death
 - [x] Move `MainActivity.kt` to its package-matching folder
-- [ ] Expand widget/golden tests; wire coverage reporting into CI
+- [x] Expand widget/golden tests; wire coverage reporting into CI (painter
+      goldens, screen tests, coverage summary on every CI run: 81%)
 - [x] Settings: pour-animation speed, reduce-motion option
 - [x] A simple **stats** screen (levels solved, stars, perfect levels, wins,
       daily streak)
 - [x] In-app "how to play" / first-run tutorial overlay
+- [x] Realistic pouring: the tube flies over and tips on its lip, the liquid
+      stays level and drains, and a falling stream splashes into the target
 - [x] App store assets (screenshots, feature graphic, store listing copy) in
       `store/`, plus a privacy policy (`PRIVACY.md`)
 
@@ -100,7 +104,9 @@ Bigger bets, only if the community wants them.
   recreation; verify this plays nicely across the OEM matrix.
 - Ambient loops use `LoadMode.disk`; if any device misbehaves on resume,
   in-memory loading is the fallback (startup is already deferred, so it's cheap).
-- No automated golden tests for the painters yet.
+- Painter goldens are made on macOS and checked on Linux CI with a small
+  pixel tolerance; refresh them with `flutter test --update-goldens` after an
+  intended visual change.
 
 ---
 
