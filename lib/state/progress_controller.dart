@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/legacy.dart';
 
+import '../logic/daily_challenge.dart';
+import '../models/daily_stats.dart';
 import '../models/level_result.dart';
 import '../models/play_stats.dart';
 import '../services/persistence_service.dart';
@@ -14,12 +16,16 @@ class ProgressData {
   /// Lifetime wins and daily streak.
   final PlayStats stats;
 
+  /// Daily challenge streak and recent results.
+  final DailyStats daily;
+
   const ProgressData({
     required this.unlockedLevel,
     required this.totalStars,
     required this.levelsCompleted,
     required this.results,
     this.stats = const PlayStats(),
+    this.daily = const DailyStats(),
   });
 
   LevelResult? resultFor(int levelId) => results[levelId];
@@ -65,11 +71,25 @@ class ProgressController extends StateNotifier<ProgressData> {
       levelsCompleted: p.levelsCompleted(),
       results: results,
       stats: p.loadStats(),
+      daily: p.loadDaily(),
     );
   }
 
+  /// The current local time, as seen by this controller (tests inject it).
+  DateTime now() => _now();
+
   /// Persist a win (best result + lifetime stats) and refresh the snapshot.
+  ///
+  /// A daily challenge win counts toward lifetime wins and the daily streak,
+  /// but isn't a campaign level: it saves no level result and unlocks nothing.
   Future<void> recordWin(int levelId, int stars, int moves) async {
+    if (DailyChallenge.isDaily(levelId)) {
+      final day = DailyChallenge.dateOf(levelId);
+      await _persistence.saveDaily(_persistence.loadDaily().record(day, stars));
+      await _persistence.saveStats(_persistence.loadStats().recordWin(_now()));
+      state = _read(_persistence);
+      return;
+    }
     // Read stats before the result is saved, so a first-ever load doesn't
     // backfill this win from levelsCompleted and then count it again.
     final stats = _persistence.loadStats().recordWin(_now());

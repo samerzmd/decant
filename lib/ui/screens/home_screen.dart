@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../logic/daily_challenge.dart';
 import '../../state/providers.dart';
 import '../theme/app_theme.dart';
 import '../widgets/confirm_dialog.dart';
@@ -40,6 +41,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     final progress = ref.watch(progressProvider);
     final continueLevel = progress.unlockedLevel;
+    final today = ref.read(progressProvider.notifier).now();
+    final dailyDone = progress.daily.solvedOn(today);
+    final dailyStreak = progress.daily.currentStreak(today);
 
     return PopScope(
       canPop: false,
@@ -100,6 +104,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ),
                   const SizedBox(height: 14),
                   DecantButton(
+                    label: _dailyLabel(dailyDone, dailyStreak),
+                    icon: dailyDone
+                        ? Icons.check_circle_rounded
+                        : Icons.today_rounded,
+                    primary: false,
+                    expand: true,
+                    onPressed: () =>
+                        _openLevel(context, DailyChallenge.idFor(today)),
+                  ),
+                  const SizedBox(height: 14),
+                  DecantButton(
                     label: 'Levels',
                     icon: Icons.grid_view_rounded,
                     primary: false,
@@ -152,6 +167,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
       ),
     );
+  }
+
+  /// "Daily challenge", or "Daily done" once today's is solved, with the
+  /// streak when there is one.
+  static String _dailyLabel(bool done, int streak) {
+    final base = done ? 'Daily done' : 'Daily challenge';
+    return streak > 0 ? '$base · $streak-day streak' : base;
   }
 
   void _openLevel(BuildContext context, int levelId) {

@@ -11,6 +11,7 @@ import '../widgets/decant_button.dart';
 import '../widgets/game_board.dart';
 import '../widgets/tutorial_card.dart';
 import '../widgets/win_overlay.dart';
+import '../../logic/daily_challenge.dart';
 
 /// The gameplay screen: header (level + moves), the tube board, the control
 /// bar (undo / hint / add-tube / how-to-play), a stuck banner, the win overlay
@@ -219,12 +220,16 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                       levelId: levelId,
                       stars: session.stars,
                       moves: session.moves,
-                      onNext: () => Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          settings: const RouteSettings(name: '/game'),
-                          builder: (_) => GameScreen(levelId: levelId + 1),
-                        ),
-                      ),
+                      dailyStreak: ref.watch(progressProvider).daily.streak,
+                      onNext: DailyChallenge.isDaily(levelId)
+                          ? () => Navigator.of(context).pop()
+                          : () => Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  settings: const RouteSettings(name: '/game'),
+                                  builder: (_) =>
+                                      GameScreen(levelId: levelId + 1),
+                                ),
+                              ),
                       onReplay: controller.restart,
                       onLevels: () => Navigator.of(context).pop(),
                     ),
@@ -275,7 +280,9 @@ class _Header extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Level $levelId',
+                  DailyChallenge.isDaily(levelId)
+                      ? DailyChallenge.title(levelId)
+                      : 'Level $levelId',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(

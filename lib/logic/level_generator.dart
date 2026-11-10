@@ -3,6 +3,7 @@ import 'dart:math';
 import '../models/game_state.dart';
 import '../models/level.dart';
 import '../models/tube.dart';
+import 'daily_challenge.dart';
 import 'solver.dart';
 
 /// Difficulty/shape parameters for a level number.
@@ -33,11 +34,21 @@ class LevelConfig {
 class LevelGenerator {
   const LevelGenerator._();
 
-  /// Shape of level [levelId] (1-based). Difficulty ramps as the number grows.
+  /// Shape of level [levelId]. Campaign levels (1-based) ramp up as the number
+  /// grows; daily challenges (negative ids) follow the day of the week.
   static LevelConfig configFor(int levelId) {
+    if (DailyChallenge.isDaily(levelId)) {
+      return _configForColors(
+        DailyChallenge.colorsFor(DailyChallenge.dateOf(levelId)),
+      );
+    }
+    // Colors grow from 3 up to 11.
+    return _configForColors((3 + (levelId - 1) ~/ 3).clamp(3, 11));
+  }
+
+  static LevelConfig _configForColors(int colorCount) {
     const capacity = 4;
-    // Colors grow from 3 up to 11; empties trend from 2 down to 1 on hard sets.
-    final colorCount = (3 + (levelId - 1) ~/ 3).clamp(3, 11);
+    // Empties trend from 2 down to 1 on hard sets.
     final emptyTubes = colorCount >= 8 ? 1 : 2;
     final difficulty = switch (colorCount) {
       <= 3 => 1,

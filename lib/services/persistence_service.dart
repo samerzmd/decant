@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/app_settings.dart';
+import '../models/daily_stats.dart';
 import '../models/level_result.dart';
 import '../models/play_stats.dart';
 
@@ -13,11 +14,13 @@ import '../models/play_stats.dart';
 ///  * `decant.unlocked`        — int, highest unlocked level (1-based)
 ///  * `decant.result.<id>`     — JSON of [LevelResult] per level
 ///  * `decant.stats`           — JSON of [PlayStats] (wins, daily streak)
+///  * `decant.daily`           — JSON of [DailyStats] (daily challenge)
 class PersistenceService {
   static const _kSettings = 'decant.settings';
   static const _kUnlocked = 'decant.unlocked';
   static const _kResultPrefix = 'decant.result.';
   static const _kStats = 'decant.stats';
+  static const _kDaily = 'decant.daily';
 
   final SharedPreferences _prefs;
   PersistenceService(this._prefs);
@@ -108,4 +111,19 @@ class PersistenceService {
 
   Future<void> saveStats(PlayStats stats) =>
       _prefs.setString(_kStats, jsonEncode(stats.toJson()));
+
+  // ---- Daily challenge --------------------------------------------------- //
+
+  DailyStats loadDaily() {
+    final raw = _prefs.getString(_kDaily);
+    if (raw == null) return const DailyStats();
+    try {
+      return DailyStats.fromJson(jsonDecode(raw) as Map<String, dynamic>);
+    } catch (_) {
+      return const DailyStats();
+    }
+  }
+
+  Future<void> saveDaily(DailyStats daily) =>
+      _prefs.setString(_kDaily, jsonEncode(daily.toJson()));
 }

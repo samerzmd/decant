@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../logic/daily_challenge.dart';
 import '../theme/app_theme.dart';
 import 'decant_button.dart';
 import 'star_row.dart';
@@ -13,6 +14,9 @@ class WinOverlay extends StatelessWidget {
   final VoidCallback onReplay;
   final VoidCallback onLevels;
 
+  /// For a daily challenge: the daily streak after this win.
+  final int dailyStreak;
+
   const WinOverlay({
     super.key,
     required this.levelId,
@@ -21,10 +25,12 @@ class WinOverlay extends StatelessWidget {
     required this.onNext,
     required this.onReplay,
     required this.onLevels,
+    this.dailyStreak = 0,
   });
 
   @override
   Widget build(BuildContext context) {
+    final daily = DailyChallenge.isDaily(levelId);
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0, end: 1),
       duration: const Duration(milliseconds: 320),
@@ -65,7 +71,7 @@ class WinOverlay extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  'Level $levelId solved',
+                  daily ? 'Daily challenge solved' : 'Level $levelId solved',
                   style: const TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w800,
@@ -74,7 +80,9 @@ class WinOverlay extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Beautifully done.',
+                  daily && dailyStreak > 0
+                      ? '$dailyStreak-day streak. Beautifully done.'
+                      : 'Beautifully done.',
                   style: TextStyle(
                     color: DecantColors.accent.withValues(alpha: 0.95),
                     fontSize: 14,
@@ -94,8 +102,9 @@ class WinOverlay extends StatelessWidget {
                 ),
                 const SizedBox(height: 24),
                 DecantButton(
-                  label: 'Next level',
-                  icon: Icons.arrow_forward_rounded,
+                  label: daily ? 'Done' : 'Next level',
+                  icon:
+                      daily ? Icons.check_rounded : Icons.arrow_forward_rounded,
                   expand: true,
                   onPressed: onNext,
                 ),
@@ -110,15 +119,18 @@ class WinOverlay extends StatelessWidget {
                         onPressed: onReplay,
                       ),
                     ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: DecantButton(
-                        label: 'Levels',
-                        icon: Icons.grid_view_rounded,
-                        primary: false,
-                        onPressed: onLevels,
+                    // A daily has no next level, and "Done" already goes home.
+                    if (!daily) ...[
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: DecantButton(
+                          label: 'Levels',
+                          icon: Icons.grid_view_rounded,
+                          primary: false,
+                          onPressed: onLevels,
+                        ),
                       ),
-                    ),
+                    ],
                   ],
                 ),
               ],

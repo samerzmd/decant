@@ -57,7 +57,8 @@ Tighten the release and lay groundwork for the community.
 
 Give players reasons to come back.
 
-- [ ] **Daily challenge** (seeded level of the day + streak tracking)
+- [x] **Daily challenge**: one seeded level per local day, the same for
+      everyone, easiest on Monday and hardest on Sunday, with its own streak
 - [ ] **Zen mode** (no move counter, no stars — pure unwind)
 - [ ] **Challenge modes**: move-limited and timed variants
 - [ ] Per-level star tuning + "perfect" (no-hint) badges
