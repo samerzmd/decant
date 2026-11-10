@@ -37,8 +37,8 @@ class ProgressData {
   LevelResult? resultFor(int levelId) => results[levelId];
   bool isUnlocked(int levelId) => levelId <= unlockedLevel;
 
-  /// Levels solved with the full three stars.
-  int get perfectLevels => results.values.where((r) => r.stars >= 3).length;
+  /// Levels with a perfect badge: solved in par, with no hints or extra tube.
+  int get perfectLevels => results.values.where((r) => r.perfect).length;
 
   /// How many solved levels have 1, 2 and 3 stars (index 0 = one star).
   List<int> get starCounts {
@@ -89,7 +89,12 @@ class ProgressController extends StateNotifier<ProgressData> {
   ///
   /// A daily challenge win counts toward lifetime wins and the daily streak,
   /// but isn't a campaign level: it saves no level result and unlocks nothing.
-  Future<void> recordWin(int levelId, int stars, int moves) async {
+  Future<void> recordWin(
+    int levelId,
+    int stars,
+    int moves, {
+    bool perfect = false,
+  }) async {
     if (Challenge.isChallenge(levelId)) {
       final cleared = _persistence.loadChallenges().recordClear(
             Challenge.modeOf(levelId),
@@ -110,7 +115,7 @@ class ProgressController extends StateNotifier<ProgressData> {
     // Read stats before the result is saved, so a first-ever load doesn't
     // backfill this win from levelsCompleted and then count it again.
     final stats = _persistence.loadStats().recordWin(_now());
-    await _persistence.recordResult(levelId, stars, moves);
+    await _persistence.recordResult(levelId, stars, moves, perfect: perfect);
     await _persistence.saveStats(stats);
     state = _read(_persistence);
   }

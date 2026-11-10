@@ -21,6 +21,10 @@ class WinOverlay extends StatelessWidget {
   /// Zen mode: no stars or move count, just the celebration.
   final bool zen;
 
+  /// A perfect solve (par, no hints, no extra tube), and the level's par.
+  final bool perfect;
+  final int par;
+
   const WinOverlay({
     super.key,
     required this.levelId,
@@ -31,6 +35,8 @@ class WinOverlay extends StatelessWidget {
     required this.onLevels,
     this.dailyStreak = 0,
     this.zen = false,
+    this.perfect = false,
+    this.par = 0,
   });
 
   @override
@@ -112,6 +118,17 @@ class WinOverlay extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
+                  const SizedBox(height: 10),
+                  if (perfect)
+                    const _PerfectChip()
+                  else if (par > 0)
+                    Text(
+                      'Perfect: $par ${par == 1 ? 'move' : 'moves'}, no help',
+                      style: TextStyle(
+                        color: DecantColors.subtle.withValues(alpha: 0.75),
+                        fontSize: 12,
+                      ),
+                    ),
                 ],
                 const SizedBox(height: 24),
                 DecantButton(
@@ -154,6 +171,38 @@ class WinOverlay extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// Badge for a perfect solve.
+class _PerfectChip extends StatelessWidget {
+  const _PerfectChip();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+      decoration: BoxDecoration(
+        color: DecantColors.accent.withValues(alpha: 0.18),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: DecantColors.accent.withValues(alpha: 0.6)),
+      ),
+      child: const Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.verified_rounded, color: DecantColors.accent, size: 16),
+          SizedBox(width: 6),
+          Text(
+            'Perfect',
+            style: TextStyle(
+              color: DecantColors.onSurface,
+              fontWeight: FontWeight.w700,
+              fontSize: 13,
+            ),
+          ),
+        ],
       ),
     );
   }

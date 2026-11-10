@@ -8,6 +8,7 @@ import '../audio/haptic_service.dart';
 import '../logic/challenge.dart';
 import '../logic/pour_engine.dart';
 import '../logic/solver.dart';
+import '../logic/star_rating.dart';
 import '../models/game_state.dart';
 import '../models/level.dart';
 import '../services/analytics_service.dart';
@@ -254,35 +255,35 @@ class GameController extends StateNotifier<GameSession> {
     _clock?.cancel();
     // Zen mode earns no stars: the level counts as solved, nothing more.
     final zen = _ref.read(settingsProvider).zenMode;
-    final stars = zen ? 0 : _computeStars();
-    state = state.copyWith(status: GameStatus.won, stars: stars);
+    final moves = state.moves;
+    final hints = state.state.hintsUsed;
+    final stars =
+        zen ? 0 : StarRating.stars(moves: moves, par: state.par, hints: hints);
+    final perfect = !zen &&
+        !Challenge.isChallenge(_level.id) &&
+        StarRating.isPerfect(
+          moves: moves,
+          par: state.par,
+          hints: hints,
+          usedExtraTube:
+              state.state.extraTubesRemaining < _level.extraTubeAllowance,
+        );
+    state = state.copyWith(
+      status: GameStatus.won,
+      stars: stars,
+      perfect: perfect,
+    );
     _audio.win();
     _haptic.win();
     _ref
         .read(progressProvider.notifier)
-        .recordWin(_level.id, stars, state.moves);
+        .recordWin(_level.id, stars, moves, perfect: perfect);
     _analytics.logLevelComplete(
       levelId: _level.id,
       stars: stars,
-      moves: state.moves,
-      hintsUsed: state.state.hintsUsed,
+      moves: moves,
+      hintsUsed: hints,
     );
-  }
-
-  int _computeStars() {
-    final moves = state.moves;
-    final par = state.par <= 0 ? 1 : state.par;
-    final hints = state.state.hintsUsed;
-    int stars;
-    if (moves <= (par * 1.25).ceil()) {
-      stars = 3;
-    } else if (moves <= (par * 1.9).ceil()) {
-      stars = 2;
-    } else {
-      stars = 1;
-    }
-    if (hints > 0) stars = (stars - 1).clamp(1, 3);
-    return stars;
   }
 
   // ---- Actions ----------------------------------------------------------- //
@@ -318,6 +319,7 @@ class GameController extends StateNotifier<GameSession> {
       status: GameStatus.playing,
       stuck: false,
       stars: 0,
+      perfect: false,
       timeLeft: state.timeLimit,
       clockStarted: false,
     );

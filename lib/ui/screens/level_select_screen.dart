@@ -152,16 +152,28 @@ class _LevelTile extends StatelessWidget {
             if (!locked)
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(3, (s) {
-                  final filled = result != null && s < result.stars;
-                  return Icon(
-                    filled ? Icons.star_rounded : Icons.star_outline_rounded,
-                    size: 12,
-                    color: filled
-                        ? DecantColors.star
-                        : DecantColors.subtle.withValues(alpha: 0.4),
-                  );
-                }),
+                children: [
+                  ...List.generate(3, (s) {
+                    final filled = result != null && s < result.stars;
+                    return Icon(
+                      filled ? Icons.star_rounded : Icons.star_outline_rounded,
+                      size: 12,
+                      color: filled
+                          ? DecantColors.star
+                          : DecantColors.subtle.withValues(alpha: 0.4),
+                    );
+                  }),
+                  if (result?.perfect ?? false)
+                    const Padding(
+                      padding: EdgeInsets.only(left: 2),
+                      child: Icon(
+                        Icons.verified_rounded,
+                        size: 12,
+                        color: DecantColors.accent,
+                        semanticLabel: 'Perfect',
+                      ),
+                    ),
+                ],
               )
             else
               Text('Lvl $levelId',

@@ -57,6 +57,9 @@ class GameSession {
   /// Stars awarded once [status] == won.
   final int stars;
 
+  /// Whether the win was perfect: par, no hints, no extra tube.
+  final bool perfect;
+
   /// Estimated optimal move count (solver result on the initial board), used
   /// for the star rating.
   final int par;
@@ -86,6 +89,7 @@ class GameSession {
     this.selected,
     this.status = GameStatus.playing,
     this.stars = 0,
+    this.perfect = false,
     this.hint,
     this.pour,
     this.stuck = false,
@@ -120,6 +124,7 @@ class GameSession {
     bool clearSelected = false,
     GameStatus? status,
     int? stars,
+    bool? perfect,
     Move? hint,
     bool clearHint = false,
     PourAnim? pour,
@@ -135,6 +140,7 @@ class GameSession {
       selected: clearSelected ? null : (selected ?? this.selected),
       status: status ?? this.status,
       stars: stars ?? this.stars,
+      perfect: perfect ?? this.perfect,
       hint: clearHint ? null : (hint ?? this.hint),
       pour: clearPour ? null : (pour ?? this.pour),
       stuck: stuck ?? this.stuck,

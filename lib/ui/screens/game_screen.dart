@@ -12,6 +12,7 @@ import '../widgets/game_board.dart';
 import '../widgets/tutorial_card.dart';
 import '../widgets/win_overlay.dart';
 import '../../logic/challenge.dart';
+import '../../logic/star_rating.dart';
 import '../../logic/daily_challenge.dart';
 import '../widgets/fail_overlay.dart';
 
@@ -156,9 +157,13 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                       levelId: levelId,
                       counter: _counter(
                         session,
-                        zen: ref.watch(settingsProvider).zenMode ||
-                            Challenge.isChallenge(levelId),
+                        zen: ref.watch(settingsProvider).zenMode,
                       ),
+                      // Challenges and Zen mode don't award stars.
+                      threeStarMoves: ref.watch(settingsProvider).zenMode ||
+                              Challenge.isChallenge(levelId)
+                          ? null
+                          : StarRating.threeStarMoves(session.par),
                       difficulty: session.level.difficulty,
                       muted: muted,
                       onBack: attemptLeave,
@@ -235,7 +240,11 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                       stars: session.stars,
                       moves: session.moves,
                       dailyStreak: ref.watch(progressProvider).daily.streak,
-                      zen: ref.watch(settingsProvider).zenMode,
+                      // Challenges don't award stars either.
+                      zen: ref.watch(settingsProvider).zenMode ||
+                          Challenge.isChallenge(levelId),
+                      perfect: session.perfect,
+                      par: session.par,
                       onNext: DailyChallenge.isDaily(levelId)
                           ? () => Navigator.of(context).pop()
                           : () => Navigator.of(context).pushReplacement(
@@ -277,6 +286,9 @@ class _Header extends StatelessWidget {
 
   /// Text for the counter pill, or null to hide it.
   final String? counter;
+
+  /// Move target for three stars, or null when stars don't apply.
+  final int? threeStarMoves;
   final int difficulty;
   final bool muted;
   final VoidCallback onBack;
@@ -286,6 +298,7 @@ class _Header extends StatelessWidget {
   const _Header({
     required this.levelId,
     required this.counter,
+    required this.threeStarMoves,
     required this.difficulty,
     required this.muted,
     required this.onBack,
@@ -325,7 +338,8 @@ class _Header extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'Difficulty ${'●' * difficulty}${'○' * (5 - difficulty)}',
+                  'Difficulty ${'●' * difficulty}${'○' * (5 - difficulty)}'
+                  '${threeStarMoves == null ? '' : ' · ★★★ in $threeStarMoves'}',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(

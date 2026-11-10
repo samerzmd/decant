@@ -86,7 +86,7 @@ class StatsScreen extends ConsumerWidget {
                             tint: DecantColors.star,
                             value: '${progress.perfectLevels}',
                             label: 'Perfect levels',
-                            detail: 'Solved with 3 stars',
+                            detail: 'Par moves, no hints',
                           ),
                         ),
                         const SizedBox(width: 12),

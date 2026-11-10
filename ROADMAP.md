@@ -63,7 +63,8 @@ Give players reasons to come back.
       still count as solved and unlock the next one
 - [x] **Challenge modes**: Move limit (no undo) and Against the clock, each an
       endless ladder of stages with the best stage saved
-- [ ] Per-level star tuning + "perfect" (no-hint) badges
+- [x] Per-level star targets shown while playing, and a "perfect" badge for
+      solving in par with no hints or extra tube
 - [ ] Hint economy / cooldown so hints feel earned (optional)
 - [ ] Level packs / chapters with themed palettes
 

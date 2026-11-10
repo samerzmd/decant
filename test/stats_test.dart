@@ -95,13 +95,14 @@ void main() {
     test('counts perfect levels and stars per level', () async {
       SharedPreferences.setMockInitialValues({
         'decant.unlocked': 5,
-        'decant.result.1': '{"stars":3,"moves":5}',
+        'decant.result.1': '{"stars":3,"moves":5,"perfect":true}',
         'decant.result.2': '{"stars":2,"moves":9}',
         'decant.result.3': '{"stars":3,"moves":7}',
         'decant.result.4': '{"stars":1,"moves":30}',
       });
       final ctrl = ProgressController(await PersistenceService.create());
-      expect(ctrl.state.perfectLevels, 2);
+      // Perfect is the badge, not just three stars.
+      expect(ctrl.state.perfectLevels, 1);
       expect(ctrl.state.starCounts, [1, 1, 2]);
     });
   });
