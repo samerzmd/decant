@@ -149,45 +149,56 @@ class LiquidTubePainter extends CustomPainter {
     final len = tube.segments.length;
     final baseCount = (len - risingCount).clamp(0, len);
 
-    // Layers bottom → top as (color, volume in segments). Volumes rather than
-    // heights, so the same liquid looks right however far the tube is tilted.
-    final layers = <(int, double)>[
-      for (var i = 0; i < baseCount; i++) (tube.segments[i], 1.0),
+    // Layers bottom → top: a color and a volume (in segments) each, kept in
+    // two parallel lists. Volumes rather than heights, so the same liquid
+    // looks right however far the tube is tilted.
+    final colors = <int>[
+      for (var i = 0; i < baseCount; i++) tube.segments[i],
     ];
+    final volumes = <double>[for (var i = 0; i < baseCount; i++) 1.0];
     if (risingCount > 0 && risingColor != null) {
       final v = risingCount * risingProgress.clamp(0.0, 1.0);
-      if (v > 0.004) layers.add((risingColor!, v));
+      if (v > 0.004) {
+        colors.add(risingColor!);
+        volumes.add(v);
+      }
     }
     if (drainCount > 0 && drainColor != null) {
       final v = drainCount * (1 - drainProgress.clamp(0.0, 1.0));
-      if (v > 0.004) layers.add((drainColor!, v));
+      if (v > 0.004) {
+        colors.add(drainColor!);
+        volumes.add(v);
+      }
     }
-    if (layers.isEmpty) return;
+    if (colors.isEmpty) return;
 
     final tilt = liquidTilt;
     var below = double.infinity; // depth of the previous layer's surface
     var filled = 0.0;
     final centres = <Offset>[];
-    for (var i = 0; i < layers.length; i++) {
-      final (colorId, volume) = layers[i];
-      filled += volume;
+    for (var i = 0; i < colors.length; i++) {
+      final colorId = colors[i];
+      filled += volumes[i];
       final level = LiquidGeometry.levelFor(inner, tilt, filled / capacity);
       // Lower bands reach a hair into the next one up, which paints over the
       // overlap, so no anti-aliased seam shows between them.
-      final top = i == layers.length - 1 ? level : level - 0.6;
+      final top = i == colors.length - 1 ? level : level - 0.6;
       final poly = LiquidGeometry.band(inner, tilt, top, below);
       if (poly.length >= 3) _paintBand(canvas, inner, poly, colorId);
       centres.add(poly.length >= 3 ? LiquidGeometry.centre(poly) : Offset.zero);
       below = level;
     }
 
-    _paintMeniscus(canvas, inner, below, segH, layers.last.$1);
+    _paintMeniscus(canvas, inner, below, segH, colors.last);
     _paintGloss(canvas, inner);
     if (colorblind) {
       // Symbols only on whole settled segments, not liquid on the move.
-      _paintSymbols(canvas, segH, [
-        for (var i = 0; i < baseCount; i++) (tube.segments[i], centres[i]),
-      ]);
+      _paintSymbols(
+        canvas,
+        segH,
+        [for (var i = 0; i < baseCount; i++) tube.segments[i]],
+        centres,
+      );
     }
   }
 
@@ -212,7 +223,8 @@ class LiquidTubePainter extends CustomPainter {
       Canvas canvas, Rect inner, double level, double segH, int colorId) {
     final chord = LiquidGeometry.chord(inner, liquidTilt, level);
     if (chord == null) return;
-    final (a, b) = chord;
+    final a = chord[0];
+    final b = chord[1];
     final mid = Offset.lerp(a, b, 0.5)!;
     final span = (b - a).distance;
 
@@ -283,9 +295,12 @@ class LiquidTubePainter extends CustomPainter {
   void _paintSymbols(
     Canvas canvas,
     double segH,
-    List<(int, Offset)> segments,
+    List<int> segmentColors,
+    List<Offset> centres,
   ) {
-    for (final (colorId, c) in segments) {
+    for (var i = 0; i < segmentColors.length; i++) {
+      final colorId = segmentColors[i];
+      final c = centres[i];
       final tp = TextPainter(
         text: TextSpan(
           text: liquidSymbol(colorId),

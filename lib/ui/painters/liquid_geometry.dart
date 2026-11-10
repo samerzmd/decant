@@ -39,8 +39,13 @@ class LiquidGeometry {
     return poly;
   }
 
-  /// Where the surface at [level] meets the walls of [rect], or null.
-  static (Offset, Offset)? chord(Rect rect, double tilt, double level) {
+  /// Where the surface at [level] meets the walls of [rect]: two points, or
+  /// null if the level misses the rect.
+  ///
+  /// Hot paint paths here avoid Dart records (see [_depthMin]): the pour
+  /// crashes of Nov 2026 were a release-only GC fault while this code was on
+  /// the stack.
+  static List<Offset>? chord(Rect rect, double tilt, double level) {
     final corners = [
       rect.topLeft,
       rect.topRight,
@@ -58,12 +63,13 @@ class LiquidGeometry {
       if (t >= 0 && t < 1) hits.add(Offset.lerp(a, b, t)!);
     }
     if (hits.length < 2) return null;
-    return (hits[0], hits[1]);
+    return [hits[0], hits[1]];
   }
 
   /// Surface level at which liquid below it fills [fraction] of [rect].
   static double levelFor(Rect rect, double tilt, double fraction) {
-    final (minD, maxD) = _depthRange(rect, tilt);
+    final minD = _depthMin(rect, tilt);
+    final maxD = _depthMax(rect, tilt);
     if (fraction <= 0) return maxD;
     if (fraction >= 1) return minD;
     final target = fraction * rect.width * rect.height;
@@ -125,15 +131,17 @@ class LiquidGeometry {
     return Offset(x / poly.length, y / poly.length);
   }
 
-  static (double, double) _depthRange(Rect rect, double tilt) {
-    final ds = [
-      depth(rect.topLeft, tilt),
-      depth(rect.topRight, tilt),
-      depth(rect.bottomRight, tilt),
-      depth(rect.bottomLeft, tilt),
-    ];
-    return (ds.reduce(math.min), ds.reduce(math.max));
-  }
+  /// Shallowest and deepest corner of [rect]. Two plain functions rather
+  /// than one returning a record.
+  static double _depthMin(Rect rect, double tilt) => math.min(
+        math.min(depth(rect.topLeft, tilt), depth(rect.topRight, tilt)),
+        math.min(depth(rect.bottomRight, tilt), depth(rect.bottomLeft, tilt)),
+      );
+
+  static double _depthMax(Rect rect, double tilt) => math.max(
+        math.max(depth(rect.topLeft, tilt), depth(rect.topRight, tilt)),
+        math.max(depth(rect.bottomRight, tilt), depth(rect.bottomLeft, tilt)),
+      );
 
   /// Keeps the part of [poly] where [f] >= 0 (Sutherland–Hodgman).
   static List<Offset> _clip(List<Offset> poly, double Function(Offset) f) {
