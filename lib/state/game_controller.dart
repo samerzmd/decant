@@ -114,13 +114,38 @@ class GameController extends StateNotifier<GameSession> {
     );
 
     // --- Audio + haptics, timed to the animation -------------------------- //
+    // The board plays the same timeline (see PourAnim.flowStart/flowEnd):
+    // fly over and tip, flow, tip back and return. Nothing on this timeline
+    // awaits audio, so a slow sound call can't push the game out of step.
+    var at = 0.0;
+    Future<void> until(double fraction) {
+      final wait = anim.duration * (fraction - at);
+      at = fraction;
+      return Future<void>.delayed(wait);
+    }
+
+    await until(PourAnim.flowStart);
+    if (!mounted) return;
     _haptic.pourStart();
-    await _audio.startPour(fillFraction: destBefore / capacity);
     // Ramp the pour pitch upward as the destination fills.
     final destAfter = destBefore + outcome.move.count;
-    unawaited(_rampPourPitch(destBefore, destAfter, capacity, anim.duration));
+    var flowing = true;
+    unawaited(
+      _audio.startPour(fillFraction: destBefore / capacity).then((_) {
+        // A slow start (first pour, audio waking up) that lands after the
+        // flow ended must not leave the trickle looping.
+        if (!flowing || !mounted) return _audio.stopPour();
+        return _rampPourPitch(
+          destBefore,
+          destAfter,
+          capacity,
+          anim.duration * (PourAnim.flowEnd - PourAnim.flowStart),
+        );
+      }),
+    );
 
-    await Future<void>.delayed(anim.duration);
+    await until(PourAnim.flowEnd + PourAnim.fall);
+    flowing = false;
     if (!mounted) {
       // Screen left mid-pour: make sure the looping trickle doesn't linger.
       await _audio.stopPour();
@@ -139,6 +164,10 @@ class GameController extends StateNotifier<GameSession> {
     } else {
       _comboChain = 0;
     }
+
+    // Let the source tube tip back and fly home before the next move.
+    await until(1);
+    if (!mounted) return;
 
     final solved = state.state.isSolved;
     final stuck = !solved &&

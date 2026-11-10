@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../../models/tube.dart';
 import '../theme/app_theme.dart';
 import '../theme/palette.dart';
+import 'liquid_geometry.dart';
 
 /// Paints a single glass tube with a 2.5-D look: rounded-bottom glass body,
 /// soft shadow, layered liquid segments with a rounded meniscus and glossy
@@ -40,6 +41,20 @@ class LiquidTubePainter extends CustomPainter {
 
   final ui.FragmentShader? glassShader;
 
+  /// Liquid still leaving this tube (source of an active pour): [drainCount]
+  /// segments of [drainColor] sit on top of [tube], [drainProgress] of the way
+  /// out.
+  final int drainCount;
+  final double drainProgress;
+  final int? drainColor;
+
+  /// How far the tube is rotated (radians, clockwise), so the liquid inside
+  /// can stay level with the world.
+  final double liquidTilt;
+
+  /// 0..1 churn from a stream landing in this tube: surface ripple + bubbles.
+  final double agitation;
+
   LiquidTubePainter({
     required this.tube,
     required this.colorblind,
@@ -53,6 +68,11 @@ class LiquidTubePainter extends CustomPainter {
     this.justCompleted = false,
     this.wobble = 0.0,
     this.glassShader,
+    this.drainCount = 0,
+    this.drainProgress = 0.0,
+    this.drainColor,
+    this.liquidTilt = 0.0,
+    this.agitation = 0.0,
   });
 
   @override
@@ -77,8 +97,7 @@ class LiquidTubePainter extends CustomPainter {
     _paintGlassBody(canvas, bodyRRect, w, h);
 
     // Inner cavity that actually holds liquid.
-    final innerRect =
-        Rect.fromLTWH(wall, wall * 0.4, w - 2 * wall, h - wall * 1.2);
+    final innerRect = LiquidGeometry.cavity(size);
     final innerRRect = RRect.fromRectAndCorners(
       innerRect,
       topLeft: Radius.circular(w * 0.12),
@@ -126,45 +145,53 @@ class LiquidTubePainter extends CustomPainter {
 
   void _paintLiquid(Canvas canvas, Rect inner) {
     final capacity = tube.capacity;
-    if (tube.isEmpty) return;
     final segH = inner.height / capacity;
     final len = tube.segments.length;
-
     final baseCount = (len - risingCount).clamp(0, len);
 
-    // Draw the settled (non-rising) segments, bottom → up.
-    for (var i = 0; i < baseCount; i++) {
-      final colorId = tube.segments[i];
-      final bottom = inner.bottom - i * segH;
-      final top = inner.bottom - (i + 1) * segH;
-      _paintSegmentBand(canvas, inner, top, bottom, colorId);
-    }
-
-    // The rising band (active pour into this tube).
-    double surfaceY;
-    int surfaceColor;
+    // Layers bottom → top as (color, volume in segments). Volumes rather than
+    // heights, so the same liquid looks right however far the tube is tilted.
+    final layers = <(int, double)>[
+      for (var i = 0; i < baseCount; i++) (tube.segments[i], 1.0),
+    ];
     if (risingCount > 0 && risingColor != null) {
-      final baseTop = inner.bottom - baseCount * segH;
-      final risingH = risingCount * segH * risingProgress.clamp(0.0, 1.0);
-      final top = baseTop - risingH;
-      if (risingH > 0.5) {
-        _paintSegmentBand(canvas, inner, top, baseTop, risingColor!);
-      }
-      surfaceY = top;
-      surfaceColor = risingColor!;
-    } else {
-      surfaceY = inner.bottom - len * segH;
-      surfaceColor = tube.segments.last;
+      final v = risingCount * risingProgress.clamp(0.0, 1.0);
+      if (v > 0.004) layers.add((risingColor!, v));
+    }
+    if (drainCount > 0 && drainColor != null) {
+      final v = drainCount * (1 - drainProgress.clamp(0.0, 1.0));
+      if (v > 0.004) layers.add((drainColor!, v));
+    }
+    if (layers.isEmpty) return;
+
+    final tilt = liquidTilt;
+    var below = double.infinity; // depth of the previous layer's surface
+    var filled = 0.0;
+    final centres = <Offset>[];
+    for (var i = 0; i < layers.length; i++) {
+      final (colorId, volume) = layers[i];
+      filled += volume;
+      final level = LiquidGeometry.levelFor(inner, tilt, filled / capacity);
+      // Lower bands reach a hair into the next one up, which paints over the
+      // overlap, so no anti-aliased seam shows between them.
+      final top = i == layers.length - 1 ? level : level - 0.6;
+      final poly = LiquidGeometry.band(inner, tilt, top, below);
+      if (poly.length >= 3) _paintBand(canvas, inner, poly, colorId);
+      centres.add(poly.length >= 3 ? LiquidGeometry.centre(poly) : Offset.zero);
+      below = level;
     }
 
-    _paintMeniscus(canvas, inner, surfaceY, segH, surfaceColor);
+    _paintMeniscus(canvas, inner, below, segH, layers.last.$1);
     _paintGloss(canvas, inner);
-    if (colorblind) _paintSymbols(canvas, inner, segH, baseCount);
+    if (colorblind) {
+      // Symbols only on whole settled segments, not liquid on the move.
+      _paintSymbols(canvas, segH, [
+        for (var i = 0; i < baseCount; i++) (tube.segments[i], centres[i]),
+      ]);
+    }
   }
 
-  void _paintSegmentBand(
-      Canvas canvas, Rect inner, double top, double bottom, int colorId) {
-    final rect = Rect.fromLTRB(inner.left, top, inner.right, bottom);
+  void _paintBand(Canvas canvas, Rect inner, List<Offset> poly, int colorId) {
     final paint = Paint()
       ..shader = LinearGradient(
         begin: Alignment.centerLeft,
@@ -177,21 +204,30 @@ class LiquidTubePainter extends CustomPainter {
           liquidShade(colorId),
         ],
         stops: const [0.0, 0.22, 0.42, 0.7, 1.0],
-      ).createShader(rect);
-    canvas.drawRect(rect, paint);
+      ).createShader(inner);
+    canvas.drawPath(Path()..addPolygon(poly, true), paint);
   }
 
   void _paintMeniscus(
-      Canvas canvas, Rect inner, double surfaceY, double segH, int colorId) {
-    // Concave surface: a lighter elliptical cap sitting on top of the column,
-    // nudged by the landing [wobble] for a settling ripple.
-    final dip = segH * 0.32;
-    final ripple = math.sin(time * 9) * wobble * segH * 0.10;
-    final capRect = Rect.fromLTRB(
-      inner.left,
-      surfaceY - dip * 0.5 + ripple,
-      inner.right,
-      surfaceY + dip * 0.5 + ripple,
+      Canvas canvas, Rect inner, double level, double segH, int colorId) {
+    final chord = LiquidGeometry.chord(inner, liquidTilt, level);
+    if (chord == null) return;
+    final (a, b) = chord;
+    final mid = Offset.lerp(a, b, 0.5)!;
+    final span = (b - a).distance;
+
+    // Concave surface: a lighter elliptical cap lying along the (world-level)
+    // surface, nudged by the landing [wobble] and by a stream's [agitation].
+    final dip = segH * (0.32 - 0.12 * (liquidTilt.abs() / 1.6).clamp(0, 1));
+    final ripple = math.sin(time * 9) * wobble * segH * 0.10 +
+        math.sin(time * 31) * agitation * segH * 0.05;
+    canvas.save();
+    canvas.translate(mid.dx, mid.dy);
+    canvas.rotate(-liquidTilt);
+    final capRect = Rect.fromCenter(
+      center: Offset(0, ripple),
+      width: span,
+      height: dip,
     );
     final capPaint = Paint()
       ..shader = LinearGradient(
@@ -207,9 +243,24 @@ class LiquidTubePainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.4
       ..strokeCap = StrokeCap.round;
-    final path = Path()
-      ..addArc(capRect.deflate(2), math.pi * 1.08, math.pi * 0.5);
-    canvas.drawPath(path, hi);
+    canvas.drawPath(
+      Path()..addArc(capRect.deflate(2), math.pi * 1.08, math.pi * 0.5),
+      hi,
+    );
+
+    // Churned surface: froth and bubbles where the stream lands.
+    if (agitation > 0.01) {
+      final froth = Paint()
+        ..color = liquidTint(colorId).withValues(alpha: 0.75 * agitation);
+      for (var i = 0; i < 6; i++) {
+        final ph = (time * (1.3 + 0.4 * _hash(i)) + _hash(i + 4)) % 1.0;
+        final x = (_hash(i + 11) - 0.5) * span * 0.55;
+        final y = ripple + segH * (0.05 + 0.55 * (1 - ph));
+        final r = segH * (0.035 + 0.03 * _hash(i + 2)) * (0.5 + 0.5 * ph);
+        canvas.drawCircle(Offset(x, y), r, froth);
+      }
+    }
+    canvas.restore();
   }
 
   void _paintGloss(Canvas canvas, Rect inner) {
@@ -229,10 +280,12 @@ class LiquidTubePainter extends CustomPainter {
     );
   }
 
-  void _paintSymbols(Canvas canvas, Rect inner, double segH, int baseCount) {
-    for (var i = 0; i < baseCount; i++) {
-      final colorId = tube.segments[i];
-      final cy = inner.bottom - (i + 0.5) * segH;
+  void _paintSymbols(
+    Canvas canvas,
+    double segH,
+    List<(int, Offset)> segments,
+  ) {
+    for (final (colorId, c) in segments) {
       final tp = TextPainter(
         text: TextSpan(
           text: liquidSymbol(colorId),
@@ -244,13 +297,13 @@ class LiquidTubePainter extends CustomPainter {
         ),
         textDirection: TextDirection.ltr,
       )..layout();
-      tp.paint(
-          canvas, Offset(inner.center.dx - tp.width / 2, cy - tp.height / 2));
+      tp.paint(canvas, c - Offset(tp.width / 2, tp.height / 2));
     }
   }
 
   void _paintBubbles(Canvas canvas, Rect inner) {
-    if (tube.isEmpty) return;
+    // Idle bubbles only drift in an upright tube.
+    if (tube.isEmpty || liquidTilt != 0) return;
     final liquidTop =
         inner.bottom - tube.segments.length * (inner.height / tube.capacity);
     final paint = Paint()..color = Colors.white.withValues(alpha: 0.18);
@@ -356,6 +409,10 @@ class LiquidTubePainter extends CustomPainter {
         old.hintSource != hintSource ||
         old.hintTarget != hintTarget ||
         old.wobble != wobble ||
+        old.drainCount != drainCount ||
+        old.drainProgress != drainProgress ||
+        old.liquidTilt != liquidTilt ||
+        old.agitation != agitation ||
         old.colorblind != colorblind ||
         old.glassShader != glassShader;
   }

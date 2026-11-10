@@ -22,6 +22,16 @@ class PourAnim {
   /// animation and the controller's timing both use it, so they stay in step.
   final Duration duration;
 
+  /// The pour timeline, as fractions of [duration]: the source tube flies
+  /// over and tips until [flowStart], liquid flows until [flowEnd], then the
+  /// tube tips back and returns home.
+  static const double flowStart = 0.24;
+  static const double flowEnd = 0.78;
+
+  /// How long (as a fraction of [duration]) the stream takes to fall from the
+  /// lip into the destination.
+  static const double fall = 0.05;
+
   const PourAnim({
     required this.id,
     required this.from,
@@ -29,7 +39,7 @@ class PourAnim {
     required this.color,
     required this.count,
     required this.destFillBefore,
-    this.duration = const Duration(milliseconds: 540),
+    this.duration = const Duration(milliseconds: 1000),
   });
 }
 

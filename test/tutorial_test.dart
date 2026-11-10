@@ -87,7 +87,7 @@ void main() {
     expect(tube(move.to).hintTarget, isTrue);
 
     await tapTube(tester, move.to);
-    await tester.pump(const Duration(milliseconds: 700)); // pour animation
+    await tester.pump(const Duration(milliseconds: 1200)); // pour animation
     expect(find.text('Sort every tube into one color'), findsOneWidget);
 
     await tester.tap(find.text('Got it'));

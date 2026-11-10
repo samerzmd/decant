@@ -1,10 +1,12 @@
 import '../audio/audio_service.dart';
 
-/// How long a pour takes. Animation, sound and game logic all follow it.
+/// How long a whole pour takes: the source tube flying over, tipping, the
+/// liquid flowing and the tube returning. Animation, sound and game logic all
+/// follow it. The flowing part (about 54%) matches the original pour lengths.
 enum PourSpeed {
-  relaxed('Relaxed', Duration(milliseconds: 760)),
-  normal('Normal', Duration(milliseconds: 540)),
-  quick('Quick', Duration(milliseconds: 340));
+  relaxed('Relaxed', Duration(milliseconds: 1400)),
+  normal('Normal', Duration(milliseconds: 1000)),
+  quick('Quick', Duration(milliseconds: 640));
 
   final String label;
   final Duration duration;

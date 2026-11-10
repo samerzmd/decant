@@ -28,6 +28,20 @@ class TubeWidget extends StatelessWidget {
   final double tilt;
   final double wobble;
 
+  /// Point the tube tilts around (its lip while pouring).
+  final Alignment pivot;
+
+  /// How far the tube has moved from its slot (the source flies to its target).
+  final Offset offset;
+
+  /// Liquid still leaving this tube, see [LiquidTubePainter.drainCount].
+  final int drainCount;
+  final double drainProgress;
+  final int? drainColor;
+
+  /// Churn from a stream landing in this tube.
+  final double agitation;
+
   final ui.FragmentShader? shader;
   final VoidCallback onTap;
 
@@ -48,6 +62,12 @@ class TubeWidget extends StatelessWidget {
     this.risingColor,
     this.tilt = 0.0,
     this.wobble = 0.0,
+    this.pivot = Alignment.topCenter,
+    this.offset = Offset.zero,
+    this.drainCount = 0,
+    this.drainProgress = 0.0,
+    this.drainColor,
+    this.agitation = 0.0,
     this.shader,
   });
 
@@ -56,28 +76,36 @@ class TubeWidget extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
-      child: AnimatedSlide(
-        duration: const Duration(milliseconds: 160),
-        curve: Curves.easeOut,
-        offset: Offset(0, selected ? -0.08 : 0),
-        child: Transform.rotate(
-          angle: tilt,
-          alignment: Alignment.topCenter,
-          child: CustomPaint(
-            size: Size(width, height),
-            painter: LiquidTubePainter(
-              tube: tube,
-              colorblind: colorblind,
-              time: time,
-              risingCount: risingCount,
-              risingProgress: risingProgress,
-              risingColor: risingColor,
-              selected: selected,
-              hintSource: hintSource,
-              hintTarget: hintTarget,
-              justCompleted: justCompleted,
-              wobble: wobble,
-              glassShader: shader,
+      child: Transform.translate(
+        offset: offset,
+        child: AnimatedSlide(
+          duration: const Duration(milliseconds: 160),
+          curve: Curves.easeOut,
+          offset: Offset(0, selected ? -0.08 : 0),
+          child: Transform.rotate(
+            angle: tilt,
+            alignment: pivot,
+            child: CustomPaint(
+              size: Size(width, height),
+              painter: LiquidTubePainter(
+                tube: tube,
+                colorblind: colorblind,
+                time: time,
+                risingCount: risingCount,
+                risingProgress: risingProgress,
+                risingColor: risingColor,
+                selected: selected,
+                hintSource: hintSource,
+                hintTarget: hintTarget,
+                justCompleted: justCompleted,
+                wobble: wobble,
+                glassShader: shader,
+                drainCount: drainCount,
+                drainProgress: drainProgress,
+                drainColor: drainColor,
+                liquidTilt: tilt,
+                agitation: agitation,
+              ),
             ),
           ),
         ),

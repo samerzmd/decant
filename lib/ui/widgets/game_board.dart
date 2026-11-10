@@ -7,6 +7,7 @@ import '../../models/move.dart';
 import '../../models/tube.dart';
 import '../../state/game_session.dart';
 import '../../state/providers.dart';
+import '../painters/liquid_geometry.dart';
 import '../painters/pour_stream_painter.dart';
 import 'tube_widget.dart';
 
@@ -87,7 +88,9 @@ class _GameBoardState extends ConsumerState<GameBoard>
       _pour.duration = pour.duration;
       _pour.forward(from: 0);
       if (!reduceMotion) {
-        Future.delayed(pour.duration, () {
+        // The landed liquid settles once the stream has stopped falling.
+        final settle = pour.duration * (PourAnim.flowEnd + PourAnim.fall);
+        Future.delayed(settle, () {
           if (mounted) _wobble.forward(from: 0);
         });
       }
@@ -105,22 +108,31 @@ class _GameBoardState extends ConsumerState<GameBoard>
           builder: (context, _) {
             final time = _bubble.value * 8.0;
             final pourP = _pour.value;
+            final pose = pour == null
+                ? null
+                : _pose(
+                    layout,
+                    session,
+                    pour,
+                    pourP,
+                    reduceMotion,
+                    constraints.maxWidth,
+                    time,
+                  );
             final children = <Widget>[];
+            Widget? source;
 
             for (var i = 0; i < session.state.tubes.length; i++) {
               final Tube tube = session.state.tubes[i];
               final rect = layout.rects[i];
 
-              final isSource = pour != null && pour.from == i;
-              final isDest = pour != null && pour.to == i;
-
-              final tilt = (isSource && !reduceMotion)
-                  ? _sourceTilt(layout, pour, pourP)
-                  : 0.0;
+              final isSource = pose != null && pour!.from == i;
+              final isDest = pose != null && pour!.to == i;
               final wobble =
                   (isDest && _wobble.isAnimating) ? (1 - _wobble.value) : 0.0;
 
-              children.add(Positioned(
+              final child = Positioned(
+                key: ValueKey(i),
                 left: rect.left,
                 top: rect.top,
                 width: rect.width,
@@ -138,32 +150,38 @@ class _GameBoardState extends ConsumerState<GameBoard>
                       (widget.guide?.to == i &&
                           session.selected == widget.guide?.from),
                   risingCount: isDest ? pour.count : 0,
-                  risingProgress: isDest ? pourP : 1.0,
+                  risingProgress: isDest ? pose.risen : 1.0,
                   risingColor: isDest ? pour.color : null,
-                  tilt: tilt,
+                  drainCount: isSource ? pour.count : 0,
+                  drainProgress: isSource ? pose.drained : 0.0,
+                  drainColor: isSource ? pour.color : null,
+                  tilt: isSource ? pose.tilt : 0.0,
+                  pivot: isSource ? pose.pivot : Alignment.topCenter,
+                  offset: isSource ? pose.offset : Offset.zero,
+                  agitation: isDest ? pose.agitation : 0.0,
                   wobble: wobble,
                   shader: shader,
                   onTap: () => controller.tapTube(i),
                 ),
-              ));
+              );
+              // The source is painted last, so it passes over other tubes.
+              if (isSource) {
+                source = child;
+              } else {
+                children.add(child);
+              }
             }
 
-            if (pour != null) {
+            if (pose != null && pose.stream != null) {
               children.add(Positioned.fill(
                 child: IgnorePointer(
-                  child: CustomPaint(
-                    painter: PourStreamPainter(
-                      source: _spout(layout, pour, pourP),
-                      dest: _mouth(layout, pour.to),
-                      colorId: pour.color,
-                      progress: pourP,
-                    ),
-                  ),
+                  child: CustomPaint(painter: pose.stream),
                 ),
               ));
             }
+            if (source != null) children.add(source);
 
-            return Stack(children: children);
+            return Stack(clipBehavior: Clip.none, children: children);
           },
         );
       },
@@ -216,29 +234,139 @@ class _GameBoardState extends ConsumerState<GameBoard>
     return _Layout(tubeW, tubeH, rects);
   }
 
-  double _sourceTilt(_Layout layout, PourAnim pour, double p) {
-    final src = layout.rects[pour.from].center;
-    final dst = layout.rects[pour.to].center;
-    final sign = dst.dx >= src.dx ? 1.0 : -1.0;
-    final env = math.sin(math.pi * p.clamp(0.0, 1.0)); // 0→1→0
-    return sign * 0.20 * env;
-  }
+  /// Where everything is at progress [p] of [pour]: the source tube flies
+  /// to a spot beside the destination's mouth and tips there, pivoting on its
+  /// lip. While liquid flows, the tilt follows the volume left inside, so the
+  /// surface always just reaches the lip (as it does when you pour by hand).
+  _PourPose _pose(
+    _Layout layout,
+    GameSession session,
+    PourAnim pour,
+    double p,
+    bool reduceMotion,
+    double boardWidth,
+    double time,
+  ) {
+    const a = PourAnim.flowStart;
+    const b = PourAnim.flowEnd;
+    const fall = PourAnim.fall;
+    final flowT = ((p - a) / (b - a)).clamp(0.0, 1.0);
+    final drained = flowT * flowT * (3 - 2 * flowT); // eases in and out
+    final risen = ((p - a - fall) / (b - a)).clamp(0.0, 1.0);
 
-  Offset _spout(_Layout layout, PourAnim pour, double p) {
-    final r = layout.rects[pour.from];
-    final dst = layout.rects[pour.to].center;
-    final sign = dst.dx >= r.center.dx ? 1.0 : -1.0;
-    final env = math.sin(math.pi * p.clamp(0.0, 1.0));
-    return Offset(
-      r.center.dx + sign * r.width * 0.42 * env,
-      r.top + r.height * 0.04,
+    if (reduceMotion) {
+      // Levels still change, but nothing flies, tips or splashes.
+      return _PourPose(drained: p, risen: p);
+    }
+
+    final src = layout.rects[pour.from];
+    final dst = layout.rects[pour.to];
+    final w = src.width;
+    final capacity = session.level.capacity;
+
+    // Lean toward the destination, unless the tipped tube would then stick
+    // out past the board edge; then come in from the other side.
+    var side = dst.center.dx >= src.center.dx ? 1.0 : -1.0;
+    double lipX(double s) => dst.center.dx - s * w * 0.3;
+    final room = side > 0 ? lipX(side) : boardWidth - lipX(side);
+    if (room < src.height * 0.8) side = -side;
+    final lip = Offset(lipX(side), dst.top - w * 0.3);
+    final home = side > 0 ? src.topRight : src.topLeft;
+
+    // Tilt that keeps the liquid level at the lip for a given fill.
+    final cavity = LiquidGeometry.cavity(src.size);
+    final left = session.state.tubes[pour.from].segments.length;
+    double tiltFor(double segments) {
+      final t = LiquidGeometry.pourTilt(cavity, segments / capacity, side);
+      return side * math.max(t.abs(), 0.32);
+    }
+
+    final startTilt = tiltFor(left + pour.count.toDouble());
+    final endTilt = tiltFor(left.toDouble());
+    double travel;
+    double tilt;
+    if (p < a) {
+      travel = Curves.easeInOut.transform(p / a);
+      tilt = startTilt * travel;
+    } else if (p <= b) {
+      travel = 1;
+      tilt = tiltFor(left + pour.count * (1 - drained));
+    } else {
+      travel = 1 - Curves.easeInOut.transform((p - b) / (1 - b));
+      tilt = endTilt * travel;
+    }
+    // A slight lift on the way, so the tube arcs over rather than sliding.
+    // (sin(pi * travel) is 0 at both ends, so this only acts mid-flight.)
+    final arc = Offset(0, -w * 0.35 * math.sin(math.pi * travel));
+    final offset = (lip - home) * travel + arc;
+
+    PourStreamPainter? stream;
+    var agitation = 0.0;
+    final head = ((p - a) / fall).clamp(0.0, 1.0);
+    final tail = ((p - b) / fall).clamp(0.0, 1.0);
+    if (p > a && tail < 1) {
+      // Liquid leaves from the inner corner of the lip, wherever it has turned.
+      final wall = w * 0.07;
+      final v = Offset(-side * wall * 0.9, wall * 0.5);
+      final spout = lip +
+          Offset(
+            v.dx * math.cos(tilt) - v.dy * math.sin(tilt),
+            v.dx * math.sin(tilt) + v.dy * math.cos(tilt),
+          );
+      final dCavity = LiquidGeometry.cavity(dst.size);
+      final filled = pour.destFillBefore + pour.count * risen;
+      final surface =
+          dst.top + dCavity.bottom - filled * dCavity.height / capacity;
+      stream = PourStreamPainter(
+        spout: spout,
+        impact: Offset(dst.center.dx, surface),
+        side: side,
+        colorId: pour.color,
+        head: head * head, // falling: accelerates
+        tail: tail * tail,
+        flow: (math.min(1.0, flowT * 6) * (1 - 0.7 * math.pow(flowT, 4)))
+            .toDouble(),
+        time: time,
+        scale: w,
+      );
+      agitation = head >= 1 ? (1 - tail) : 0.0;
+    }
+
+    return _PourPose(
+      drained: drained,
+      risen: risen,
+      tilt: tilt,
+      pivot: side > 0 ? Alignment.topRight : Alignment.topLeft,
+      offset: offset,
+      agitation: agitation,
+      stream: stream,
     );
   }
+}
 
-  Offset _mouth(_Layout layout, int index) {
-    final r = layout.rects[index];
-    return Offset(r.center.dx, r.top + r.height * 0.06);
-  }
+/// One frame of an in-flight pour, see [_GameBoardState._pose].
+class _PourPose {
+  /// 0..1 of the poured liquid that has left the source.
+  final double drained;
+
+  /// 0..1 of the poured liquid that has landed in the destination.
+  final double risen;
+
+  final double tilt;
+  final Alignment pivot;
+  final Offset offset;
+  final double agitation;
+  final PourStreamPainter? stream;
+
+  const _PourPose({
+    required this.drained,
+    required this.risen,
+    this.tilt = 0,
+    this.pivot = Alignment.topCenter,
+    this.offset = Offset.zero,
+    this.agitation = 0,
+    this.stream,
+  });
 }
 
 /// Convenience: a [Move] description for tooltips/debug (kept for reuse).

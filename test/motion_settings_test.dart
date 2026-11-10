@@ -10,6 +10,7 @@ import 'package:decant/models/app_settings.dart';
 import 'package:decant/models/game_state.dart';
 import 'package:decant/services/analytics_service.dart';
 import 'package:decant/services/persistence_service.dart';
+import 'package:decant/state/game_session.dart';
 import 'package:decant/state/providers.dart';
 import 'package:decant/ui/screens/game_screen.dart';
 import 'package:decant/ui/widgets/tube_widget.dart';
@@ -35,8 +36,10 @@ void main() {
     );
   });
 
-  test('speeds are ordered and Normal keeps the original timing', () {
-    expect(PourSpeed.normal.duration, const Duration(milliseconds: 540));
+  test('speeds are ordered and Normal flows for the original 540 ms', () {
+    final flow =
+        PourSpeed.normal.duration * (PourAnim.flowEnd - PourAnim.flowStart);
+    expect(flow.inMilliseconds, 540);
     expect(PourSpeed.quick.duration < PourSpeed.normal.duration, isTrue);
     expect(PourSpeed.relaxed.duration > PourSpeed.normal.duration, isTrue);
   });
@@ -103,8 +106,8 @@ void main() {
     expect(session.pour, isNotNull);
     expect(session.pour!.duration, PourSpeed.quick.duration);
 
-    // Well before Normal's 540 ms, the quick pour is already done.
-    await tester.pump(const Duration(milliseconds: 380));
+    // Well before Normal's 1000 ms, the quick pour is already done.
+    await tester.pump(const Duration(milliseconds: 680));
     await tester.pump();
     expect(container.read(gameControllerProvider(1)).pour, isNull);
   });
@@ -121,7 +124,7 @@ void main() {
     expect(bubbleTime(), before);
 
     await pourFirstMove(tester);
-    await tester.pump(const Duration(milliseconds: 270)); // mid-pour
+    await tester.pump(const Duration(milliseconds: 500)); // mid-pour
     expect(tilts(tester).every((t) => t == 0), isTrue);
     await tester.pump(const Duration(seconds: 1));
   });
@@ -131,7 +134,7 @@ void main() {
   ) async {
     await pumpLevel(tester, const AppSettings());
     await pourFirstMove(tester);
-    await tester.pump(const Duration(milliseconds: 270)); // mid-pour
+    await tester.pump(const Duration(milliseconds: 500)); // mid-pour
     expect(tilts(tester).any((t) => t != 0), isTrue);
     await tester.pump(const Duration(seconds: 1));
   });
