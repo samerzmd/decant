@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../models/liquid_palette.dart';
+
 /// Decant's calm visual identity: deep twilight gradients, soft glass, a single
 /// warm-teal accent. Centralized so every screen stays on-brand.
 class DecantColors {
@@ -47,26 +49,47 @@ ThemeData buildDecantTheme() {
   );
 }
 
+/// The background theme, set from settings at the app root.
+UiTheme activeUiTheme = UiTheme.twilight;
+
 /// A full-screen container painting the brand gradient. Wrap each screen body.
 /// [colors] swaps in another top-to-bottom gradient, such as a chapter theme.
+/// Keeps menu content at a comfortable reading width, centered, so buttons
+/// and lists don't stretch across tablets and landscape phones.
+class ReadableWidth extends StatelessWidget {
+  final Widget child;
+  const ReadableWidth({super.key, required this.child});
+
+  static const double maxWidth = 560;
+
+  @override
+  Widget build(BuildContext context) => Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: maxWidth),
+          child: child,
+        ),
+      );
+}
+
 class DecantBackground extends StatelessWidget {
   final Widget child;
   final List<Color>? colors;
   const DecantBackground({super.key, required this.child, this.colors});
 
+  /// The gradient actually painted: [colors], or the active theme's.
+  List<Color> get effectiveColors => colors ?? activeUiTheme.colors;
+
   @override
   Widget build(BuildContext context) {
-    final c = colors;
+    final c = effectiveColors;
     return DecoratedBox(
       decoration: BoxDecoration(
-        gradient: c == null
-            ? kBackgroundGradient
-            : LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: c,
-                stops: const [0.0, 0.55, 1.0],
-              ),
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: c,
+          stops: const [0.0, 0.55, 1.0],
+        ),
       ),
       child: child,
     );

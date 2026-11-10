@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../models/liquid_color.dart';
+import '../../models/liquid_palette.dart';
 
 /// Rendered RGB values for each liquid id in [kLiquidPalette].
 ///
@@ -21,7 +22,13 @@ const List<Color> kLiquidColors = <Color>[
   Color(0xFFA6D24A), // 11 Lime
 ];
 
-Color liquidColor(int id) => kLiquidColors[id % kLiquidColors.length];
+/// The palette liquids are drawn in, set from settings at the app root.
+LiquidPalette activeLiquidPalette = LiquidPalette.standard;
+
+Color liquidColor(int id) {
+  final colors = activeLiquidPalette.colors;
+  return colors[id % colors.length];
+}
 
 /// A slightly darker shade of the same liquid, for the bottom gradient and the
 /// rounded meniscus shading.

@@ -62,9 +62,16 @@ Finder _switchFor(String label) => find.descendant(
     );
 
 /// Scrolls the settings list until [text] has been built and is on screen.
-Future<void> _scrollTo(WidgetTester tester, String text) =>
-    tester.scrollUntilVisible(find.text(text), 120,
-        scrollable: find.byType(Scrollable).first);
+Future<void> _scrollTo(WidgetTester tester, String text) async {
+  await tester.scrollUntilVisible(
+    find.text(text),
+    120,
+    scrollable: find.byType(Scrollable).first,
+  );
+  // Fully on screen, not just at the edge, so taps land.
+  await tester.ensureVisible(find.text(text));
+  await tester.pump();
+}
 
 /// Lets a route transition finish (the board animates forever, so
 /// pumpAndSettle would never return).

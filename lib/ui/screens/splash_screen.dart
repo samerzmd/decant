@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import '../widgets/decant_logo.dart';
 import 'home_screen.dart';
+import '../../l10n/l10n.dart';
 
 /// Brief branded splash. It deliberately mirrors the native (OS) splash — same
 /// `#243156` background and the same centered mark — so the hand-off from the
@@ -75,7 +76,7 @@ class _SplashScreenState extends State<SplashScreen>
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Pour. Sort. Unwind.',
+                    context.l10n.tagline,
                     style: TextStyle(
                       fontSize: 15,
                       letterSpacing: 1.8,

@@ -31,6 +31,8 @@ void main() {
     expect(find.text('Pour. Sort. Unwind.'), findsOneWidget);
     expect(find.text('Play'), findsOneWidget);
     expect(find.text('Levels'), findsOneWidget);
-    expect(find.text('Settings'), findsOneWidget);
+    expect(find.byTooltip('Settings'), findsOneWidget);
+    expect(find.byTooltip('Stats'), findsOneWidget);
+    expect(find.text('Daily challenge'), findsOneWidget);
   });
 }

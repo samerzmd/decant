@@ -1,16 +1,22 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'audio/audio_service.dart';
 import 'firebase_options.dart';
+import 'l10n/l10n.dart';
+import 'logic/streak_reminder.dart';
+import 'models/app_settings.dart';
 import 'services/analytics_service.dart';
 import 'services/persistence_service.dart';
+import 'services/reminder_service.dart';
 import 'state/providers.dart';
 import 'ui/screens/splash_screen.dart';
 import 'ui/theme/app_theme.dart';
 import 'services/log.dart';
+import 'ui/theme/palette.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,10 +24,6 @@ Future<void> main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   final analytics = AnalyticsService();
 
-  // Portrait-only for a calm, focused layout.
-  await SystemChrome.setPreferredOrientations(
-    [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
-  );
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.light,
@@ -35,6 +37,7 @@ Future<void> main() async {
   // seconds. Defer it to AFTER the first frame is rendered; every audio call is
   // a no-op until ready, and the ambient bed auto-starts once loading finishes.
   final audio = AudioService();
+  final reminders = ReminderService();
   WidgetsBinding.instance.addPostFrameCallback((_) {
     audio.init();
   });
@@ -45,6 +48,7 @@ Future<void> main() async {
         persistenceProvider.overrideWithValue(persistence),
         audioServiceProvider.overrideWithValue(audio),
         analyticsServiceProvider.overrideWithValue(analytics),
+        reminderServiceProvider.overrideWithValue(reminders),
       ],
       child: const DecantApp(),
     ),
@@ -64,6 +68,38 @@ class _DecantAppState extends ConsumerState<DecantApp>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    // Reminders load the timezone database, so start them after the first
+    // frame, then plan the next one.
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await ref.read(reminderServiceProvider).init();
+      if (mounted) _syncReminder();
+    });
+  }
+
+  /// Plans the next streak reminder from the current progress and settings,
+  /// or clears it when reminders are off.
+  void _syncReminder() {
+    final settings = ref.read(settingsProvider);
+    final reminders = ref.read(reminderServiceProvider);
+    if (!settings.streakReminders) {
+      reminders.cancel();
+      return;
+    }
+    final plan = planReminder(
+      now: ref.read(progressProvider.notifier).now(),
+      hour: settings.reminderHour,
+      daily: ref.read(progressProvider).daily,
+    );
+    reminders.schedule(plan, _strings(settings.language));
+  }
+
+  /// Strings for notifications, which are built outside any widget.
+  static AppLocalizations _strings(AppLanguage language) {
+    final code = language.code ??
+        WidgetsBinding.instance.platformDispatcher.locale.languageCode;
+    final known =
+        AppLocalizations.supportedLocales.any((l) => l.languageCode == code);
+    return lookupAppLocalizations(Locale(known ? code : 'en'));
   }
 
   @override
@@ -79,6 +115,8 @@ class _DecantAppState extends ConsumerState<DecantApp>
     switch (state) {
       case AppLifecycleState.resumed:
         audio.handleAppResumed();
+        // A new day may have started while away.
+        _syncReminder();
       case AppLifecycleState.detached:
         // Activity being destroyed — fully release the audio engine so that if
         // the process is reused (Android recreates the Activity), a fresh init
@@ -94,11 +132,27 @@ class _DecantAppState extends ConsumerState<DecantApp>
 
   @override
   Widget build(BuildContext context) {
+    // Painters read the liquid palette directly, so set it before building.
+    final settings = ref.watch(settingsProvider);
+    ref.listen(settingsProvider, (_, __) => _syncReminder());
+    ref.listen(progressProvider, (_, __) => _syncReminder());
+    activeLiquidPalette = settings.liquidPalette;
+    activeUiTheme = settings.uiTheme;
     return MaterialApp(
       title: 'Decant',
       debugShowCheckedModeBanner: false,
       navigatorObservers: [ref.read(analyticsServiceProvider).observer],
       theme: buildDecantTheme(),
+      locale: settings.language.code == null
+          ? null
+          : Locale(settings.language.code!),
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       // A brief splash that mirrors the native splash (same logo + background)
       // so the brand mark is reliably visible before Home.
       home: const SplashScreen(),

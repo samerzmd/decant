@@ -199,7 +199,8 @@ void main() {
       await tester.pump(const Duration(milliseconds: 100));
     }
     expect(find.byType(GameScreen), findsNothing);
-    expect(find.text('Daily done · 1-day streak'), findsOneWidget);
+    expect(find.text('Daily done'), findsOneWidget);
+    expect(find.text('1-day streak'), findsOneWidget);
     expect(container.read(progressProvider).unlockedLevel, 1);
   });
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
 import 'decant_button.dart';
+import '../../l10n/l10n.dart';
 
 /// Shown when a challenge runs out of moves or time.
 class FailOverlay extends StatelessWidget {
@@ -44,7 +45,7 @@ class FailOverlay extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             Text(
-              timedOut ? "Time's up" : 'Out of moves',
+              timedOut ? context.l10n.timesUp : context.l10n.outOfMoves,
               style: const TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.w800,
@@ -53,7 +54,7 @@ class FailOverlay extends StatelessWidget {
             ),
             const SizedBox(height: 6),
             Text(
-              'Take a breath and try again.',
+              context.l10n.failMessage,
               style: TextStyle(
                 color: DecantColors.accent.withValues(alpha: 0.95),
                 fontSize: 14,
@@ -61,14 +62,14 @@ class FailOverlay extends StatelessWidget {
             ),
             const SizedBox(height: 22),
             DecantButton(
-              label: 'Retry',
+              label: context.l10n.retry,
               icon: Icons.refresh_rounded,
               expand: true,
               onPressed: onRetry,
             ),
             const SizedBox(height: 12),
             DecantButton(
-              label: 'Back',
+              label: context.l10n.back,
               icon: Icons.arrow_back_rounded,
               primary: false,
               expand: true,

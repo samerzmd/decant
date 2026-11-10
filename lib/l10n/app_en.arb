@@ -1,0 +1,303 @@
+{
+  "@@locale": "en",
+  "tagline": "Pour. Sort. Unwind.",
+  "play": "Play",
+  "levels": "Levels",
+  "challenges": "Challenges",
+  "stats": "Stats",
+  "settings": "Settings",
+  "dailyChallenge": "Daily challenge",
+  "dailyDone": "Daily done",
+  "dailyTitle": "Daily · {date}",
+  "@dailyTitle": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "exitTitle": "Exit Decant?",
+  "exitMessage": "Take a breath — your progress is saved. Leave the app?",
+  "exit": "Exit",
+  "stay": "Stay",
+  "leave": "Leave",
+  "back": "Back",
+  "audio": "Audio",
+  "muteAll": "Mute all",
+  "soundEffects": "Sound effects",
+  "ambience": "Ambience",
+  "music": "Music",
+  "ambientLoop": "Ambient background loop",
+  "ambienceSound": "Ambience sound",
+  "soundCount": "{category} · {count} sounds",
+  "@soundCount": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "backgroundMusic": "Background music",
+  "backgroundMusicSubtitle": "Calm music on top of the ambience",
+  "musicTrack": "Music track",
+  "trackCount": "{category} · {count} tracks",
+  "@trackCount": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "feel": "Feel",
+  "haptics": "Haptic feedback",
+  "keepAwake": "Keep screen awake",
+  "pourSpeed": "Pour speed",
+  "pourRelaxed": "Relaxed",
+  "pourNormal": "Normal",
+  "pourQuick": "Quick",
+  "zenMode": "Zen mode",
+  "zenModeSubtitle": "No move counter or stars. Just pour.",
+  "accessibility": "Accessibility",
+  "theme": "Theme",
+  "themeTwilight": "Twilight",
+  "themeMidnight": "Midnight",
+  "highContrast": "High contrast",
+  "liquidColors": "Liquid colors",
+  "paletteStandard": "Standard",
+  "paletteColorblind": "Colorblind-safe",
+  "colorblindSymbols": "Colorblind symbols",
+  "colorblindSubtitle": "Show a distinct shape on each liquid color",
+  "reduceMotion": "Reduce motion",
+  "reduceMotionSubtitle": "No bubbles, tilting or wobbling",
+  "language": "Language",
+  "languageSystem": "System",
+  "timesUp": "Time's up",
+  "outOfMoves": "Out of moves",
+  "failMessage": "Take a breath and try again.",
+  "retry": "Retry",
+  "dailySolved": "Daily challenge solved",
+  "stageCleared": "Stage {stage} cleared",
+  "@stageCleared": {
+    "placeholders": {
+      "stage": {
+        "type": "int"
+      }
+    }
+  },
+  "levelSolved": "Level {level} solved",
+  "@levelSolved": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "beautifullyDone": "Beautifully done.",
+  "streakBeautifullyDone": "{days}-day streak. Beautifully done.",
+  "@streakBeautifullyDone": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "moveCount": "{count, plural, =1{1 move} other{{count} moves}}",
+  "@moveCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "perfectTarget": "Perfect: {moves}, no help",
+  "@perfectTarget": {
+    "placeholders": {
+      "moves": {
+        "type": "String"
+      }
+    }
+  },
+  "perfect": "Perfect",
+  "done": "Done",
+  "nextStage": "Next stage",
+  "nextLevel": "Next level",
+  "replay": "Replay",
+  "leaveLevelTitle": "Leave this level?",
+  "leaveLevelMessage": "Your progress on this level isn't saved — you'll start it over next time.",
+  "keepPlaying": "Keep playing",
+  "noMovesHint": "No moves left — try undo or restart",
+  "noHintsLeft": "No hints left. Solve a level to earn one.",
+  "noExtraTubes": "No extra tubes left",
+  "levelHeader": "Level {level} · {chapter}",
+  "@levelHeader": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      },
+      "chapter": {
+        "type": "String"
+      }
+    }
+  },
+  "difficulty": "Difficulty {dots}",
+  "@difficulty": {
+    "placeholders": {
+      "dots": {
+        "type": "String"
+      }
+    }
+  },
+  "threeStarsIn": "★★★ in {moves}",
+  "@threeStarsIn": {
+    "placeholders": {
+      "moves": {
+        "type": "int"
+      }
+    }
+  },
+  "undo": "Undo",
+  "hint": "Hint",
+  "addTube": "Add empty tube",
+  "howToPlay": "How to play",
+  "stuckBanner": "No moves left. Undo, restart, or add an empty tube.",
+  "stageTitle": "{mode} · Stage {stage}",
+  "@stageTitle": {
+    "placeholders": {
+      "mode": {
+        "type": "String"
+      },
+      "stage": {
+        "type": "int"
+      }
+    }
+  },
+  "tutorialTapTitle": "Tap the glowing tube",
+  "tutorialTapBody": "That picks up the color on top.",
+  "tutorialPourTitle": "Now tap the other glowing tube",
+  "tutorialPourBody": "Colors pour onto the same color or into an empty tube.",
+  "skip": "Skip",
+  "tutorialGoal": "Sort every tube into one color",
+  "tutorialStars": "Fewer moves earn more stars. If you're stuck:",
+  "tutorialUndo": "Undo a pour",
+  "tutorialHint": "Show a hint (costs a star)",
+  "tutorialAddTube": "Add an empty tube",
+  "gotIt": "Got it",
+  "levelsSolved": "Levels solved",
+  "nextUp": "Next up: level {level}",
+  "@nextUp": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "stars": "Stars",
+  "perfectLevels": "Perfect levels",
+  "perfectLevelsDetail": "Par moves, no hints",
+  "wins": "Wins",
+  "winsDetail": "Replays included",
+  "starsPerLevel": "Stars per level",
+  "noStreak": "No streak yet",
+  "streak": "{days}-day streak",
+  "@streak": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "streakStart": "Win a level today to start one.",
+  "streakDone": "Today's win is in. See you tomorrow.",
+  "streakKeep": "Win a level today to keep it going.",
+  "statsEmpty": "Solve a level to see how your stars stack up.",
+  "bestStage": "Best: stage {stage}",
+  "@bestStage": {
+    "placeholders": {
+      "stage": {
+        "type": "int"
+      }
+    }
+  },
+  "notPlayed": "Not played yet",
+  "playStage": "Play stage {stage}",
+  "@playStage": {
+    "placeholders": {
+      "stage": {
+        "type": "int"
+      }
+    }
+  },
+  "modeMoves": "Move limit",
+  "modeMovesBlurb": "Solve within the move limit. No undo.",
+  "modeTimed": "Against the clock",
+  "modeTimedBlurb": "Beat the timer. It starts on your first pour.",
+  "levelShort": "Lvl {level}",
+  "@levelShort": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "chapterTitle": "Chapter {number} · {name}",
+  "@chapterTitle": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "chapterSolved": "{solved}/{total} solved",
+  "@chapterSolved": {
+    "placeholders": {
+      "solved": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "chapterDawn": "Dawn",
+  "chapterTide": "Tide",
+  "chapterEmber": "Ember",
+  "chapterGrove": "Grove",
+  "chapterDusk": "Dusk",
+  "chapterAurora": "Aurora",
+  "dailyNew": "A new puzzle every day",
+  "streakReminders": "Streak reminders",
+  "streakRemindersSubtitle": "A gentle nudge when today's daily isn't done",
+  "reminderTime": "Reminder time",
+  "notificationsBlocked": "Notifications are off for Decant. Turn them on in system settings.",
+  "reminderStreakTitle": "Keep your {days}-day streak going",
+  "@reminderStreakTitle": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "reminderStreakBody": "Today's daily puzzle is waiting.",
+  "reminderTitle": "A new daily puzzle is ready",
+  "reminderBody": "Take a calm minute and pour.",
+  "reminderOfferTitle": "Keep your streak?",
+  "reminderOfferMessage": "Decant can send one gentle reminder at {time} on days you haven't solved the daily. You can change this in Settings.",
+  "@reminderOfferMessage": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "remindMe": "Remind me",
+  "notNow": "Not now"
+}

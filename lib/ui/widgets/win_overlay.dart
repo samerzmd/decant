@@ -5,6 +5,7 @@ import '../../logic/daily_challenge.dart';
 import '../theme/app_theme.dart';
 import 'decant_button.dart';
 import 'star_row.dart';
+import '../../l10n/l10n.dart';
 
 /// Celebratory overlay shown when a level is solved.
 class WinOverlay extends StatelessWidget {
@@ -44,10 +45,10 @@ class WinOverlay extends StatelessWidget {
     final daily = DailyChallenge.isDaily(levelId);
     final challenge = Challenge.isChallenge(levelId);
     final title = daily
-        ? 'Daily challenge solved'
+        ? context.l10n.dailySolved
         : challenge
-            ? 'Stage ${Challenge.stageOf(levelId)} cleared'
-            : 'Level $levelId solved';
+            ? context.l10n.stageCleared(Challenge.stageOf(levelId))
+            : context.l10n.levelSolved(levelId);
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0, end: 1),
       duration: const Duration(milliseconds: 320),
@@ -98,8 +99,8 @@ class WinOverlay extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   daily && dailyStreak > 0
-                      ? '$dailyStreak-day streak. Beautifully done.'
-                      : 'Beautifully done.',
+                      ? context.l10n.streakBeautifullyDone(dailyStreak)
+                      : context.l10n.beautifullyDone,
                   style: TextStyle(
                     color: DecantColors.accent.withValues(alpha: 0.95),
                     fontSize: 14,
@@ -111,7 +112,7 @@ class WinOverlay extends StatelessWidget {
                   StarRow(earned: stars, size: 40, animate: true),
                   const SizedBox(height: 18),
                   Text(
-                    '$moves ${moves == 1 ? 'move' : 'moves'}',
+                    context.l10n.moveCount(moves),
                     style: const TextStyle(
                       color: DecantColors.subtle,
                       fontSize: 15,
@@ -123,7 +124,7 @@ class WinOverlay extends StatelessWidget {
                     const _PerfectChip()
                   else if (par > 0)
                     Text(
-                      'Perfect: $par ${par == 1 ? 'move' : 'moves'}, no help',
+                      context.l10n.perfectTarget(context.l10n.moveCount(par)),
                       style: TextStyle(
                         color: DecantColors.subtle.withValues(alpha: 0.75),
                         fontSize: 12,
@@ -133,10 +134,10 @@ class WinOverlay extends StatelessWidget {
                 const SizedBox(height: 24),
                 DecantButton(
                   label: daily
-                      ? 'Done'
+                      ? context.l10n.done
                       : challenge
-                          ? 'Next stage'
-                          : 'Next level',
+                          ? context.l10n.nextStage
+                          : context.l10n.nextLevel,
                   icon:
                       daily ? Icons.check_rounded : Icons.arrow_forward_rounded,
                   expand: true,
@@ -147,7 +148,7 @@ class WinOverlay extends StatelessWidget {
                   children: [
                     Expanded(
                       child: DecantButton(
-                        label: 'Replay',
+                        label: context.l10n.replay,
                         icon: Icons.refresh_rounded,
                         primary: false,
                         onPressed: onReplay,
@@ -158,7 +159,9 @@ class WinOverlay extends StatelessWidget {
                       const SizedBox(width: 12),
                       Expanded(
                         child: DecantButton(
-                          label: challenge ? 'Challenges' : 'Levels',
+                          label: challenge
+                              ? context.l10n.challenges
+                              : context.l10n.levels,
                           icon: Icons.grid_view_rounded,
                           primary: false,
                           onPressed: onLevels,
@@ -189,14 +192,15 @@ class _PerfectChip extends StatelessWidget {
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: DecantColors.accent.withValues(alpha: 0.6)),
       ),
-      child: const Row(
+      child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.verified_rounded, color: DecantColors.accent, size: 16),
-          SizedBox(width: 6),
+          const Icon(Icons.verified_rounded,
+              color: DecantColors.accent, size: 16),
+          const SizedBox(width: 6),
           Text(
-            'Perfect',
-            style: TextStyle(
+            context.l10n.perfect,
+            style: const TextStyle(
               color: DecantColors.onSurface,
               fontWeight: FontWeight.w700,
               fontSize: 13,

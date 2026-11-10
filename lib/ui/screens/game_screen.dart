@@ -15,8 +15,10 @@ import '../widgets/win_overlay.dart';
 import '../../logic/challenge.dart';
 import '../../logic/star_rating.dart';
 import '../../models/chapter.dart';
+import '../../models/liquid_palette.dart';
 import '../../logic/daily_challenge.dart';
 import '../widgets/fail_overlay.dart';
+import '../../l10n/l10n.dart';
 
 /// The gameplay screen: header (level + moves), the tube board, the control
 /// bar (undo / hint / add-tube / how-to-play), a stuck banner, the win overlay
@@ -132,11 +134,10 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       }
       final leave = await showDecantConfirm(
         context,
-        title: 'Leave this level?',
-        message: "Your progress on this level isn't saved — you'll start it "
-            'over next time.',
-        confirmLabel: 'Leave',
-        cancelLabel: 'Keep playing',
+        title: context.l10n.leaveLevelTitle,
+        message: context.l10n.leaveLevelMessage,
+        confirmLabel: context.l10n.leave,
+        cancelLabel: context.l10n.keepPlaying,
         icon: Icons.exit_to_app_rounded,
       );
       if (leave && context.mounted) Navigator.of(context).pop();
@@ -150,9 +151,11 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       },
       child: Scaffold(
         body: DecantBackground(
-          // Campaign levels take their chapter's palette.
-          colors:
-              _isCampaign(levelId) ? Chapter.forLevel(levelId).colors : null,
+          // Campaign levels take their chapter's palette, on the default
+          // theme only; other themes keep their own background.
+          colors: _isCampaign(levelId) && activeUiTheme == UiTheme.twilight
+              ? Chapter.forLevel(levelId).colors
+              : null,
           child: SafeArea(
             child: Stack(
               children: [
@@ -206,10 +209,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                       onHint: () {
                         final message = switch (controller.requestHint()) {
                           HintOutcome.shown => null,
-                          HintOutcome.noMove =>
-                            'No moves left — try undo or restart',
-                          HintOutcome.noHintsLeft =>
-                            'No hints left. Solve a level to earn one.',
+                          HintOutcome.noMove => context.l10n.noMovesHint,
+                          HintOutcome.noHintsLeft => context.l10n.noHintsLeft,
                         };
                         if (message != null) {
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -224,9 +225,9 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                         final ok = controller.addEmptyTube();
                         if (!ok) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('No extra tubes left'),
-                              duration: Duration(seconds: 2),
+                            SnackBar(
+                              content: Text(context.l10n.noExtraTubes),
+                              duration: const Duration(seconds: 2),
                             ),
                           );
                         }
@@ -338,10 +339,13 @@ class _Header extends StatelessWidget {
               children: [
                 Text(
                   DailyChallenge.isDaily(levelId)
-                      ? DailyChallenge.title(levelId)
+                      ? context.l10n.dailyChallengeTitle(levelId)
                       : Challenge.isChallenge(levelId)
-                          ? Challenge.title(levelId)
-                          : 'Level $levelId · ${Chapter.forLevel(levelId).name}',
+                          ? context.l10n.challengeTitle(levelId)
+                          : context.l10n.levelHeader(
+                              levelId,
+                              context.l10n
+                                  .chapterName(Chapter.forLevel(levelId))),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
@@ -351,8 +355,11 @@ class _Header extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'Difficulty ${'●' * difficulty}${'○' * (5 - difficulty)}'
-                  '${threeStarMoves == null ? '' : ' · ★★★ in $threeStarMoves'}',
+                  context.l10n.difficulty(
+                          '${'●' * difficulty}${'○' * (5 - difficulty)}') +
+                      (threeStarMoves == null
+                          ? ''
+                          : ' · ${context.l10n.threeStarsIn(threeStarMoves!)}'),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -364,17 +371,24 @@ class _Header extends StatelessWidget {
             ),
           ),
           if (counter != null)
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.06),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Text(
-                counter!,
-                style: const TextStyle(
-                  color: DecantColors.onSurface,
-                  fontWeight: FontWeight.w700,
+            // Shrinks (rather than overflowing) at large text sizes.
+            Flexible(
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.06),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    counter!,
+                    style: const TextStyle(
+                      color: DecantColors.onSurface,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -425,25 +439,25 @@ class _ControlBar extends StatelessWidget {
         children: [
           DecantIconButton(
             icon: Icons.undo_rounded,
-            tooltip: 'Undo',
+            tooltip: context.l10n.undo,
             onPressed: canUndo ? onUndo : null,
           ),
           DecantIconButton(
             icon: Icons.lightbulb_outline_rounded,
-            tooltip: 'Hint',
+            tooltip: context.l10n.hint,
             tint: DecantColors.star,
             badge: hints == null ? null : '$hints',
             onPressed: onHint,
           ),
           DecantIconButton(
             icon: Icons.add_circle_outline_rounded,
-            tooltip: 'Add empty tube',
+            tooltip: context.l10n.addTube,
             badge: '$extraTubes',
             onPressed: extraTubes > 0 ? onAddTube : null,
           ),
           DecantIconButton(
             icon: Icons.help_outline_rounded,
-            tooltip: 'How to play',
+            tooltip: context.l10n.howToPlay,
             onPressed: onHelp,
           ),
         ],
@@ -466,14 +480,16 @@ class _StuckBanner extends StatelessWidget {
         border:
             Border.all(color: const Color(0xFFE2425B).withValues(alpha: 0.5)),
       ),
-      child: const Row(
+      child: Row(
         children: [
-          Icon(Icons.info_outline_rounded, color: Color(0xFFF08AA6), size: 18),
-          SizedBox(width: 10),
+          const Icon(Icons.info_outline_rounded,
+              color: Color(0xFFF08AA6), size: 18),
+          const SizedBox(width: 10),
           Expanded(
             child: Text(
-              'No moves left. Undo, restart, or add an empty tube.',
-              style: TextStyle(color: DecantColors.onSurface, fontSize: 13),
+              context.l10n.stuckBanner,
+              style:
+                  const TextStyle(color: DecantColors.onSurface, fontSize: 13),
             ),
           ),
         ],

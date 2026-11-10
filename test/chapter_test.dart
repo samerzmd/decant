@@ -7,6 +7,7 @@ import 'package:decant/audio/audio_service.dart';
 import 'package:decant/logic/daily_challenge.dart';
 import 'package:decant/models/app_settings.dart';
 import 'package:decant/models/chapter.dart';
+import 'package:decant/models/liquid_palette.dart';
 import 'package:decant/services/analytics_service.dart';
 import 'package:decant/services/persistence_service.dart';
 import 'package:decant/state/providers.dart';
@@ -100,5 +101,14 @@ void main() {
     final id = DailyChallenge.idFor(DateTime(2026, 11, 10));
     await pump(tester, GameScreen(levelId: id));
     expect(backgroundColors(tester), isNull);
+  });
+
+  testWidgets('other themes override chapter colors', (tester) async {
+    activeUiTheme = UiTheme.midnight;
+    addTearDown(() => activeUiTheme = UiTheme.twilight);
+    await pump(tester, const GameScreen(levelId: 26));
+    expect(backgroundColors(tester), isNull);
+    final bg = tester.widget<DecantBackground>(find.byType(DecantBackground));
+    expect(bg.effectiveColors, UiTheme.midnight.colors);
   });
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
 import 'decant_button.dart';
+import '../../l10n/l10n.dart';
 
 /// Steps of the how-to-play guide.
 enum TutorialStep {
@@ -62,16 +63,15 @@ class TutorialCard extends StatelessWidget {
             child: switch (step) {
               TutorialStep.pick => _Instruction(
                   icon: Icons.touch_app_rounded,
-                  title: 'Tap the glowing tube',
-                  body: 'That picks up the color on top.',
+                  title: context.l10n.tutorialTapTitle,
+                  body: context.l10n.tutorialTapBody,
                   step: 0,
                   onSkip: onSkip,
                 ),
               TutorialStep.pour => _Instruction(
                   icon: Icons.water_drop_rounded,
-                  title: 'Now tap the other glowing tube',
-                  body:
-                      'Colors pour onto the same color or into an empty tube.',
+                  title: context.l10n.tutorialPourTitle,
+                  body: context.l10n.tutorialPourBody,
                   step: 1,
                   onSkip: onSkip,
                 ),
@@ -159,7 +159,7 @@ class _Instruction extends StatelessWidget {
                 foregroundColor: DecantColors.subtle,
                 visualDensity: VisualDensity.compact,
               ),
-              child: const Text('Skip'),
+              child: Text(context.l10n.skip),
             ),
           ],
         ),
@@ -178,28 +178,29 @@ class _Goal extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Sort every tube into one color',
-          style: TextStyle(
+        Text(
+          context.l10n.tutorialGoal,
+          style: const TextStyle(
             fontSize: 17,
             fontWeight: FontWeight.w800,
             color: DecantColors.onSurface,
           ),
         ),
         const SizedBox(height: 4),
-        const Text(
-          "Fewer moves earn more stars. If you're stuck:",
-          style: TextStyle(fontSize: 13.5, color: DecantColors.subtle),
+        Text(
+          context.l10n.tutorialStars,
+          style: const TextStyle(fontSize: 13.5, color: DecantColors.subtle),
         ),
         const SizedBox(height: 12),
-        const _Tool(icon: Icons.undo_rounded, label: 'Undo a pour'),
-        const _Tool(
+        _Tool(icon: Icons.undo_rounded, label: context.l10n.tutorialUndo),
+        _Tool(
           icon: Icons.lightbulb_outline_rounded,
-          label: 'Show a hint (costs a star)',
+          label: context.l10n.tutorialHint,
           tint: DecantColors.star,
         ),
-        const _Tool(
-            icon: Icons.add_circle_outline_rounded, label: 'Add an empty tube'),
+        _Tool(
+            icon: Icons.add_circle_outline_rounded,
+            label: context.l10n.tutorialAddTube),
         const SizedBox(height: 8),
         Row(
           children: [
@@ -208,7 +209,7 @@ class _Goal extends StatelessWidget {
             SizedBox(
               width: 132,
               child: DecantButton(
-                  label: 'Got it', primary: true, onPressed: onDone),
+                  label: context.l10n.gotIt, primary: true, onPressed: onDone),
             ),
           ],
         ),

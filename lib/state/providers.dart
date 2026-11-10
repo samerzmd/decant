@@ -15,6 +15,7 @@ import 'game_session.dart';
 import 'progress_controller.dart';
 import 'settings_controller.dart';
 import '../services/log.dart';
+import '../services/reminder_service.dart';
 
 /// Overridden in `main()` with the loaded instance.
 final persistenceProvider = Provider<PersistenceService>(
@@ -22,6 +23,11 @@ final persistenceProvider = Provider<PersistenceService>(
 );
 
 /// Overridden in `main()` with an already-initialized engine.
+/// Streak reminder notifications. Overridden in main with an initialized
+/// service; this default stays inert (every call is a no-op), as in tests.
+final reminderServiceProvider =
+    Provider<ReminderService>((_) => ReminderService());
+
 final audioServiceProvider = Provider<AudioService>(
   (_) => throw UnimplementedError('audioServiceProvider must be overridden'),
 );

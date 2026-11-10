@@ -6,6 +6,7 @@ import '../../state/providers.dart';
 import '../theme/app_theme.dart';
 import '../widgets/decant_button.dart';
 import 'game_screen.dart';
+import '../../l10n/l10n.dart';
 
 /// Picks a challenge mode. Each mode is an endless ladder of stages; this
 /// shows the best stage cleared and starts the next one.
@@ -19,41 +20,47 @@ class ChallengesScreen extends ConsumerWidget {
     return Scaffold(
       body: DecantBackground(
         child: SafeArea(
-          child: ListView(
-            padding: const EdgeInsets.fromLTRB(8, 6, 8, 24),
-            children: [
-              Row(
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back_rounded,
-                        color: DecantColors.onSurface),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                  const Text(
-                    'Challenges',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w800,
-                      color: DecantColors.onSurface,
+          child: ReadableWidth(
+            child: ListView(
+              padding: const EdgeInsets.fromLTRB(8, 6, 8, 24),
+              children: [
+                Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.arrow_back_rounded,
+                          color: DecantColors.onSurface),
+                      onPressed: () => Navigator.of(context).pop(),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              for (final mode in ChallengeMode.values)
-                _ModeCard(
-                  mode: mode,
-                  best: stats.bestStage(mode),
-                  onPlay: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      settings: const RouteSettings(name: '/game'),
-                      builder: (_) => GameScreen(
-                        levelId: Challenge.idFor(mode, stats.nextStage(mode)),
+                    Expanded(
+                      child: Text(
+                        context.l10n.challenges,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w800,
+                          color: DecantColors.onSurface,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                for (final mode in ChallengeMode.values)
+                  _ModeCard(
+                    mode: mode,
+                    best: stats.bestStage(mode),
+                    onPlay: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        settings: const RouteSettings(name: '/game'),
+                        builder: (_) => GameScreen(
+                          levelId: Challenge.idFor(mode, stats.nextStage(mode)),
+                        ),
                       ),
                     ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -96,7 +103,7 @@ class _ModeCard extends StatelessWidget {
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
-                  mode.label,
+                  context.l10n.challengeMode(mode),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
@@ -110,7 +117,7 @@ class _ModeCard extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            mode.blurb,
+            context.l10n.challengeBlurb(mode),
             style: TextStyle(
               color: DecantColors.subtle.withValues(alpha: 0.9),
               fontSize: 13,
@@ -118,7 +125,7 @@ class _ModeCard extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            best > 0 ? 'Best: stage $best' : 'Not played yet',
+            best > 0 ? context.l10n.bestStage(best) : context.l10n.notPlayed,
             style: const TextStyle(
               color: DecantColors.onSurface,
               fontWeight: FontWeight.w600,
@@ -127,7 +134,7 @@ class _ModeCard extends StatelessWidget {
           ),
           const SizedBox(height: 14),
           DecantButton(
-            label: 'Play stage ${best + 1}',
+            label: context.l10n.playStage(best + 1),
             icon: Icons.play_arrow_rounded,
             expand: true,
             onPressed: onPlay,

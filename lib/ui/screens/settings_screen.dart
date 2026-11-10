@@ -3,9 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../audio/audio_service.dart';
 import '../../models/app_settings.dart';
+import '../../logic/streak_reminder.dart';
+import '../../models/liquid_palette.dart';
 import '../../state/providers.dart';
 import '../theme/app_theme.dart';
+import '../reminder_prompt.dart';
 import 'sound_browser_screen.dart';
+import '../../l10n/l10n.dart';
 
 /// Audio mixer (SFX / ambience / music), mute, ambient toggle, haptics and the
 /// colorblind-friendly rendering option. All changes persist immediately.
@@ -21,144 +25,199 @@ class SettingsScreen extends ConsumerWidget {
     return Scaffold(
       body: DecantBackground(
         child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8, 6, 20, 6),
-                child: Row(
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.arrow_back_rounded,
-                          color: DecantColors.onSurface),
-                      onPressed: () => Navigator.of(context).pop(),
-                    ),
-                    const Text(
-                      'Settings',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w800,
-                        color: DecantColors.onSurface,
+          child: ReadableWidth(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 6, 20, 6),
+                  child: Row(
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.arrow_back_rounded,
+                            color: DecantColors.onSurface),
+                        onPressed: () => Navigator.of(context).pop(),
                       ),
-                    ),
-                  ],
+                      Expanded(
+                        child: Text(
+                          context.l10n.settings,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w800,
+                            color: DecantColors.onSurface,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Expanded(
-                child: ListView(
-                  padding: const EdgeInsets.fromLTRB(22, 6, 22, 24),
-                  children: [
-                    const _SectionLabel('Audio'),
-                    _SwitchTile(
-                      label: 'Mute all',
-                      icon: Icons.volume_off_rounded,
-                      value: audio.muted,
-                      onChanged: (_) => ctrl.toggleMute(),
-                    ),
-                    _SliderTile(
-                      label: 'Sound effects',
-                      icon: Icons.water_drop_rounded,
-                      value: audio.sfxVolume,
-                      enabled: !audio.muted,
-                      onChanged: ctrl.setSfxVolume,
-                    ),
-                    _SliderTile(
-                      label: 'Ambience',
-                      icon: Icons.spa_rounded,
-                      value: audio.ambientVolume,
-                      enabled: !audio.muted && audio.ambientEnabled,
-                      onChanged: ctrl.setAmbientVolume,
-                    ),
-                    _SliderTile(
-                      label: 'Music',
-                      icon: Icons.music_note_rounded,
-                      value: audio.musicVolume,
-                      enabled: !audio.muted,
-                      onChanged: ctrl.setMusicVolume,
-                    ),
-                    _SwitchTile(
-                      label: 'Ambient background loop',
-                      icon: Icons.waves_rounded,
-                      value: audio.ambientEnabled,
-                      onChanged: (_) => ctrl.toggleAmbient(),
-                    ),
-                    if (audio.ambientEnabled)
-                      _NavTile(
-                        title: 'Ambience sound',
-                        value: audio.ambientTrack.label,
-                        detail:
-                            '${audio.ambientTrack.categoryInfo.label} · ${kAmbientCatalog.length} sounds',
-                        icon: audio.ambientTrack.icon,
-                        onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => const SoundBrowserScreen(
-                                    kind: SoundKind.ambient))),
+                Expanded(
+                  child: ListView(
+                    padding: const EdgeInsets.fromLTRB(22, 6, 22, 24),
+                    children: [
+                      _SectionLabel(context.l10n.audio),
+                      _SwitchTile(
+                        label: context.l10n.muteAll,
+                        icon: Icons.volume_off_rounded,
+                        value: audio.muted,
+                        onChanged: (_) => ctrl.toggleMute(),
                       ),
-                    _SwitchTile(
-                      label: 'Background music',
-                      subtitle: 'Calm music on top of the ambience',
-                      icon: Icons.library_music_rounded,
-                      value: audio.musicEnabled,
-                      onChanged: (_) => ctrl.toggleMusic(),
-                    ),
-                    if (audio.musicEnabled)
-                      _NavTile(
-                        title: 'Music track',
-                        value: audio.musicTrack.label,
-                        detail:
-                            '${audio.musicTrack.categoryInfo.label} · ${kMusicCatalog.length} tracks',
-                        icon: audio.musicTrack.icon,
-                        onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => const SoundBrowserScreen(
-                                    kind: SoundKind.music))),
+                      _SliderTile(
+                        label: context.l10n.soundEffects,
+                        icon: Icons.water_drop_rounded,
+                        value: audio.sfxVolume,
+                        enabled: !audio.muted,
+                        onChanged: ctrl.setSfxVolume,
                       ),
-                    const SizedBox(height: 18),
-                    const _SectionLabel('Feel'),
-                    _SwitchTile(
-                      label: 'Haptic feedback',
-                      icon: Icons.vibration_rounded,
-                      value: settings.hapticsEnabled,
-                      onChanged: (_) => ctrl.toggleHaptics(),
-                    ),
-                    _SwitchTile(
-                      label: 'Keep screen awake',
-                      subtitle: "Don't let the screen sleep while playing",
-                      icon: Icons.light_mode_rounded,
-                      value: settings.keepScreenOn,
-                      onChanged: (_) => ctrl.toggleKeepScreenOn(),
-                    ),
-                    _PourSpeedTile(
-                      value: settings.pourSpeed,
-                      onChanged: ctrl.setPourSpeed,
-                    ),
-                    _SwitchTile(
-                      label: 'Zen mode',
-                      subtitle: 'No move counter or stars. Just pour.',
-                      icon: Icons.spa_rounded,
-                      value: settings.zenMode,
-                      onChanged: (_) => ctrl.toggleZenMode(),
-                    ),
-                    const SizedBox(height: 18),
-                    const _SectionLabel('Accessibility'),
-                    _SwitchTile(
-                      label: 'Colorblind symbols',
-                      subtitle: 'Show a distinct shape on each liquid color',
-                      icon: Icons.remove_red_eye_rounded,
-                      value: settings.colorblindMode,
-                      onChanged: (_) => ctrl.toggleColorblind(),
-                    ),
-                    _SwitchTile(
-                      label: 'Reduce motion',
-                      subtitle: 'No bubbles, tilting or wobbling',
-                      icon: Icons.motion_photos_off_rounded,
-                      value: settings.reduceMotion,
-                      onChanged: (_) => ctrl.toggleReduceMotion(),
-                    ),
-                  ],
+                      _SliderTile(
+                        label: context.l10n.ambience,
+                        icon: Icons.spa_rounded,
+                        value: audio.ambientVolume,
+                        enabled: !audio.muted && audio.ambientEnabled,
+                        onChanged: ctrl.setAmbientVolume,
+                      ),
+                      _SliderTile(
+                        label: context.l10n.music,
+                        icon: Icons.music_note_rounded,
+                        value: audio.musicVolume,
+                        enabled: !audio.muted,
+                        onChanged: ctrl.setMusicVolume,
+                      ),
+                      _SwitchTile(
+                        label: context.l10n.ambientLoop,
+                        icon: Icons.waves_rounded,
+                        value: audio.ambientEnabled,
+                        onChanged: (_) => ctrl.toggleAmbient(),
+                      ),
+                      if (audio.ambientEnabled)
+                        _NavTile(
+                          title: context.l10n.ambienceSound,
+                          value: audio.ambientTrack.label,
+                          detail: context.l10n.soundCount(
+                              audio.ambientTrack.categoryInfo.label,
+                              kAmbientCatalog.length),
+                          icon: audio.ambientTrack.icon,
+                          onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (_) => const SoundBrowserScreen(
+                                      kind: SoundKind.ambient))),
+                        ),
+                      _SwitchTile(
+                        label: context.l10n.backgroundMusic,
+                        subtitle: context.l10n.backgroundMusicSubtitle,
+                        icon: Icons.library_music_rounded,
+                        value: audio.musicEnabled,
+                        onChanged: (_) => ctrl.toggleMusic(),
+                      ),
+                      if (audio.musicEnabled)
+                        _NavTile(
+                          title: context.l10n.musicTrack,
+                          value: audio.musicTrack.label,
+                          detail: context.l10n.trackCount(
+                              audio.musicTrack.categoryInfo.label,
+                              kMusicCatalog.length),
+                          icon: audio.musicTrack.icon,
+                          onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (_) => const SoundBrowserScreen(
+                                      kind: SoundKind.music))),
+                        ),
+                      const SizedBox(height: 18),
+                      _SectionLabel(context.l10n.feel),
+                      _SwitchTile(
+                        label: context.l10n.haptics,
+                        icon: Icons.vibration_rounded,
+                        value: settings.hapticsEnabled,
+                        onChanged: (_) => ctrl.toggleHaptics(),
+                      ),
+                      _SwitchTile(
+                        label: context.l10n.keepAwake,
+                        subtitle: "Don't let the screen sleep while playing",
+                        icon: Icons.light_mode_rounded,
+                        value: settings.keepScreenOn,
+                        onChanged: (_) => ctrl.toggleKeepScreenOn(),
+                      ),
+                      _ChoiceTile<PourSpeed>(
+                        title: context.l10n.pourSpeed,
+                        icon: Icons.speed_rounded,
+                        options: PourSpeed.values,
+                        labelOf: context.l10n.pourSpeedLabel,
+                        value: settings.pourSpeed,
+                        onChanged: ctrl.setPourSpeed,
+                      ),
+                      _SwitchTile(
+                        label: context.l10n.zenMode,
+                        subtitle: context.l10n.zenModeSubtitle,
+                        icon: Icons.spa_rounded,
+                        value: settings.zenMode,
+                        onChanged: (_) => ctrl.toggleZenMode(),
+                      ),
+                      _SwitchTile(
+                        label: context.l10n.streakReminders,
+                        subtitle: context.l10n.streakRemindersSubtitle,
+                        icon: Icons.notifications_active_rounded,
+                        value: settings.streakReminders,
+                        onChanged: (on) => _setReminders(context, ref, on),
+                      ),
+                      if (settings.streakReminders)
+                        _ChoiceTile<int>(
+                          title: context.l10n.reminderTime,
+                          icon: Icons.schedule_rounded,
+                          options: kReminderHours,
+                          labelOf: (h) => MaterialLocalizations.of(context)
+                              .formatTimeOfDay(TimeOfDay(hour: h, minute: 0)),
+                          value: settings.reminderHour,
+                          onChanged: ctrl.setReminderHour,
+                        ),
+                      const SizedBox(height: 18),
+                      _SectionLabel(context.l10n.accessibility),
+                      _ChoiceTile<UiTheme>(
+                        title: context.l10n.theme,
+                        icon: Icons.dark_mode_rounded,
+                        options: UiTheme.values,
+                        labelOf: context.l10n.uiThemeLabel,
+                        value: settings.uiTheme,
+                        onChanged: ctrl.setUiTheme,
+                      ),
+                      _ChoiceTile<LiquidPalette>(
+                        title: context.l10n.liquidColors,
+                        icon: Icons.palette_rounded,
+                        options: LiquidPalette.values,
+                        labelOf: context.l10n.liquidPaletteLabel,
+                        value: settings.liquidPalette,
+                        onChanged: ctrl.setLiquidPalette,
+                      ),
+                      _SwitchTile(
+                        label: context.l10n.colorblindSymbols,
+                        subtitle: context.l10n.colorblindSubtitle,
+                        icon: Icons.remove_red_eye_rounded,
+                        value: settings.colorblindMode,
+                        onChanged: (_) => ctrl.toggleColorblind(),
+                      ),
+                      _SwitchTile(
+                        label: context.l10n.reduceMotion,
+                        subtitle: context.l10n.reduceMotionSubtitle,
+                        icon: Icons.motion_photos_off_rounded,
+                        value: settings.reduceMotion,
+                        onChanged: (_) => ctrl.toggleReduceMotion(),
+                      ),
+                      const SizedBox(height: 18),
+                      _SectionLabel(context.l10n.language),
+                      _ChoiceTile<AppLanguage>(
+                        title: context.l10n.language,
+                        icon: Icons.translate_rounded,
+                        options: AppLanguage.values,
+                        labelOf: context.l10n.appLanguageLabel,
+                        value: settings.language,
+                        onChanged: ctrl.setLanguage,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -166,11 +225,37 @@ class SettingsScreen extends ConsumerWidget {
   }
 }
 
-/// Pour speed as three side-by-side choices.
-class _PourSpeedTile extends StatelessWidget {
-  final PourSpeed value;
-  final ValueChanged<PourSpeed> onChanged;
-  const _PourSpeedTile({required this.value, required this.onChanged});
+/// Streak reminders switch: on goes through the permission prompt.
+Future<void> _setReminders(
+  BuildContext context,
+  WidgetRef ref,
+  bool on,
+) async {
+  if (on) {
+    await turnOnReminders(context, ref);
+  } else {
+    ref.read(settingsProvider.notifier).setStreakReminders(false);
+  }
+}
+
+/// Chips picking one of [options]: pour speed, theme, colors, language.
+/// Up to four share a row; more wrap onto extra lines.
+class _ChoiceTile<T> extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  final List<T> options;
+  final String Function(T) labelOf;
+  final T value;
+  final ValueChanged<T> onChanged;
+
+  const _ChoiceTile({
+    required this.title,
+    required this.icon,
+    required this.options,
+    required this.labelOf,
+    required this.value,
+    required this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -184,59 +269,72 @@ class _PourSpeedTile extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
-              Icon(Icons.speed_rounded, color: DecantColors.accent, size: 22),
-              SizedBox(width: 14),
-              Text(
-                'Pour speed',
-                style: TextStyle(
-                  color: DecantColors.onSurface,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
+              Icon(icon, color: DecantColors.accent, size: 22),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    color: DecantColors.onSurface,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             ],
           ),
           const SizedBox(height: 12),
-          Row(
-            children: [
-              for (final speed in PourSpeed.values) ...[
-                if (speed != PourSpeed.values.first) const SizedBox(width: 8),
-                Expanded(
-                  child: Semantics(
-                    button: true,
-                    selected: speed == value,
-                    child: GestureDetector(
-                      onTap: () => onChanged(speed),
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 160),
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: speed == value
-                              ? DecantColors.accent
-                              : Colors.white.withValues(alpha: 0.06),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          speed.label,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            color: speed == value
-                                ? DecantColors.bgTop
-                                : DecantColors.onSurface,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+          if (options.length > 4)
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [for (final o in options) _chip(o, padX: 14)],
+            )
+          else
+            Row(
+              children: [
+                for (var i = 0; i < options.length; i++) ...[
+                  if (i > 0) const SizedBox(width: 8),
+                  Expanded(child: _chip(options[i])),
+                ],
               ],
-            ],
-          ),
+            ),
         ],
+      ),
+    );
+  }
+
+  Widget _chip(T option, {double padX = 6}) {
+    final selected = option == value;
+    return Semantics(
+      button: true,
+      selected: selected,
+      child: GestureDetector(
+        onTap: () => onChanged(option),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 160),
+          padding: EdgeInsets.symmetric(vertical: 10, horizontal: padX),
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: selected
+                ? DecantColors.accent
+                : Colors.white.withValues(alpha: 0.06),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              labelOf(option),
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w700,
+                color: selected ? DecantColors.bgTop : DecantColors.onSurface,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

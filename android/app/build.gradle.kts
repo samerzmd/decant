@@ -28,6 +28,8 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+        // flutter_local_notifications schedules with java.time on old Androids.
+        isCoreLibraryDesugaringEnabled = true
     }
 
     defaultConfig {
@@ -84,4 +86,8 @@ flutter {
 
 dependencies {
     implementation("com.google.android.play:asset-delivery:2.2.2")
+}
+
+dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 }

@@ -69,16 +69,24 @@ Give players reasons to come back.
       solve; unlimited in Zen mode
 - [x] Chapters of 20 levels with themed backgrounds (Dawn, Tide, Ember, Grove,
       Dusk, Aurora), shown as sections on the level grid
+- [x] Streak reminders: an opt-in local notification at a chosen hour when
+      today's daily isn't solved, naming the streak at stake
 
 ## 💡 v1.3 — Accessibility & reach
 
-- [ ] Localization (i18n) scaffolding + first translations
-- [ ] Dynamic type / larger-text support audit
-- [ ] Additional colorblind palettes and a high-contrast theme
-- [ ] Theme system (light/dark + a few calm palettes), pluggable via a provider
-- [ ] More ambient beds (soft wind, distant thunder, night, café) + crossfade
-      when switching tracks
-- [ ] Tablet / large-screen and landscape layouts
+- [x] Localization (i18n) scaffolding + first translations: gen-l10n ARB
+      files with Spanish, French and German, and a Language setting. Sound and
+      track names are still English only.
+- [x] Dynamic type / larger-text support audit: every screen is checked at
+      1.5× and 2× text, and in German, on a small phone.
+- [x] Additional colorblind palettes and a high-contrast theme
+- [x] Theme system (Twilight, Midnight, High contrast) set in Settings.
+      A light theme is still to come: it needs the hard-coded text colors
+      moved into theme tokens first.
+- [x] More ambient beds + crossfade when switching tracks (the 50+ sound
+      catalog, now with a 1.5 s crossfade)
+- [x] Tablet / large-screen and landscape layouts: rotation unlocked, menus
+      keep a readable width, the level grid widens
 
 ## 💡 v2.0 — Social & creation (exploratory)
 

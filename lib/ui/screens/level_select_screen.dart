@@ -7,6 +7,7 @@ import '../../state/progress_controller.dart';
 import '../../state/providers.dart';
 import '../theme/app_theme.dart';
 import 'game_screen.dart';
+import '../../l10n/l10n.dart';
 
 /// Scrollable grid of levels. Unlocked levels show their best star rating;
 /// locked levels show a padlock.
@@ -70,15 +71,18 @@ class _Header extends StatelessWidget {
                 color: DecantColors.onSurface),
             onPressed: () => Navigator.of(context).pop(),
           ),
-          const Text(
-            'Levels',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.w800,
-              color: DecantColors.onSurface,
+          Expanded(
+            child: Text(
+              context.l10n.levels,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w800,
+                color: DecantColors.onSurface,
+              ),
             ),
           ),
-          const Spacer(),
           const Icon(Icons.star_rounded, color: DecantColors.star, size: 20),
           const SizedBox(width: 6),
           Text('$stars',
@@ -125,54 +129,61 @@ class _LevelTile extends StatelessWidget {
             width: 1.4,
           ),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (locked)
-              Icon(Icons.lock_rounded,
-                  color: DecantColors.subtle.withValues(alpha: 0.6), size: 22)
-            else
-              Text(
-                '$levelId',
-                style: const TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w800,
-                  color: DecantColors.onSurface,
+        // Scales down inside the fixed grid cell at large text sizes.
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (locked)
+                Icon(Icons.lock_rounded,
+                    color: DecantColors.subtle.withValues(alpha: 0.6), size: 22)
+              else
+                Text(
+                  '$levelId',
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w800,
+                    color: DecantColors.onSurface,
+                  ),
                 ),
-              ),
-            const SizedBox(height: 6),
-            if (!locked)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ...List.generate(3, (s) {
-                    final filled = result != null && s < result.stars;
-                    return Icon(
-                      filled ? Icons.star_rounded : Icons.star_outline_rounded,
-                      size: 12,
-                      color: filled
-                          ? DecantColors.star
-                          : DecantColors.subtle.withValues(alpha: 0.4),
-                    );
-                  }),
-                  if (result?.perfect ?? false)
-                    const Padding(
-                      padding: EdgeInsets.only(left: 2),
-                      child: Icon(
-                        Icons.verified_rounded,
+              const SizedBox(height: 6),
+              if (!locked)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ...List.generate(3, (s) {
+                      final filled = result != null && s < result.stars;
+                      return Icon(
+                        filled
+                            ? Icons.star_rounded
+                            : Icons.star_outline_rounded,
                         size: 12,
-                        color: DecantColors.accent,
-                        semanticLabel: 'Perfect',
+                        color: filled
+                            ? DecantColors.star
+                            : DecantColors.subtle.withValues(alpha: 0.4),
+                      );
+                    }),
+                    if (result?.perfect ?? false)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 2),
+                        child: Icon(
+                          Icons.verified_rounded,
+                          size: 12,
+                          color: DecantColors.accent,
+                          semanticLabel: context.l10n.perfect,
+                        ),
                       ),
-                    ),
-                ],
-              )
-            else
-              Text('Lvl $levelId',
-                  style: TextStyle(
-                      fontSize: 11,
-                      color: DecantColors.subtle.withValues(alpha: 0.6))),
-          ],
+                  ],
+                )
+              else
+                Text(context.l10n.levelShort(levelId),
+                    style: TextStyle(
+                        fontSize: 11,
+                        color: DecantColors.subtle.withValues(alpha: 0.6))),
+            ],
+          ),
         ),
       ),
     );
@@ -233,7 +244,7 @@ class _ChapterSection extends StatelessWidget {
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
-                  chapter.title,
+                  context.l10n.chapter(chapter),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
@@ -244,7 +255,7 @@ class _ChapterSection extends StatelessWidget {
                 ),
               ),
               Text(
-                '$solved/${Chapter.size} solved',
+                context.l10n.chapterSolved(solved, Chapter.size),
                 style: TextStyle(
                   fontSize: 12,
                   color: DecantColors.subtle.withValues(alpha: 0.9),
@@ -254,7 +265,9 @@ class _ChapterSection extends StatelessWidget {
           ),
         ),
         GridView.count(
-          crossAxisCount: 4,
+          // Four across on phones, more on tablets and in landscape. Each
+          // count divides a 20-level chapter, so no row is left half full.
+          crossAxisCount: _columnsFor(MediaQuery.sizeOf(context).width),
           mainAxisSpacing: 14,
           crossAxisSpacing: 14,
           childAspectRatio: 0.82,
@@ -276,3 +289,10 @@ class _ChapterSection extends StatelessWidget {
 
   VoidCallback _opener(int levelId) => () => onOpen(levelId);
 }
+
+/// Level-grid columns for a screen [width] in dp.
+int _columnsFor(double width) => width >= 1100
+    ? 10
+    : width >= 600
+        ? 5
+        : 4;

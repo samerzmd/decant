@@ -5,6 +5,7 @@ import '../audio/audio_service.dart';
 import '../audio/haptic_service.dart';
 import '../models/app_settings.dart';
 import '../services/persistence_service.dart';
+import '../models/liquid_palette.dart';
 
 /// Owns [AppSettings], persists changes, and pushes them into the audio and
 /// haptic services so the rest of the app just reads/sets values.
@@ -110,6 +111,23 @@ class SettingsController extends StateNotifier<AppSettings> {
       _commit(state.copyWith(reduceMotion: !state.reduceMotion));
 
   void toggleZenMode() => _commit(state.copyWith(zenMode: !state.zenMode));
+
+  void setLiquidPalette(LiquidPalette palette) =>
+      _commit(state.copyWith(liquidPalette: palette));
+
+  void setUiTheme(UiTheme theme) => _commit(state.copyWith(uiTheme: theme));
+
+  void setLanguage(AppLanguage language) =>
+      _commit(state.copyWith(language: language));
+
+  void setStreakReminders(bool on) =>
+      _commit(state.copyWith(streakReminders: on));
+
+  void setReminderHour(int hour) => _commit(state.copyWith(reminderHour: hour));
+
+  void markReminderOffered() {
+    if (!state.reminderOffered) _commit(state.copyWith(reminderOffered: true));
+  }
 
   void markTutorialSeen() {
     if (!state.tutorialSeen) _commit(state.copyWith(tutorialSeen: true));

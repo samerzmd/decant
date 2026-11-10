@@ -321,41 +321,55 @@ class _SoundTile extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(8, 12, 8, 10),
             child: Stack(
               children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 180),
-                      width: 46,
-                      height: 46,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: active
-                            ? DecantColors.accent
-                            : DecantColors.accent.withValues(alpha: 0.12),
+                // Scales down inside the fixed grid cell at large text sizes.
+                Positioned.fill(
+                  child: LayoutBuilder(
+                    builder: (context, box) => FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: SizedBox(
+                        width: box.maxWidth,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            AnimatedContainer(
+                              duration: const Duration(milliseconds: 180),
+                              width: 46,
+                              height: 46,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: active
+                                    ? DecantColors.accent
+                                    : DecantColors.accent
+                                        .withValues(alpha: 0.12),
+                              ),
+                              child: Icon(track.icon,
+                                  size: 24,
+                                  color: active
+                                      ? DecantColors.bgTop
+                                      : DecantColors.accent),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              track.label,
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: active
+                                    ? DecantColors.onSurface
+                                    : DecantColors.subtle,
+                                fontSize: 12.5,
+                                height: 1.15,
+                                fontWeight:
+                                    active ? FontWeight.w700 : FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      child: Icon(track.icon,
-                          size: 24,
-                          color: active
-                              ? DecantColors.bgTop
-                              : DecantColors.accent),
                     ),
-                    const SizedBox(height: 10),
-                    Text(
-                      track.label,
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: active
-                            ? DecantColors.onSurface
-                            : DecantColors.subtle,
-                        fontSize: 12.5,
-                        height: 1.15,
-                        fontWeight: active ? FontWeight.w700 : FontWeight.w600,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
                 if (active)
                   const Positioned(

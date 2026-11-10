@@ -328,7 +328,28 @@ class AudioService {
 
   // ---- Ambient bed ------------------------------------------------------- //
 
-  Future<void> startAmbient() async {
+  /// How long switching tracks takes: the old one fades out while the new
+  /// one fades in.
+  static const crossfade = Duration(milliseconds: 1500);
+
+  /// Releases [source] once any crossfade still playing from it has ended.
+  void _disposeAfterFade(AudioSource source) {
+    unawaited(
+      Future<void>.delayed(crossfade + const Duration(milliseconds: 300), () {
+        try {
+          return _soloud.disposeSource(source);
+        } catch (_) {}
+      }),
+    );
+  }
+
+  /// Fades [handle] out over [crossfade] and stops it.
+  void _fadeOut(SoundHandle handle) {
+    _safe(() => _soloud.fadeVolume(handle, 0, crossfade));
+    _safe(() => _soloud.scheduleStop(handle, crossfade));
+  }
+
+  Future<void> startAmbient({bool fadeIn = false}) async {
     if (!_ready) {
       _pendingAmbient = true; // start as soon as loading finishes
       return;
@@ -346,11 +367,16 @@ class AudioService {
             await _ambientSourceFor(AmbientTrack.ocean); // bundled stand-in
       }
       if (gen != _ambientGen || source == null) return; // superseded meanwhile
-      final h = _soloud.play(source, volume: _ambientLevel, looping: true);
+      final h = _soloud.play(
+        source,
+        volume: fadeIn ? 0 : _ambientLevel,
+        looping: true,
+      );
       if (gen != _ambientGen || _ambientLevel <= 0) {
         _safe(() => _soloud.stop(h)); // stopped/switched while starting
         return;
       }
+      if (fadeIn) _safe(() => _soloud.fadeVolume(h, _ambientLevel, crossfade));
       _ambientHandle = h;
     } catch (e) {
       Log.w('Audio', 'startAmbient failed', e);
@@ -367,11 +393,8 @@ class AudioService {
     _ambientSourceTrack = null;
     _musicSource = null;
     _musicSourceTrack = null;
-    if (old != null) {
-      try {
-        await _soloud.disposeSource(old);
-      } catch (_) {}
-    }
+    // Later, not now: the old bed may still be fading out.
+    if (old != null) _disposeAfterFade(old);
     final src = await _loadSound(track);
     if (src == null) return null;
     _ambientSource = src;
@@ -387,17 +410,20 @@ class AudioService {
     _safe(() => _soloud.stop(h));
   }
 
-  /// Switch the ambient bed to [track]. If ambience is currently audible, it
-  /// restarts seamlessly with the new track.
+  /// Switch the ambient bed to [track]. If ambience is playing, the old bed
+  /// fades out while the new one fades in.
   Future<void> switchAmbient(AmbientTrack track) async {
     _settings = _settings.copyWith(ambientTrack: track);
-    await stopAmbient();
-    if (_ambientLevel > 0) await startAmbient();
+    _ambientGen++;
+    final old = _ambientHandle;
+    _ambientHandle = null;
+    if (old != null) _fadeOut(old);
+    if (_ambientLevel > 0) await startAmbient(fadeIn: old != null);
   }
 
   // ---- Background music -------------------------------------------------- //
 
-  Future<void> startMusic() async {
+  Future<void> startMusic({bool fadeIn = false}) async {
     if (!_ready) {
       _pendingMusic = true; // start as soon as loading finishes
       return;
@@ -414,11 +440,16 @@ class AudioService {
         source = await _musicSourceFor(MusicTrack.warmKeys); // bundled stand-in
       }
       if (gen != _musicGen || source == null) return; // superseded meanwhile
-      final h = _soloud.play(source, volume: _musicBedLevel, looping: true);
+      final h = _soloud.play(
+        source,
+        volume: fadeIn ? 0 : _musicBedLevel,
+        looping: true,
+      );
       if (gen != _musicGen || _musicBedLevel <= 0) {
         _safe(() => _soloud.stop(h));
         return;
       }
+      if (fadeIn) _safe(() => _soloud.fadeVolume(h, _musicBedLevel, crossfade));
       _musicHandle = h;
     } catch (e) {
       Log.w('Audio', 'startMusic failed', e);
@@ -431,11 +462,8 @@ class AudioService {
     final old = _musicSource;
     _musicSource = null;
     _musicSourceTrack = null;
-    if (old != null) {
-      try {
-        await _soloud.disposeSource(old);
-      } catch (_) {}
-    }
+    // Later, not now: the old track may still be fading out.
+    if (old != null) _disposeAfterFade(old);
     final src = await _loadSound(track);
     if (src == null) return null;
     _musicSource = src;
@@ -452,11 +480,16 @@ class AudioService {
     _safe(() => _soloud.stop(h));
   }
 
-  /// Switch the music to [track], restarting it if it is currently playing.
+  /// Switch the music to [track]. If music is playing, the old track fades
+  /// out while the new one fades in.
   Future<void> switchMusic(MusicTrack track) async {
     _settings = _settings.copyWith(musicTrack: track);
-    await stopMusic();
-    if (_musicBedLevel > 0) await startMusic();
+    _pendingMusic = false;
+    _musicGen++;
+    final old = _musicHandle;
+    _musicHandle = null;
+    if (old != null) _fadeOut(old);
+    if (_musicBedLevel > 0) await startMusic(fadeIn: old != null);
   }
 
   // ---- App lifecycle ----------------------------------------------------- //
