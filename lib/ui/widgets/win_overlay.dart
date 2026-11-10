@@ -17,6 +17,9 @@ class WinOverlay extends StatelessWidget {
   /// For a daily challenge: the daily streak after this win.
   final int dailyStreak;
 
+  /// Zen mode: no stars or move count, just the celebration.
+  final bool zen;
+
   const WinOverlay({
     super.key,
     required this.levelId,
@@ -26,6 +29,7 @@ class WinOverlay extends StatelessWidget {
     required this.onReplay,
     required this.onLevels,
     this.dailyStreak = 0,
+    this.zen = false,
   });
 
   @override
@@ -89,17 +93,19 @@ class WinOverlay extends StatelessWidget {
                     letterSpacing: 0.5,
                   ),
                 ),
-                const SizedBox(height: 20),
-                StarRow(earned: stars, size: 40, animate: true),
-                const SizedBox(height: 18),
-                Text(
-                  '$moves ${moves == 1 ? 'move' : 'moves'}',
-                  style: const TextStyle(
-                    color: DecantColors.subtle,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
+                if (!zen) ...[
+                  const SizedBox(height: 20),
+                  StarRow(earned: stars, size: 40, animate: true),
+                  const SizedBox(height: 18),
+                  Text(
+                    '$moves ${moves == 1 ? 'move' : 'moves'}',
+                    style: const TextStyle(
+                      color: DecantColors.subtle,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                ),
+                ],
                 const SizedBox(height: 24),
                 DecantButton(
                   label: daily ? 'Done' : 'Next level',

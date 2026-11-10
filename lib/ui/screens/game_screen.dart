@@ -153,6 +153,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                     _Header(
                       levelId: levelId,
                       moves: session.moves,
+                      showMoves: !ref.watch(settingsProvider).zenMode,
                       difficulty: session.level.difficulty,
                       muted: muted,
                       onBack: attemptLeave,
@@ -221,6 +222,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                       stars: session.stars,
                       moves: session.moves,
                       dailyStreak: ref.watch(progressProvider).daily.streak,
+                      zen: ref.watch(settingsProvider).zenMode,
                       onNext: DailyChallenge.isDaily(levelId)
                           ? () => Navigator.of(context).pop()
                           : () => Navigator.of(context).pushReplacement(
@@ -246,6 +248,9 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 class _Header extends StatelessWidget {
   final int levelId;
   final int moves;
+
+  /// Hidden in Zen mode.
+  final bool showMoves;
   final int difficulty;
   final bool muted;
   final VoidCallback onBack;
@@ -255,6 +260,7 @@ class _Header extends StatelessWidget {
   const _Header({
     required this.levelId,
     required this.moves,
+    required this.showMoves,
     required this.difficulty,
     required this.muted,
     required this.onBack,
@@ -303,20 +309,21 @@ class _Header extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.06),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Text(
-              '$moves ${moves == 1 ? 'move' : 'moves'}',
-              style: const TextStyle(
-                color: DecantColors.onSurface,
-                fontWeight: FontWeight.w700,
+          if (showMoves)
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.06),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Text(
+                '$moves ${moves == 1 ? 'move' : 'moves'}',
+                style: const TextStyle(
+                  color: DecantColors.onSurface,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
-          ),
           IconButton(
             icon: Icon(
                 muted ? Icons.volume_off_rounded : Icons.volume_up_rounded,

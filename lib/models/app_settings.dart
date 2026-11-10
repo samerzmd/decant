@@ -40,6 +40,10 @@ class AppSettings {
   /// the system asks for fewer animations.
   final bool reduceMotion;
 
+  /// Pure unwinding: no move counter and no stars. Levels still count as
+  /// solved and unlock the next one.
+  final bool zenMode;
+
   const AppSettings({
     this.audio = const AudioSettings(),
     this.hapticsEnabled = true,
@@ -48,6 +52,7 @@ class AppSettings {
     this.tutorialSeen = false,
     this.pourSpeed = PourSpeed.normal,
     this.reduceMotion = false,
+    this.zenMode = false,
   });
 
   AppSettings copyWith({
@@ -58,6 +63,7 @@ class AppSettings {
     bool? tutorialSeen,
     PourSpeed? pourSpeed,
     bool? reduceMotion,
+    bool? zenMode,
   }) =>
       AppSettings(
         audio: audio ?? this.audio,
@@ -67,6 +73,7 @@ class AppSettings {
         tutorialSeen: tutorialSeen ?? this.tutorialSeen,
         pourSpeed: pourSpeed ?? this.pourSpeed,
         reduceMotion: reduceMotion ?? this.reduceMotion,
+        zenMode: zenMode ?? this.zenMode,
       );
 
   Map<String, dynamic> toJson() => {
@@ -77,6 +84,7 @@ class AppSettings {
         'tutorialSeen': tutorialSeen,
         'pourSpeed': pourSpeed.name,
         'reduceMotion': reduceMotion,
+        'zenMode': zenMode,
       };
 
   factory AppSettings.fromJson(Map<String, dynamic> j) => AppSettings(
@@ -90,5 +98,6 @@ class AppSettings {
         tutorialSeen: j['tutorialSeen'] as bool? ?? false,
         pourSpeed: PourSpeed.fromName(j['pourSpeed'] as String?),
         reduceMotion: j['reduceMotion'] as bool? ?? false,
+        zenMode: j['zenMode'] as bool? ?? false,
       );
 }

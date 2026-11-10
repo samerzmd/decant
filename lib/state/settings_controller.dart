@@ -109,6 +109,8 @@ class SettingsController extends StateNotifier<AppSettings> {
   void toggleReduceMotion() =>
       _commit(state.copyWith(reduceMotion: !state.reduceMotion));
 
+  void toggleZenMode() => _commit(state.copyWith(zenMode: !state.zenMode));
+
   void markTutorialSeen() {
     if (!state.tutorialSeen) _commit(state.copyWith(tutorialSeen: true));
   }

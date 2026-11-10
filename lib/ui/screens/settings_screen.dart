@@ -132,6 +132,13 @@ class SettingsScreen extends ConsumerWidget {
                       value: settings.pourSpeed,
                       onChanged: ctrl.setPourSpeed,
                     ),
+                    _SwitchTile(
+                      label: 'Zen mode',
+                      subtitle: 'No move counter or stars. Just pour.',
+                      icon: Icons.spa_rounded,
+                      value: settings.zenMode,
+                      onChanged: (_) => ctrl.toggleZenMode(),
+                    ),
                     const SizedBox(height: 18),
                     const _SectionLabel('Accessibility'),
                     _SwitchTile(

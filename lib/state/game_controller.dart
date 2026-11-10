@@ -197,7 +197,9 @@ class GameController extends StateNotifier<GameSession> {
   }
 
   void _onWin() {
-    final stars = _computeStars();
+    // Zen mode earns no stars: the level counts as solved, nothing more.
+    final zen = _ref.read(settingsProvider).zenMode;
+    final stars = zen ? 0 : _computeStars();
     state = state.copyWith(status: GameStatus.won, stars: stars);
     _audio.win();
     _haptic.win();

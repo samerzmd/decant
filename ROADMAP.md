@@ -59,7 +59,8 @@ Give players reasons to come back.
 
 - [x] **Daily challenge**: one seeded level per local day, the same for
       everyone, easiest on Monday and hardest on Sunday, with its own streak
-- [ ] **Zen mode** (no move counter, no stars — pure unwind)
+- [x] **Zen mode**: a setting that hides the move counter and stars; levels
+      still count as solved and unlock the next one
 - [ ] **Challenge modes**: move-limited and timed variants
 - [ ] Per-level star tuning + "perfect" (no-hint) badges
 - [ ] Hint economy / cooldown so hints feel earned (optional)
