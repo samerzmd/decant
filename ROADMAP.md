@@ -61,7 +61,8 @@ Give players reasons to come back.
       everyone, easiest on Monday and hardest on Sunday, with its own streak
 - [x] **Zen mode**: a setting that hides the move counter and stars; levels
       still count as solved and unlock the next one
-- [ ] **Challenge modes**: move-limited and timed variants
+- [x] **Challenge modes**: Move limit (no undo) and Against the clock, each an
+      endless ladder of stages with the best stage saved
 - [ ] Per-level star tuning + "perfect" (no-hint) badges
 - [ ] Hint economy / cooldown so hints feel earned (optional)
 - [ ] Level packs / chapters with themed palettes

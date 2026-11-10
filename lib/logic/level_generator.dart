@@ -3,6 +3,7 @@ import 'dart:math';
 import '../models/game_state.dart';
 import '../models/level.dart';
 import '../models/tube.dart';
+import 'challenge.dart';
 import 'daily_challenge.dart';
 import 'solver.dart';
 
@@ -37,6 +38,11 @@ class LevelGenerator {
   /// Shape of level [levelId]. Campaign levels (1-based) ramp up as the number
   /// grows; daily challenges (negative ids) follow the day of the week.
   static LevelConfig configFor(int levelId) {
+    if (Challenge.isChallenge(levelId)) {
+      return _configForColors(
+        Challenge.colorsFor(Challenge.stageOf(levelId)),
+      );
+    }
     if (DailyChallenge.isDaily(levelId)) {
       return _configForColors(
         DailyChallenge.colorsFor(DailyChallenge.dateOf(levelId)),

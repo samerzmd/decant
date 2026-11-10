@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/legacy.dart';
 
+import '../logic/challenge.dart';
 import '../logic/daily_challenge.dart';
+import '../models/challenge_stats.dart';
 import '../models/daily_stats.dart';
 import '../models/level_result.dart';
 import '../models/play_stats.dart';
@@ -19,6 +21,9 @@ class ProgressData {
   /// Daily challenge streak and recent results.
   final DailyStats daily;
 
+  /// Best stage cleared in each challenge mode.
+  final ChallengeStats challenges;
+
   const ProgressData({
     required this.unlockedLevel,
     required this.totalStars,
@@ -26,6 +31,7 @@ class ProgressData {
     required this.results,
     this.stats = const PlayStats(),
     this.daily = const DailyStats(),
+    this.challenges = const ChallengeStats(),
   });
 
   LevelResult? resultFor(int levelId) => results[levelId];
@@ -72,6 +78,7 @@ class ProgressController extends StateNotifier<ProgressData> {
       results: results,
       stats: p.loadStats(),
       daily: p.loadDaily(),
+      challenges: p.loadChallenges(),
     );
   }
 
@@ -83,6 +90,16 @@ class ProgressController extends StateNotifier<ProgressData> {
   /// A daily challenge win counts toward lifetime wins and the daily streak,
   /// but isn't a campaign level: it saves no level result and unlocks nothing.
   Future<void> recordWin(int levelId, int stars, int moves) async {
+    if (Challenge.isChallenge(levelId)) {
+      final cleared = _persistence.loadChallenges().recordClear(
+            Challenge.modeOf(levelId),
+            Challenge.stageOf(levelId),
+          );
+      await _persistence.saveChallenges(cleared);
+      await _persistence.saveStats(_persistence.loadStats().recordWin(_now()));
+      state = _read(_persistence);
+      return;
+    }
     if (DailyChallenge.isDaily(levelId)) {
       final day = DailyChallenge.dateOf(levelId);
       await _persistence.saveDaily(_persistence.loadDaily().record(day, stars));

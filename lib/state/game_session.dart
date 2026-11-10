@@ -2,7 +2,8 @@ import '../models/game_state.dart';
 import '../models/level.dart';
 import '../models/move.dart';
 
-enum GameStatus { playing, won }
+/// [failed]: a challenge ran out of moves or time.
+enum GameStatus { playing, won, failed }
 
 /// Transient description of an in-flight pour, consumed by the board widget to
 /// drive the arc stream, tube tilt, rising-liquid and splash animations.
@@ -69,6 +70,15 @@ class GameSession {
   /// True when the board has no legal moves and isn't solved.
   final bool stuck;
 
+  /// Move limit challenge: pours allowed in total (null otherwise).
+  final int? moveLimit;
+
+  /// Against the clock: time allowed, and time left (null otherwise). The
+  /// clock runs only once [clockStarted] is true (on the first pour).
+  final Duration? timeLimit;
+  final Duration? timeLeft;
+  final bool clockStarted;
+
   const GameSession({
     required this.level,
     required this.state,
@@ -79,10 +89,28 @@ class GameSession {
     this.hint,
     this.pour,
     this.stuck = false,
+    this.moveLimit,
+    this.timeLimit,
+    this.timeLeft,
+    this.clockStarted = false,
   });
 
   bool get isAnimating => pour != null;
-  bool get canUndo => state.history.isNotEmpty && status == GameStatus.playing;
+
+  /// Undo is off in a move limit challenge: it would hand moves back.
+  bool get canUndo =>
+      moveLimit == null &&
+      state.history.isNotEmpty &&
+      status == GameStatus.playing;
+
+  /// Pours left in a move limit challenge.
+  int? get movesLeft {
+    final limit = moveLimit;
+    if (limit == null) return null;
+    final left = limit - moves;
+    return left < 0 ? 0 : left;
+  }
+
   bool get canAddTube => state.extraTubesRemaining > 0;
   int get moves => state.moveCount;
 
@@ -97,6 +125,8 @@ class GameSession {
     PourAnim? pour,
     bool clearPour = false,
     bool? stuck,
+    Duration? timeLeft,
+    bool? clockStarted,
   }) {
     return GameSession(
       level: level,
@@ -108,6 +138,10 @@ class GameSession {
       hint: clearHint ? null : (hint ?? this.hint),
       pour: clearPour ? null : (pour ?? this.pour),
       stuck: stuck ?? this.stuck,
+      moveLimit: moveLimit,
+      timeLimit: timeLimit,
+      timeLeft: timeLeft ?? this.timeLeft,
+      clockStarted: clockStarted ?? this.clockStarted,
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../logic/challenge.dart';
 import '../../logic/daily_challenge.dart';
 import '../theme/app_theme.dart';
 import 'decant_button.dart';
@@ -35,6 +36,12 @@ class WinOverlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final daily = DailyChallenge.isDaily(levelId);
+    final challenge = Challenge.isChallenge(levelId);
+    final title = daily
+        ? 'Daily challenge solved'
+        : challenge
+            ? 'Stage ${Challenge.stageOf(levelId)} cleared'
+            : 'Level $levelId solved';
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0, end: 1),
       duration: const Duration(milliseconds: 320),
@@ -75,7 +82,7 @@ class WinOverlay extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  daily ? 'Daily challenge solved' : 'Level $levelId solved',
+                  title,
                   style: const TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w800,
@@ -108,7 +115,11 @@ class WinOverlay extends StatelessWidget {
                 ],
                 const SizedBox(height: 24),
                 DecantButton(
-                  label: daily ? 'Done' : 'Next level',
+                  label: daily
+                      ? 'Done'
+                      : challenge
+                          ? 'Next stage'
+                          : 'Next level',
                   icon:
                       daily ? Icons.check_rounded : Icons.arrow_forward_rounded,
                   expand: true,
@@ -130,7 +141,7 @@ class WinOverlay extends StatelessWidget {
                       const SizedBox(width: 12),
                       Expanded(
                         child: DecantButton(
-                          label: 'Levels',
+                          label: challenge ? 'Challenges' : 'Levels',
                           icon: Icons.grid_view_rounded,
                           primary: false,
                           onPressed: onLevels,

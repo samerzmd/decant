@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/legacy.dart';
 
 import '../audio/audio_service.dart';
 import '../audio/haptic_service.dart';
+import '../logic/challenge.dart';
 import '../logic/pour_engine.dart';
 import '../logic/solver.dart';
 import '../models/game_state.dart';
@@ -23,6 +24,9 @@ class GameController extends StateNotifier<GameSession> {
   int _comboChain = 0;
   int _pourSeq = 0;
 
+  /// Ticks the Against the clock timer once a second.
+  Timer? _clock;
+
   GameController(this._ref, this._level) : super(_initial(_level)) {
     _analytics.logLevelStart(_level.id);
   }
@@ -33,6 +37,7 @@ class GameController extends StateNotifier<GameSession> {
 
   @override
   void dispose() {
+    _clock?.cancel();
     // Leaving the level must immediately kill the looping pour sound, even if
     // we were mid-pour when the screen was popped.
     try {
@@ -49,13 +54,24 @@ class GameController extends StateNotifier<GameSession> {
     // Estimate optimal length for the star rating (board is guaranteed solvable).
     final solution = Solver.solve(state);
     final par = solution?.length ?? (level.colorCount * level.capacity);
-    return GameSession(level: level, state: state, par: par);
+    final mode =
+        Challenge.isChallenge(level.id) ? Challenge.modeOf(level.id) : null;
+    final timeLimit =
+        mode == ChallengeMode.timed ? Challenge.timeLimit(par) : null;
+    return GameSession(
+      level: level,
+      state: state,
+      par: par,
+      moveLimit: mode == ChallengeMode.moves ? Challenge.moveLimit(par) : null,
+      timeLimit: timeLimit,
+      timeLeft: timeLimit,
+    );
   }
 
   // ---- Input ------------------------------------------------------------- //
 
   void tapTube(int index) {
-    if (state.status == GameStatus.won || state.isAnimating) return;
+    if (state.status != GameStatus.playing || state.isAnimating) return;
 
     final selected = state.selected;
     if (selected == null) {
@@ -112,6 +128,7 @@ class GameController extends StateNotifier<GameSession> {
       pour: anim,
       stuck: false,
     );
+    _startClockIfNeeded();
 
     // --- Audio + haptics, timed to the animation -------------------------- //
     // The board plays the same timeline (see PourAnim.flowStart/flowEnd):
@@ -176,8 +193,12 @@ class GameController extends StateNotifier<GameSession> {
 
     state = state.copyWith(clearPour: true, stuck: stuck);
 
+    // Time ran out while this pour was in the air: it doesn't count.
+    if (state.status == GameStatus.failed) return;
     if (solved) {
       _onWin();
+    } else if ((state.movesLeft ?? 1) <= 0) {
+      _fail();
     }
   }
 
@@ -196,7 +217,41 @@ class GameController extends StateNotifier<GameSession> {
     }
   }
 
+  void _startClockIfNeeded() {
+    if (state.timeLimit == null || state.clockStarted) return;
+    state = state.copyWith(clockStarted: true);
+    _clock?.cancel();
+    _clock = Timer.periodic(const Duration(seconds: 1), (_) => _tick());
+  }
+
+  void _tick() {
+    if (!mounted || state.status != GameStatus.playing) {
+      _clock?.cancel();
+      return;
+    }
+    final left = (state.timeLeft ?? Duration.zero) - const Duration(seconds: 1);
+    if (left <= Duration.zero) {
+      state = state.copyWith(timeLeft: Duration.zero);
+      _fail();
+    } else {
+      state = state.copyWith(timeLeft: left);
+    }
+  }
+
+  /// A challenge ran out of moves or time.
+  void _fail() {
+    _clock?.cancel();
+    _comboChain = 0;
+    state = state.copyWith(
+      status: GameStatus.failed,
+      clearSelected: true,
+      clearHint: true,
+    );
+    _haptic.select();
+  }
+
   void _onWin() {
+    _clock?.cancel();
     // Zen mode earns no stars: the level counts as solved, nothing more.
     final zen = _ref.read(settingsProvider).zenMode;
     final stars = zen ? 0 : _computeStars();
@@ -250,6 +305,7 @@ class GameController extends StateNotifier<GameSession> {
   void restart() {
     if (state.isAnimating) return;
     _comboChain = 0;
+    _clock?.cancel();
     _audio.tap();
     final fresh = GameState(
       tubes: _level.buildTubes(),
@@ -262,12 +318,14 @@ class GameController extends StateNotifier<GameSession> {
       status: GameStatus.playing,
       stuck: false,
       stars: 0,
+      timeLeft: state.timeLimit,
+      clockStarted: false,
     );
   }
 
   /// Highlight the next optimal move. Returns false if none is available.
   bool requestHint() {
-    if (state.isAnimating || state.status == GameStatus.won) return false;
+    if (state.isAnimating || state.status != GameStatus.playing) return false;
     final move = Solver.nextMove(state.state);
     if (move == null) return false;
     _audio.tap();
@@ -286,7 +344,11 @@ class GameController extends StateNotifier<GameSession> {
 
   /// Use the "add empty tube" power-up. Returns false if no uses remain.
   bool addEmptyTube() {
-    if (state.isAnimating || !state.canAddTube) return false;
+    if (state.isAnimating ||
+        !state.canAddTube ||
+        state.status != GameStatus.playing) {
+      return false;
+    }
     final next = PourEngine.addEmptyTube(state.state);
     if (next == null) return false;
     _audio.glug();

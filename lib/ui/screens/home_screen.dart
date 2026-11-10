@@ -8,6 +8,7 @@ import '../theme/app_theme.dart';
 import '../widgets/confirm_dialog.dart';
 import '../widgets/decant_button.dart';
 import '../widgets/decant_logo.dart';
+import 'challenges_screen.dart';
 import 'game_screen.dart';
 import 'level_select_screen.dart';
 import 'settings_screen.dart';
@@ -62,105 +63,142 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       child: Scaffold(
         body: DecantBackground(
           child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Spacer(),
-                  const DecantLogo(size: 96),
-                  const SizedBox(height: 18),
-                  const Text(
-                    'Decant',
-                    style: TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 1.2,
-                      color: DecantColors.onSurface,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    'Pour. Sort. Unwind.',
-                    style: TextStyle(
-                      fontSize: 15,
-                      letterSpacing: 1.8,
-                      color: DecantColors.accent.withValues(alpha: 0.95),
-                    ),
-                  ),
-                  const SizedBox(height: 14),
-                  _StatPill(
-                    stars: progress.totalStars,
-                    completed: progress.levelsCompleted,
-                  ),
-                  const Spacer(),
-                  DecantButton(
-                    label: continueLevel > 1
-                        ? 'Continue · Level $continueLevel'
-                        : 'Play',
-                    icon: Icons.play_arrow_rounded,
-                    expand: true,
-                    onPressed: () => _openLevel(context, continueLevel),
-                  ),
-                  const SizedBox(height: 14),
-                  DecantButton(
-                    label: _dailyLabel(dailyDone, dailyStreak),
-                    icon: dailyDone
-                        ? Icons.check_circle_rounded
-                        : Icons.today_rounded,
-                    primary: false,
-                    expand: true,
-                    onPressed: () =>
-                        _openLevel(context, DailyChallenge.idFor(today)),
-                  ),
-                  const SizedBox(height: 14),
-                  DecantButton(
-                    label: 'Levels',
-                    icon: Icons.grid_view_rounded,
-                    primary: false,
-                    expand: true,
-                    onPressed: () => Navigator.of(context).push(
-                      _route(const LevelSelectScreen(), name: '/level_select'),
-                    ),
-                  ),
-                  const SizedBox(height: 14),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: DecantButton(
-                          label: 'Stats',
-                          icon: Icons.insights_rounded,
-                          primary: false,
-                          expand: true,
-                          onPressed: () => Navigator.of(context).push(
-                            _route(const StatsScreen(), name: '/stats'),
+            // Fills the screen with the spacers on normal phones; scrolls
+            // instead of overflowing on very short ones.
+            child: LayoutBuilder(
+              builder: (context, box) => SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: box.maxHeight),
+                  child: IntrinsicHeight(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 28),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Spacer(),
+                          const DecantLogo(size: 96),
+                          const SizedBox(height: 18),
+                          const Text(
+                            'Decant',
+                            style: TextStyle(
+                              fontSize: 40,
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: 1.2,
+                              color: DecantColors.onSurface,
+                            ),
                           ),
-                        ),
-                      ),
-                      const SizedBox(width: 14),
-                      Expanded(
-                        child: DecantButton(
-                          label: 'Settings',
-                          icon: Icons.tune_rounded,
-                          primary: false,
-                          expand: true,
-                          onPressed: () => Navigator.of(context).push(
-                            _route(const SettingsScreen(), name: '/settings'),
+                          const SizedBox(height: 6),
+                          Text(
+                            'Pour. Sort. Unwind.',
+                            style: TextStyle(
+                              fontSize: 15,
+                              letterSpacing: 1.8,
+                              color:
+                                  DecantColors.accent.withValues(alpha: 0.95),
+                            ),
                           ),
-                        ),
+                          const SizedBox(height: 14),
+                          _StatPill(
+                            stars: progress.totalStars,
+                            completed: progress.levelsCompleted,
+                          ),
+                          const Spacer(),
+                          DecantButton(
+                            label: continueLevel > 1
+                                ? 'Continue · Level $continueLevel'
+                                : 'Play',
+                            icon: Icons.play_arrow_rounded,
+                            expand: true,
+                            onPressed: () => _openLevel(context, continueLevel),
+                          ),
+                          const SizedBox(height: 14),
+                          DecantButton(
+                            label: _dailyLabel(dailyDone, dailyStreak),
+                            icon: dailyDone
+                                ? Icons.check_circle_rounded
+                                : Icons.today_rounded,
+                            primary: false,
+                            expand: true,
+                            onPressed: () => _openLevel(
+                                context, DailyChallenge.idFor(today)),
+                          ),
+                          const SizedBox(height: 14),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: DecantButton(
+                                  label: 'Levels',
+                                  icon: Icons.grid_view_rounded,
+                                  primary: false,
+                                  expand: true,
+                                  onPressed: () => Navigator.of(context).push(
+                                    _route(
+                                      const LevelSelectScreen(),
+                                      name: '/level_select',
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 14),
+                              Expanded(
+                                child: DecantButton(
+                                  label: 'Challenges',
+                                  icon: Icons.bolt_rounded,
+                                  primary: false,
+                                  expand: true,
+                                  onPressed: () => Navigator.of(context).push(
+                                    _route(
+                                      const ChallengesScreen(),
+                                      name: '/challenges',
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 14),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: DecantButton(
+                                  label: 'Stats',
+                                  icon: Icons.insights_rounded,
+                                  primary: false,
+                                  expand: true,
+                                  onPressed: () => Navigator.of(context).push(
+                                    _route(const StatsScreen(), name: '/stats'),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 14),
+                              Expanded(
+                                child: DecantButton(
+                                  label: 'Settings',
+                                  icon: Icons.tune_rounded,
+                                  primary: false,
+                                  expand: true,
+                                  onPressed: () => Navigator.of(context).push(
+                                    _route(const SettingsScreen(),
+                                        name: '/settings'),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Spacer(),
+                          Text(
+                            'A calm sorting game',
+                            style: TextStyle(
+                              color: DecantColors.subtle.withValues(alpha: 0.7),
+                              fontSize: 12,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                        ],
                       ),
-                    ],
-                  ),
-                  const Spacer(),
-                  Text(
-                    'A calm sorting game',
-                    style: TextStyle(
-                      color: DecantColors.subtle.withValues(alpha: 0.7),
-                      fontSize: 12,
                     ),
                   ),
-                  const SizedBox(height: 12),
-                ],
+                ),
               ),
             ),
           ),

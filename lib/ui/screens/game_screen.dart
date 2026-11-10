@@ -11,7 +11,9 @@ import '../widgets/decant_button.dart';
 import '../widgets/game_board.dart';
 import '../widgets/tutorial_card.dart';
 import '../widgets/win_overlay.dart';
+import '../../logic/challenge.dart';
 import '../../logic/daily_challenge.dart';
+import '../widgets/fail_overlay.dart';
 
 /// The gameplay screen: header (level + moves), the tube board, the control
 /// bar (undo / hint / add-tube / how-to-play), a stuck banner, the win overlay
@@ -152,8 +154,11 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                   children: [
                     _Header(
                       levelId: levelId,
-                      moves: session.moves,
-                      showMoves: !ref.watch(settingsProvider).zenMode,
+                      counter: _counter(
+                        session,
+                        zen: ref.watch(settingsProvider).zenMode ||
+                            Challenge.isChallenge(levelId),
+                      ),
                       difficulty: session.level.difficulty,
                       muted: muted,
                       onBack: attemptLeave,
@@ -215,6 +220,14 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                     const SizedBox(height: 8),
                   ],
                 ),
+                if (session.status == GameStatus.failed)
+                  Positioned.fill(
+                    child: FailOverlay(
+                      timedOut: session.timeLimit != null,
+                      onRetry: controller.restart,
+                      onBack: () => Navigator.of(context).pop(),
+                    ),
+                  ),
                 if (session.status == GameStatus.won)
                   Positioned.fill(
                     child: WinOverlay(
@@ -245,12 +258,25 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   }
 }
 
+/// The header pill: pours left in a Move limit challenge, the clock in
+/// Against the clock, otherwise the move count (hidden in Zen mode).
+String? _counter(GameSession s, {required bool zen}) {
+  final left = s.movesLeft;
+  if (left != null) return '$left ${left == 1 ? 'move' : 'moves'} left';
+  final time = s.timeLeft;
+  if (time != null) {
+    final secs = time.inSeconds;
+    return '${secs ~/ 60}:${(secs % 60).toString().padLeft(2, '0')}';
+  }
+  if (zen) return null;
+  return '${s.moves} ${s.moves == 1 ? 'move' : 'moves'}';
+}
+
 class _Header extends StatelessWidget {
   final int levelId;
-  final int moves;
 
-  /// Hidden in Zen mode.
-  final bool showMoves;
+  /// Text for the counter pill, or null to hide it.
+  final String? counter;
   final int difficulty;
   final bool muted;
   final VoidCallback onBack;
@@ -259,8 +285,7 @@ class _Header extends StatelessWidget {
 
   const _Header({
     required this.levelId,
-    required this.moves,
-    required this.showMoves,
+    required this.counter,
     required this.difficulty,
     required this.muted,
     required this.onBack,
@@ -288,7 +313,9 @@ class _Header extends StatelessWidget {
                 Text(
                   DailyChallenge.isDaily(levelId)
                       ? DailyChallenge.title(levelId)
-                      : 'Level $levelId',
+                      : Challenge.isChallenge(levelId)
+                          ? Challenge.title(levelId)
+                          : 'Level $levelId',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
@@ -309,7 +336,7 @@ class _Header extends StatelessWidget {
               ],
             ),
           ),
-          if (showMoves)
+          if (counter != null)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
               decoration: BoxDecoration(
@@ -317,7 +344,7 @@ class _Header extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Text(
-                '$moves ${moves == 1 ? 'move' : 'moves'}',
+                counter!,
                 style: const TextStyle(
                   color: DecantColors.onSurface,
                   fontWeight: FontWeight.w700,
