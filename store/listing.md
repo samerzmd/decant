@@ -91,7 +91,10 @@ Decant uses Google Analytics for Firebase. Based on what the app logs:
 - **Data types:**
   - *App activity → App interactions*: level start/complete, stars, moves,
     hints, tutorial and screen views. Used for **Analytics**.
-  - *Device or other IDs*: the Firebase app-instance ID. Used for **Analytics**.
+  - *Device or other IDs*: the Firebase app-instance ID and the advertising ID.
+    Used for **Analytics**.
+- **Advertising ID declaration:** Yes, for **Analytics** only. Firebase
+  Analytics adds the `AD_ID` permission to the manifest.
 - **Is data encrypted in transit?** Yes.
 - **Can users request deletion?** Data is tied to a random app-instance ID, not
   an account. Uninstalling resets it; Analytics data expires on Google's

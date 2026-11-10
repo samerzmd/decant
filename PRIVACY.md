@@ -21,14 +21,20 @@ played, so levels and features can be improved. It records:
   finished or skipped.
 - Which screens are opened.
 - Information Firebase collects automatically, such as a random app-instance
-  ID, device model, OS version, app version and approximate country.
+  ID, the device's advertising ID, device model, OS version, app version and
+  approximate country.
+
+The advertising ID is used only for analytics (for example, counting how many
+people play). Decant shows no ads. You can reset or delete your advertising ID
+at any time in your device's settings (on Android: Settings → Privacy → Ads).
 
 Decant does not collect your name, email, contacts, precise location or any
 other personal information, and does not use this data for advertising.
 
 Data is sent encrypted to Google and handled under
 [Google's privacy policy](https://policies.google.com/privacy). It is linked to
-a random ID, not to you. Reinstalling the app resets that ID.
+these device IDs, not to your name or account. Reinstalling the app resets the
+app-instance ID.
 
 ## Children
 
