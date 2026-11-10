@@ -1,6 +1,5 @@
 import 'dart:ui' as ui;
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
@@ -15,6 +14,7 @@ import 'game_controller.dart';
 import 'game_session.dart';
 import 'progress_controller.dart';
 import 'settings_controller.dart';
+import '../services/log.dart';
 
 /// Overridden in `main()` with the loaded instance.
 final persistenceProvider = Provider<PersistenceService>(
@@ -67,7 +67,7 @@ final glassShaderProvider = FutureProvider<ui.FragmentShader?>((ref) async {
     final program = await ui.FragmentProgram.fromAsset('shaders/glass.frag');
     return program.fragmentShader();
   } catch (e) {
-    if (kDebugMode) debugPrint('Glass shader unavailable, using fallback: $e');
+    Log.w('Shader', 'unavailable, using fallback', e);
     return null;
   }
 });

@@ -1,5 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import '../services/log.dart';
 
 /// Thin wrapper over Flutter's [HapticFeedback] so haptics can be globally
 /// toggled and centrally tuned to gameplay moments.
@@ -26,7 +26,7 @@ class HapticService {
     if (!enabled) return;
     // Fire-and-forget; haptics are unsupported on some platforms/desktop.
     fn().catchError((Object e) {
-      if (kDebugMode) debugPrint('Haptic failed: $e');
+      Log.w('Haptics', 'failed', e);
     });
   }
 }

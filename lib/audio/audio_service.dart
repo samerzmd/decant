@@ -7,6 +7,7 @@ import 'ambient_track.dart';
 import 'music_track.dart';
 import 'sound_catalog.dart';
 import 'sound_packs.dart';
+import '../services/log.dart';
 
 // Ambient beds: the 54-bed catalog lives in `ambient_track.dart` (+ its
 // generated `ambient_catalog.g.dart`); re-exported for existing importers.
@@ -189,9 +190,7 @@ class AudioService {
         await startMusic();
       }
     } catch (e) {
-      if (kDebugMode) {
-        debugPrint('AudioService init failed (continuing muted): $e');
-      }
+      Log.w('Audio', 'init failed (continuing muted)', e);
       _ready = false;
     }
   }
@@ -307,7 +306,7 @@ class AudioService {
       _pourHandle = _soloud.play(_pourSource!, volume: vol, looping: true);
       updatePourPitch(fillFraction);
     } catch (e) {
-      if (kDebugMode) debugPrint('startPour failed: $e');
+      Log.w('Audio', 'startPour failed', e);
     }
   }
 
@@ -354,7 +353,7 @@ class AudioService {
       }
       _ambientHandle = h;
     } catch (e) {
-      if (kDebugMode) debugPrint('startAmbient failed: $e');
+      Log.w('Audio', 'startAmbient failed', e);
     }
   }
 
@@ -422,7 +421,7 @@ class AudioService {
       }
       _musicHandle = h;
     } catch (e) {
-      if (kDebugMode) debugPrint('startMusic failed: $e');
+      Log.w('Audio', 'startMusic failed', e);
     }
   }
 
@@ -475,9 +474,7 @@ class AudioService {
     final mh = _musicHandle;
     if (mh != null) _safe(() => _soloud.setPause(mh, true));
     _safe(() => _soloud.setGlobalVolume(0));
-    if (kDebugMode) {
-      debugPrint('Decant audio: paused & silenced (ready=$_ready)');
-    }
+    Log.d('Audio', 'paused & silenced (ready=$_ready)');
   }
 
   /// Called when the Activity is being destroyed. Tears the engine down fully
@@ -500,7 +497,7 @@ class AudioService {
     _musicSourceTrack = null;
     _pendingAmbient = false;
     _pendingMusic = false;
-    if (kDebugMode) debugPrint('Decant audio: engine released (detached)');
+    Log.d('Audio', 'engine released (detached)');
   }
 
   /// Restore audio when the app returns from the background/history.
@@ -562,7 +559,7 @@ class AudioService {
     try {
       fn();
     } catch (e) {
-      if (kDebugMode) debugPrint('AudioService op failed: $e');
+      Log.w('Audio', 'op failed', e);
     }
   }
 }

@@ -3,6 +3,7 @@ import 'dart:io' show Platform;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import '../services/log.dart';
 
 /// Where a store-delivered sound pack stands on this device.
 enum PackStatus {
@@ -121,7 +122,7 @@ class SoundPacks {
       }
       return path;
     } catch (e) {
-      if (kDebugMode) debugPrint('SoundPacks.resolve($key) failed: $e');
+      Log.w('SoundPacks', 'resolve($key) failed', e);
       return null;
     }
   }

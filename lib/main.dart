@@ -1,5 +1,4 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,6 +10,7 @@ import 'services/persistence_service.dart';
 import 'state/providers.dart';
 import 'ui/screens/splash_screen.dart';
 import 'ui/theme/app_theme.dart';
+import 'services/log.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -74,7 +74,7 @@ class _DecantAppState extends ConsumerState<DecantApp>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (kDebugMode) debugPrint('Decant lifecycle → $state');
+    Log.d('Lifecycle', '$state');
     final audio = ref.read(audioServiceProvider);
     switch (state) {
       case AppLifecycleState.resumed:
