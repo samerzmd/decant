@@ -53,7 +53,7 @@ Tighten the release and lay groundwork for the community.
 - [x] App store assets (screenshots, feature graphic, store listing copy) in
       `store/`, plus a privacy policy (`PRIVACY.md`)
 
-## 🔜 v1.2 — Modes & replayability
+## ✅ v1.2 — Modes & replayability
 
 Give players reasons to come back.
 
@@ -67,7 +67,8 @@ Give players reasons to come back.
       solving in par with no hints or extra tube
 - [x] Hint economy: a pool of hints (start 3, hold 5), one earned back per
       solve; unlimited in Zen mode
-- [ ] Level packs / chapters with themed palettes
+- [x] Chapters of 20 levels with themed backgrounds (Dawn, Tide, Ember, Grove,
+      Dusk, Aurora), shown as sections on the level grid
 
 ## 💡 v1.3 — Accessibility & reach
 

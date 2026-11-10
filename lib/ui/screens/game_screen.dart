@@ -14,6 +14,7 @@ import '../widgets/tutorial_card.dart';
 import '../widgets/win_overlay.dart';
 import '../../logic/challenge.dart';
 import '../../logic/star_rating.dart';
+import '../../models/chapter.dart';
 import '../../logic/daily_challenge.dart';
 import '../widgets/fail_overlay.dart';
 
@@ -149,6 +150,9 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       },
       child: Scaffold(
         body: DecantBackground(
+          // Campaign levels take their chapter's palette.
+          colors:
+              _isCampaign(levelId) ? Chapter.forLevel(levelId).colors : null,
           child: SafeArea(
             child: Stack(
               children: [
@@ -337,7 +341,7 @@ class _Header extends StatelessWidget {
                       ? DailyChallenge.title(levelId)
                       : Challenge.isChallenge(levelId)
                           ? Challenge.title(levelId)
-                          : 'Level $levelId',
+                          : 'Level $levelId · ${Chapter.forLevel(levelId).name}',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
@@ -477,3 +481,7 @@ class _StuckBanner extends StatelessWidget {
     );
   }
 }
+
+/// Campaign levels are the positive ids below the challenge ranges.
+bool _isCampaign(int levelId) =>
+    !DailyChallenge.isDaily(levelId) && !Challenge.isChallenge(levelId);

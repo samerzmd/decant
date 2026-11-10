@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../logic/level_generator.dart';
+import '../../models/chapter.dart';
 import '../../state/progress_controller.dart';
 import '../../state/providers.dart';
 import '../theme/app_theme.dart';
@@ -23,25 +24,16 @@ class LevelSelectScreen extends ConsumerWidget {
             children: [
               _Header(stars: progress.totalStars),
               Expanded(
-                child: GridView.builder(
-                  padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4,
-                    mainAxisSpacing: 14,
-                    crossAxisSpacing: 14,
-                    childAspectRatio: 0.82,
-                  ),
-                  // No itemCount → the grid is unbounded and builds tiles
-                  // lazily as you scroll. Levels are infinite; a level is only
-                  // generated when its tile is tapped.
-                  itemBuilder: (context, i) {
-                    final levelId = i + 1;
-                    return _LevelTile(
-                      levelId: levelId,
+                // One section per chapter, built lazily as you scroll; there's
+                // no end, since levels are infinite.
+                child: ListView.builder(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
+                  itemBuilder: (context, index) {
+                    final chapter = Chapter.forLevel(index * Chapter.size + 1);
+                    return _ChapterSection(
+                      chapter: chapter,
                       progress: progress,
-                      onTap: progress.isUnlocked(levelId)
-                          ? () => _open(context, levelId)
-                          : null,
+                      onOpen: (levelId) => _open(context, levelId),
                     );
                   },
                 ),
@@ -200,4 +192,87 @@ class _LevelTile extends StatelessWidget {
         return const Color(0xFFE2425B);
     }
   }
+}
+
+/// A chapter's header (with its palette as a swatch) and its 20 levels.
+class _ChapterSection extends StatelessWidget {
+  final Chapter chapter;
+  final ProgressData progress;
+  final ValueChanged<int> onOpen;
+
+  const _ChapterSection({
+    required this.chapter,
+    required this.progress,
+    required this.onOpen,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    var solved = 0;
+    for (var id = chapter.firstLevel; id <= chapter.lastLevel; id++) {
+      if (progress.resultFor(id) != null) solved++;
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(2, 14, 2, 10),
+          child: Row(
+            children: [
+              Container(
+                width: 18,
+                height: 18,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(colors: chapter.colors),
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: 0.35),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  chapter.title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                    color: DecantColors.onSurface,
+                  ),
+                ),
+              ),
+              Text(
+                '$solved/${Chapter.size} solved',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: DecantColors.subtle.withValues(alpha: 0.9),
+                ),
+              ),
+            ],
+          ),
+        ),
+        GridView.count(
+          crossAxisCount: 4,
+          mainAxisSpacing: 14,
+          crossAxisSpacing: 14,
+          childAspectRatio: 0.82,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          padding: EdgeInsets.zero,
+          children: [
+            for (var id = chapter.firstLevel; id <= chapter.lastLevel; id++)
+              _LevelTile(
+                levelId: id,
+                progress: progress,
+                onTap: progress.isUnlocked(id) ? _opener(id) : null,
+              ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  VoidCallback _opener(int levelId) => () => onOpen(levelId);
 }

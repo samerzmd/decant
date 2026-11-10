@@ -48,14 +48,26 @@ ThemeData buildDecantTheme() {
 }
 
 /// A full-screen container painting the brand gradient. Wrap each screen body.
+/// [colors] swaps in another top-to-bottom gradient, such as a chapter theme.
 class DecantBackground extends StatelessWidget {
   final Widget child;
-  const DecantBackground({super.key, required this.child});
+  final List<Color>? colors;
+  const DecantBackground({super.key, required this.child, this.colors});
 
   @override
   Widget build(BuildContext context) {
+    final c = colors;
     return DecoratedBox(
-      decoration: const BoxDecoration(gradient: kBackgroundGradient),
+      decoration: BoxDecoration(
+        gradient: c == null
+            ? kBackgroundGradient
+            : LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: c,
+                stops: const [0.0, 0.55, 1.0],
+              ),
+      ),
       child: child,
     );
   }
