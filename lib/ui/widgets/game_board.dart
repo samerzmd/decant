@@ -1,10 +1,11 @@
 import 'dart:math' as math;
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../models/move.dart';
-import '../../models/tube.dart';
+import '../../state/game_controller.dart';
 import '../../state/game_session.dart';
 import '../../state/providers.dart';
 import '../painters/liquid_geometry.dart';
@@ -105,88 +106,112 @@ class _GameBoardState extends ConsumerState<GameBoard>
         );
         return AnimatedBuilder(
           animation: Listenable.merge([_bubble, _pour, _wobble]),
-          builder: (context, _) {
-            final time = _bubble.value * 8.0;
-            final pourP = _pour.value;
-            final pose = pour == null
-                ? null
-                : _pose(
-                    layout,
-                    session,
-                    pour,
-                    pourP,
-                    reduceMotion,
-                    constraints.maxWidth,
-                    time,
-                  );
-            final children = <Widget>[];
-            Widget? source;
-
-            for (var i = 0; i < session.state.tubes.length; i++) {
-              final Tube tube = session.state.tubes[i];
-              final rect = layout.rects[i];
-
-              final isSource = pose != null && pour!.from == i;
-              final isDest = pose != null && pour!.to == i;
-              final wobble =
-                  (isDest && _wobble.isAnimating) ? (1 - _wobble.value) : 0.0;
-
-              final child = Positioned(
-                key: ValueKey(i),
-                left: rect.left,
-                top: rect.top,
-                width: rect.width,
-                height: rect.height,
-                child: TubeWidget(
-                  tube: tube,
-                  width: rect.width,
-                  height: rect.height,
-                  time: time,
-                  colorblind: colorblind,
-                  selected: session.selected == i,
-                  hintSource: session.hint?.from == i ||
-                      (widget.guide?.from == i && session.selected != i),
-                  hintTarget: session.hint?.to == i ||
-                      (widget.guide?.to == i &&
-                          session.selected == widget.guide?.from),
-                  risingCount: isDest ? pour.count : 0,
-                  risingProgress: isDest ? pose.risen : 1.0,
-                  risingColor: isDest ? pour.color : null,
-                  drainCount: isSource ? pour.count : 0,
-                  drainProgress: isSource ? pose.drained : 0.0,
-                  drainColor: isSource ? pour.color : null,
-                  tilt: isSource ? pose.tilt : 0.0,
-                  pivot: isSource ? pose.pivot : Alignment.topCenter,
-                  offset: isSource ? pose.offset : Offset.zero,
-                  agitation: isDest ? pose.agitation : 0.0,
-                  wobble: wobble,
-                  shader: shader,
-                  onTap: () => controller.tapTube(i),
-                ),
-              );
-              // The source is painted last, so it passes over other tubes.
-              if (isSource) {
-                source = child;
-              } else {
-                children.add(child);
-              }
-            }
-
-            if (pose != null && pose.stream != null) {
-              children.add(Positioned.fill(
-                child: IgnorePointer(
-                  child: CustomPaint(painter: pose.stream),
-                ),
-              ));
-            }
-            if (source != null) children.add(source);
-
-            return Stack(clipBehavior: Clip.none, children: children);
-          },
+          // A plain method rather than an inline closure: release builds
+          // crashed in the GC with this frame body as a nested closure.
+          builder: (context, _) => _buildFrame(
+            layout: layout,
+            session: session,
+            controller: controller,
+            colorblind: colorblind,
+            reduceMotion: reduceMotion,
+            shader: shader,
+            boardWidth: constraints.maxWidth,
+          ),
         );
       },
     );
   }
+
+  /// One animation frame of the board: every tube in its slot (the pouring
+  /// source moved and tilted), plus the stream.
+  ///
+  /// Kept deliberately simple for the compiler: [pour] and [pose] are
+  /// resolved to non-null locals once, and tubes are matched by index, with
+  /// no promotion through stored booleans and no nested closures.
+  Widget _buildFrame({
+    required _Layout layout,
+    required GameSession session,
+    required GameController controller,
+    required bool colorblind,
+    required bool reduceMotion,
+    required ui.FragmentShader? shader,
+    required double boardWidth,
+  }) {
+    final time = _bubble.value * 8.0;
+    final pourP = _pour.value;
+    final PourAnim? pour = session.pour;
+    final _PourPose? pose = pour == null
+        ? null
+        : _pose(layout, session, pour, pourP, reduceMotion, boardWidth, time);
+
+    // -1 when no pour is running.
+    final int sourceIndex = (pour != null && pose != null) ? pour.from : -1;
+    final int destIndex = (pour != null && pose != null) ? pour.to : -1;
+    final int pourCount = pour?.count ?? 0;
+    final int? pourColor = pour?.color;
+    final wobbleOn = _wobble.isAnimating;
+    final wobbleValue = _wobble.value;
+
+    final children = <Widget>[];
+    Widget? source;
+    final tubes = session.state.tubes;
+    for (var i = 0; i < tubes.length; i++) {
+      final rect = layout.rects[i];
+      final isSource = i == sourceIndex;
+      final isDest = i == destIndex;
+      final child = Positioned(
+        key: ValueKey(i),
+        left: rect.left,
+        top: rect.top,
+        width: rect.width,
+        height: rect.height,
+        child: TubeWidget(
+          tube: tubes[i],
+          width: rect.width,
+          height: rect.height,
+          time: time,
+          colorblind: colorblind,
+          selected: session.selected == i,
+          hintSource: session.hint?.from == i ||
+              (widget.guide?.from == i && session.selected != i),
+          hintTarget: session.hint?.to == i ||
+              (widget.guide?.to == i && session.selected == widget.guide?.from),
+          risingCount: isDest ? pourCount : 0,
+          risingProgress: isDest ? pose!.risen : 1.0,
+          risingColor: isDest ? pourColor : null,
+          drainCount: isSource ? pourCount : 0,
+          drainProgress: isSource ? pose!.drained : 0.0,
+          drainColor: isSource ? pourColor : null,
+          tilt: isSource ? pose!.tilt : 0.0,
+          pivot: isSource ? pose!.pivot : Alignment.topCenter,
+          offset: isSource ? pose!.offset : Offset.zero,
+          agitation: isDest ? pose!.agitation : 0.0,
+          wobble: (isDest && wobbleOn) ? (1 - wobbleValue) : 0.0,
+          shader: shader,
+          onTap: _tapHandler(controller, i),
+        ),
+      );
+      // The source is painted last, so it passes over other tubes.
+      if (isSource) {
+        source = child;
+      } else {
+        children.add(child);
+      }
+    }
+
+    final stream = pose?.stream;
+    if (stream != null) {
+      children.add(Positioned.fill(
+        child: IgnorePointer(child: CustomPaint(painter: stream)),
+      ));
+    }
+    if (source != null) children.add(source);
+    return Stack(clipBehavior: Clip.none, children: children);
+  }
+
+  /// Tap callback for tube [index], made outside the build loop.
+  static VoidCallback _tapHandler(GameController controller, int index) =>
+      () => controller.tapTube(index);
 
   // ---- Geometry ---------------------------------------------------------- //
 
