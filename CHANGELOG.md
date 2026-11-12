@@ -6,6 +6,13 @@ All notable changes to Decant are documented here. The format loosely follows
 
 ## [Unreleased]
 
+## [1.4.1] — 2026-11-12
+
+### Fixed
+- Four-digit levels showed as "Level 10…" on narrow phones. The game
+  header now shows the full level number, with the chapter name on the
+  line underneath.
+
 ## [1.4.0] — 2026-11-12
 
 ### Added
