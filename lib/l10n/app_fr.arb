@@ -135,5 +135,13 @@
   "reminderOfferTitle": "Garder votre série ?",
   "reminderOfferMessage": "Decant peut vous envoyer un petit rappel à {time} les jours où le défi du jour n’est pas fait. Modifiable dans les Réglages.",
   "remindMe": "Me le rappeler",
-  "notNow": "Plus tard"
+  "notNow": "Plus tard",
+  "outOfHintsTitle": "Plus d’indices",
+  "watchForHintMessage": "Regardez une courte vidéo pour obtenir un indice maintenant, ou résolvez un niveau pour en gagner un.",
+  "watchVideo": "Voir la vidéo",
+  "noVideoReady": "Aucune vidéo n’est prête pour le moment. Réessayez dans un instant.",
+  "videoNotFinished": "La vidéo s’est arrêtée avant la fin : pas d’indice cette fois.",
+  "privacy": "Confidentialité",
+  "adPrivacyChoices": "Choix de confidentialité des annonces",
+  "adPrivacySubtitle": "Modifier l’usage de vos données par les annonces"
 }

@@ -30,6 +30,10 @@ class AnalyticsService {
 
   void logHintUsed(int levelId) => _log('hint_used', {'level_id': levelId});
 
+  /// A rewarded video for a hint closed; [earned] when it was watched through.
+  void logRewardedHint({required bool earned}) =>
+      _log('rewarded_hint', {'earned': earned ? 1 : 0});
+
   void logAddTubeUsed(int levelId) =>
       _log('add_tube_used', {'level_id': levelId});
 

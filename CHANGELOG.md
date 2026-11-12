@@ -6,6 +6,12 @@ All notable changes to Decant are documented here. The format loosely follows
 
 ## [Unreleased]
 
+### Added
+- Out of hints? Watch a short, optional video for one (Google AdMob rewarded
+  ads). Nothing plays unless you choose to, Zen mode and challenge ladders
+  never offer it, and players in the EEA and UK are asked for consent first,
+  with "Ad privacy choices" in Settings to change it.
+
 ## [1.3.1] — 2026-11-12
 
 ### Added

@@ -917,6 +917,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not now'**
   String get notNow;
+
+  /// No description provided for @outOfHintsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Out of hints'**
+  String get outOfHintsTitle;
+
+  /// No description provided for @watchForHintMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch a short video for a hint now, or solve a level to earn one back.'**
+  String get watchForHintMessage;
+
+  /// No description provided for @watchVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch video'**
+  String get watchVideo;
+
+  /// No description provided for @noVideoReady.
+  ///
+  /// In en, this message translates to:
+  /// **'No video is ready right now. Try again in a moment.'**
+  String get noVideoReady;
+
+  /// No description provided for @videoNotFinished.
+  ///
+  /// In en, this message translates to:
+  /// **'The video ended early, so no hint this time.'**
+  String get videoNotFinished;
+
+  /// No description provided for @privacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy'**
+  String get privacy;
+
+  /// No description provided for @adPrivacyChoices.
+  ///
+  /// In en, this message translates to:
+  /// **'Ad privacy choices'**
+  String get adPrivacyChoices;
+
+  /// No description provided for @adPrivacySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Change how ads use your data'**
+  String get adPrivacySubtitle;
 }
 
 class _AppLocalizationsDelegate

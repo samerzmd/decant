@@ -471,4 +471,31 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get notNow => 'Nicht jetzt';
+
+  @override
+  String get outOfHintsTitle => 'Keine Tipps mehr';
+
+  @override
+  String get watchForHintMessage =>
+      'Sieh dir ein kurzes Video an, um jetzt einen Tipp zu bekommen, oder löse ein Level, um einen zu verdienen.';
+
+  @override
+  String get watchVideo => 'Video ansehen';
+
+  @override
+  String get noVideoReady =>
+      'Gerade ist kein Video bereit. Versuch es gleich noch einmal.';
+
+  @override
+  String get videoNotFinished =>
+      'Das Video wurde vorzeitig beendet, daher gibt es diesmal keinen Tipp.';
+
+  @override
+  String get privacy => 'Datenschutz';
+
+  @override
+  String get adPrivacyChoices => 'Datenschutzoptionen für Werbung';
+
+  @override
+  String get adPrivacySubtitle => 'Ändern, wie Werbung deine Daten nutzt';
 }

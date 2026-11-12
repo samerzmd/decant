@@ -471,4 +471,31 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get notNow => 'Ahora no';
+
+  @override
+  String get outOfHintsTitle => 'Sin pistas';
+
+  @override
+  String get watchForHintMessage =>
+      'Mira un vídeo corto para obtener una pista ahora, o resuelve un nivel para ganar una.';
+
+  @override
+  String get watchVideo => 'Ver vídeo';
+
+  @override
+  String get noVideoReady =>
+      'Ahora no hay ningún vídeo listo. Inténtalo de nuevo en un momento.';
+
+  @override
+  String get videoNotFinished =>
+      'El vídeo terminó antes de tiempo, así que esta vez no hay pista.';
+
+  @override
+  String get privacy => 'Privacidad';
+
+  @override
+  String get adPrivacyChoices => 'Opciones de privacidad de anuncios';
+
+  @override
+  String get adPrivacySubtitle => 'Cambia cómo usan tus datos los anuncios';
 }

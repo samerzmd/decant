@@ -469,4 +469,30 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notNow => 'Not now';
+
+  @override
+  String get outOfHintsTitle => 'Out of hints';
+
+  @override
+  String get watchForHintMessage =>
+      'Watch a short video for a hint now, or solve a level to earn one back.';
+
+  @override
+  String get watchVideo => 'Watch video';
+
+  @override
+  String get noVideoReady =>
+      'No video is ready right now. Try again in a moment.';
+
+  @override
+  String get videoNotFinished => 'The video ended early, so no hint this time.';
+
+  @override
+  String get privacy => 'Privacy';
+
+  @override
+  String get adPrivacyChoices => 'Ad privacy choices';
+
+  @override
+  String get adPrivacySubtitle => 'Change how ads use your data';
 }

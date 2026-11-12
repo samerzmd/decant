@@ -44,6 +44,14 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        // AdMob app ID (it ships inside the app, so it isn't a secret). Pass
+        // the real one with -PADMOB_APP_ID=… or ORG_GRADLE_PROJECT_ADMOB_APP_ID;
+        // without it the app uses Google's sample ID, and release builds
+        // without ADMOB_REWARDED_ID load no ads anyway.
+        manifestPlaceholders["admobAppId"] =
+            (project.findProperty("ADMOB_APP_ID") as String?)
+                ?.takeIf { it.isNotBlank() }
+                ?: "ca-app-pub-3940256099942544~3347511713"
     }
 
     signingConfigs {

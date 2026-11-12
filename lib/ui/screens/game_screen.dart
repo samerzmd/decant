@@ -52,6 +52,51 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     });
   }
 
+  /// Whether an empty hint pool offers a video. Challenge ladders don't: the
+  /// clock would keep running during the video.
+  bool get _videoHintsOffered =>
+      ref.read(adServiceProvider).enabled && !Challenge.isChallenge(levelId);
+
+  void _toast(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message), duration: const Duration(seconds: 2)),
+    );
+  }
+
+  /// Out of hints: offers a short rewarded video for one, then shows it.
+  Future<void> _offerVideoHint() async {
+    final l10n = context.l10n;
+    final watch = await showDecantConfirm(
+      context,
+      title: l10n.outOfHintsTitle,
+      message: l10n.watchForHintMessage,
+      confirmLabel: l10n.watchVideo,
+      cancelLabel: l10n.notNow,
+      icon: Icons.ondemand_video_rounded,
+    );
+    if (!watch || !mounted) return;
+    final ads = ref.read(adServiceProvider);
+    if (!ads.rewardedReady) {
+      _toast(l10n.noVideoReady);
+      return;
+    }
+    // On Android the video is its own activity, so the app lifecycle pauses
+    // and resumes the sound around it.
+    final earned = await ads.showRewarded();
+    ref.read(analyticsServiceProvider).logRewardedHint(earned: earned);
+    if (!mounted) return;
+    if (!earned) {
+      _toast(l10n.videoNotFinished);
+      return;
+    }
+    await ref.read(progressProvider.notifier).grantHint();
+    if (!mounted) return;
+    final outcome =
+        ref.read(gameControllerProvider(levelId).notifier).requestHint();
+    // The board may have no useful move; the earned hint stays in the pool.
+    if (outcome == HintOutcome.noMove) _toast(l10n.noMovesHint);
+  }
+
   void _startGuide({required bool replay}) {
     final controller = ref.read(gameControllerProvider(levelId).notifier);
     var session = ref.read(gameControllerProvider(levelId));
@@ -207,19 +252,18 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                           ? null
                           : ref.watch(progressProvider).hints,
                       onHint: () {
-                        final message = switch (controller.requestHint()) {
+                        final outcome = controller.requestHint();
+                        if (outcome == HintOutcome.noHintsLeft &&
+                            _videoHintsOffered) {
+                          _offerVideoHint();
+                          return;
+                        }
+                        final message = switch (outcome) {
                           HintOutcome.shown => null,
                           HintOutcome.noMove => context.l10n.noMovesHint,
                           HintOutcome.noHintsLeft => context.l10n.noHintsLeft,
                         };
-                        if (message != null) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(message),
-                              duration: const Duration(seconds: 2),
-                            ),
-                          );
-                        }
+                        if (message != null) _toast(message);
                       },
                       onAddTube: () {
                         final ok = controller.addEmptyTube();

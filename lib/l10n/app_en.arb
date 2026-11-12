@@ -300,5 +300,13 @@
     }
   },
   "remindMe": "Remind me",
-  "notNow": "Not now"
+  "notNow": "Not now",
+  "outOfHintsTitle": "Out of hints",
+  "watchForHintMessage": "Watch a short video for a hint now, or solve a level to earn one back.",
+  "watchVideo": "Watch video",
+  "noVideoReady": "No video is ready right now. Try again in a moment.",
+  "videoNotFinished": "The video ended early, so no hint this time.",
+  "privacy": "Privacy",
+  "adPrivacyChoices": "Ad privacy choices",
+  "adPrivacySubtitle": "Change how ads use your data"
 }

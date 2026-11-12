@@ -104,6 +104,12 @@ class ProgressController extends StateNotifier<ProgressData> {
     return true;
   }
 
+  /// Adds one hint to the pool (the reward for watching a video).
+  Future<void> grantHint() async {
+    await _persistence.saveHints(_persistence.hints() + 1);
+    state = _read(_persistence);
+  }
+
   Future<void> recordWin(
     int levelId,
     int stars,

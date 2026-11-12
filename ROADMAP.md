@@ -67,6 +67,8 @@ Give players reasons to come back.
       solving in par with no hints or extra tube
 - [x] Hint economy: a pool of hints (start 3, hold 5), one earned back per
       solve; unlimited in Zen mode
+- [x] Optional rewarded video (AdMob) for a hint when the pool is empty, with
+      Google's consent form where the law needs it
 - [x] Chapters of 20 levels with themed backgrounds (Dawn, Tide, Ember, Grove,
       Dusk, Aurora), shown as sections on the level grid
 - [x] Streak reminders: an opt-in local notification at a chosen hour when

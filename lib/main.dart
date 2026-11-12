@@ -9,6 +9,7 @@ import 'firebase_options.dart';
 import 'l10n/l10n.dart';
 import 'logic/streak_reminder.dart';
 import 'models/app_settings.dart';
+import 'services/ad_service.dart';
 import 'services/analytics_service.dart';
 import 'services/persistence_service.dart';
 import 'services/reminder_service.dart';
@@ -38,6 +39,7 @@ Future<void> main() async {
   // a no-op until ready, and the ambient bed auto-starts once loading finishes.
   final audio = AudioService();
   final reminders = ReminderService();
+  final ads = AdService();
   WidgetsBinding.instance.addPostFrameCallback((_) {
     audio.init();
   });
@@ -49,6 +51,7 @@ Future<void> main() async {
         audioServiceProvider.overrideWithValue(audio),
         analyticsServiceProvider.overrideWithValue(analytics),
         reminderServiceProvider.overrideWithValue(reminders),
+        adServiceProvider.overrideWithValue(ads),
       ],
       child: const DecantApp(),
     ),
@@ -73,6 +76,9 @@ class _DecantAppState extends ConsumerState<DecantApp>
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await ref.read(reminderServiceProvider).init();
       if (mounted) _syncReminder();
+      // Asks for ad consent where it's needed, then loads a video in the
+      // background for the "watch for a hint" offer.
+      await ref.read(adServiceProvider).init();
     });
   }
 

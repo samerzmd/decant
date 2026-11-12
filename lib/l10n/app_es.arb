@@ -135,5 +135,13 @@
   "reminderOfferTitle": "¿Mantener tu racha?",
   "reminderOfferMessage": "Decant puede enviarte un aviso suave a las {time} los días que no hayas resuelto el desafío diario. Puedes cambiarlo en Ajustes.",
   "remindMe": "Recuérdamelo",
-  "notNow": "Ahora no"
+  "notNow": "Ahora no",
+  "outOfHintsTitle": "Sin pistas",
+  "watchForHintMessage": "Mira un vídeo corto para obtener una pista ahora, o resuelve un nivel para ganar una.",
+  "watchVideo": "Ver vídeo",
+  "noVideoReady": "Ahora no hay ningún vídeo listo. Inténtalo de nuevo en un momento.",
+  "videoNotFinished": "El vídeo terminó antes de tiempo, así que esta vez no hay pista.",
+  "privacy": "Privacidad",
+  "adPrivacyChoices": "Opciones de privacidad de anuncios",
+  "adPrivacySubtitle": "Cambia cómo usan tus datos los anuncios"
 }

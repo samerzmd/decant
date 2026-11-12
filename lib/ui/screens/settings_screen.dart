@@ -213,6 +213,21 @@ class SettingsScreen extends ConsumerWidget {
                         value: settings.language,
                         onChanged: ctrl.setLanguage,
                       ),
+                      // Shown only where the consent law applies (EEA, UK).
+                      if (ref
+                          .read(adServiceProvider)
+                          .privacyOptionsRequired) ...[
+                        const SizedBox(height: 18),
+                        _SectionLabel(context.l10n.privacy),
+                        _NavTile(
+                          title: context.l10n.privacy,
+                          value: context.l10n.adPrivacyChoices,
+                          detail: context.l10n.adPrivacySubtitle,
+                          icon: Icons.privacy_tip_rounded,
+                          onTap: () =>
+                              ref.read(adServiceProvider).showPrivacyOptions(),
+                        ),
+                      ],
                     ],
                   ),
                 ),

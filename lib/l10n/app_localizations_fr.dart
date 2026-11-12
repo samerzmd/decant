@@ -477,4 +477,32 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get notNow => 'Plus tard';
+
+  @override
+  String get outOfHintsTitle => 'Plus d’indices';
+
+  @override
+  String get watchForHintMessage =>
+      'Regardez une courte vidéo pour obtenir un indice maintenant, ou résolvez un niveau pour en gagner un.';
+
+  @override
+  String get watchVideo => 'Voir la vidéo';
+
+  @override
+  String get noVideoReady =>
+      'Aucune vidéo n’est prête pour le moment. Réessayez dans un instant.';
+
+  @override
+  String get videoNotFinished =>
+      'La vidéo s’est arrêtée avant la fin : pas d’indice cette fois.';
+
+  @override
+  String get privacy => 'Confidentialité';
+
+  @override
+  String get adPrivacyChoices => 'Choix de confidentialité des annonces';
+
+  @override
+  String get adPrivacySubtitle =>
+      'Modifier l’usage de vos données par les annonces';
 }

@@ -8,6 +8,7 @@ import '../audio/haptic_service.dart';
 import '../logic/level_generator.dart';
 import '../models/app_settings.dart';
 import '../models/level.dart';
+import '../services/ad_service.dart';
 import '../services/analytics_service.dart';
 import '../services/persistence_service.dart';
 import 'game_controller.dart';
@@ -27,6 +28,10 @@ final persistenceProvider = Provider<PersistenceService>(
 /// service; this default stays inert (every call is a no-op), as in tests.
 final reminderServiceProvider =
     Provider<ReminderService>((_) => ReminderService());
+
+/// Rewarded video ads. Overridden in main; this default shows no ads, as in
+/// tests.
+final adServiceProvider = Provider<AdService>((_) => AdService.off());
 
 final audioServiceProvider = Provider<AudioService>(
   (_) => throw UnimplementedError('audioServiceProvider must be overridden'),

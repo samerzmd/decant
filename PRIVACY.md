@@ -1,9 +1,10 @@
 # Decant privacy policy
 
-*Last updated: 10 November 2026*
+*Last updated: 12 November 2026*
 
-Decant is a single-player puzzle game. It has no accounts, no ads and no
-in-app purchases.
+Decant is a single-player puzzle game. It has no accounts and no in-app
+purchases. The only ads are optional videos you can choose to watch for a hint
+when you have none left.
 
 ## What stays on your device
 
@@ -24,12 +25,29 @@ played, so levels and features can be improved. It records:
   ID, the device's advertising ID, device model, OS version, app version and
   approximate country.
 
-The advertising ID is used only for analytics (for example, counting how many
-people play). Decant shows no ads. You can reset or delete your advertising ID
-at any time in your device's settings (on Android: Settings → Privacy → Ads).
+Analytics also records whether a hint video was watched through.
 
 Decant does not collect your name, email, contacts, precise location or any
-other personal information, and does not use this data for advertising.
+other personal information.
+
+## Ads
+
+When your hint pool is empty, Decant offers a short video ad in exchange for a
+hint. Nothing plays unless you tap **Watch video**, and there are no banners
+or ads between levels.
+
+These videos come from **Google AdMob**. To show and measure them, AdMob
+collects the device's advertising ID, IP address, device and app information,
+and how you interact with the ad. Google may use this to show personalized ads
+where you allow it. See
+[how Google uses information from apps that use its services](https://policies.google.com/technologies/partner-sites).
+
+If you are in the European Economic Area, the UK or Switzerland, Decant asks
+for your consent before any ad is loaded, using Google's consent form. You can
+change your choice at any time in **Settings → Privacy → Ad privacy choices**.
+
+You can reset or delete your advertising ID at any time in your device's
+settings (on Android: Settings → Privacy → Ads).
 
 Data is sent encrypted to Google and handled under
 [Google's privacy policy](https://policies.google.com/privacy). It is linked to

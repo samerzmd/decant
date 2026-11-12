@@ -135,5 +135,13 @@
   "reminderOfferTitle": "Serie halten?",
   "reminderOfferMessage": "Decant kann dich an Tagen ohne gelöstes Tagesrätsel um {time} sanft erinnern. Das lässt sich in den Einstellungen ändern.",
   "remindMe": "Erinnere mich",
-  "notNow": "Nicht jetzt"
+  "notNow": "Nicht jetzt",
+  "outOfHintsTitle": "Keine Tipps mehr",
+  "watchForHintMessage": "Sieh dir ein kurzes Video an, um jetzt einen Tipp zu bekommen, oder löse ein Level, um einen zu verdienen.",
+  "watchVideo": "Video ansehen",
+  "noVideoReady": "Gerade ist kein Video bereit. Versuch es gleich noch einmal.",
+  "videoNotFinished": "Das Video wurde vorzeitig beendet, daher gibt es diesmal keinen Tipp.",
+  "privacy": "Datenschutz",
+  "adPrivacyChoices": "Datenschutzoptionen für Werbung",
+  "adPrivacySubtitle": "Ändern, wie Werbung deine Daten nutzt"
 }

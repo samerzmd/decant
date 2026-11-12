@@ -113,6 +113,19 @@ Actions). Encode files with `base64 -i <file> | pbcopy` on macOS:
 | `GOOGLE_SERVICES_JSON_BASE64` | `android/app/google-services.json`, base64 |
 | `FIREBASE_OPTIONS_DART_BASE64` | `lib/firebase_options.dart`, base64 |
 
+Rewarded ads use two repository **variables** (same page, Variables tab).
+They ship inside the app, so they aren't secrets:
+
+| Variable | Value |
+| --- | --- |
+| `ADMOB_APP_ID` | the AdMob app ID, `ca-app-pub-…~…` |
+| `ADMOB_REWARDED_ID` | the rewarded ad unit ID, `ca-app-pub-…/…` |
+
+Without them the release builds and works, but shows no ads. Debug builds use
+Google's test ads; to try real ones locally, build with
+`--dart-define=ADMOB_REWARDED_ID=…` and `-PADMOB_APP_ID=…` (or the
+`ORG_GRADLE_PROJECT_ADMOB_APP_ID` environment variable).
+
 ## Reporting bugs
 
 Open an issue with: device + OS version, Flutter version (`flutter --version`),

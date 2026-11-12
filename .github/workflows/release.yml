@@ -104,8 +104,21 @@ jobs:
         run: flutter test
 
       # Debug symbols are kept so crash reports from this build can be read.
+      # AdMob IDs are repository variables. Without them the bundle shows no
+      # ads (and never a test ad).
       - name: Build the app bundle
-        run: flutter build appbundle --release --split-debug-info=build/symbols
+        env:
+          ORG_GRADLE_PROJECT_ADMOB_APP_ID: ${{ vars.ADMOB_APP_ID }}
+          ADMOB_REWARDED_ID: ${{ vars.ADMOB_REWARDED_ID }}
+        run: |
+          if [[ -z "$ADMOB_REWARDED_ID" || -z "$ORG_GRADLE_PROJECT_ADMOB_APP_ID" ]]; then
+            echo "::warning::ADMOB_APP_ID or ADMOB_REWARDED_ID is not set; this build shows no ads."
+            unset ORG_GRADLE_PROJECT_ADMOB_APP_ID
+            flutter build appbundle --release --split-debug-info=build/symbols
+          else
+            flutter build appbundle --release --split-debug-info=build/symbols \
+              --dart-define=ADMOB_REWARDED_ID="$ADMOB_REWARDED_ID"
+          fi
 
       - name: Check the bundle is signed with the upload key
         run: |
