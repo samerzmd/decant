@@ -6,6 +6,8 @@ All notable changes to Decant are documented here. The format loosely follows
 
 ## [Unreleased]
 
+## [1.3.1] — 2026-11-12
+
 ### Added
 - Daylight, a light theme. Every screen now draws its colors from theme
   tokens, and a test checks text contrast for each theme.
