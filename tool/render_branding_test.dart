@@ -35,7 +35,7 @@ Future<void> _render(
     canvas.drawRect(
       full,
       Paint()
-        ..shader = const LinearGradient(
+        ..shader = LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [

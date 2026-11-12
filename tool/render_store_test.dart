@@ -52,7 +52,7 @@ void main() {
       canvas.drawRect(
         full,
         Paint()
-          ..shader = const LinearGradient(
+          ..shader = LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
@@ -83,7 +83,7 @@ void main() {
         canvas,
         'Decant',
         const Offset(72, 128),
-        const TextStyle(
+        TextStyle(
           fontSize: 112,
           fontWeight: FontWeight.w900,
           letterSpacing: 2,
@@ -94,7 +94,7 @@ void main() {
         canvas,
         'Pour. Sort. Unwind.',
         const Offset(78, 272),
-        const TextStyle(
+        TextStyle(
           fontSize: 34,
           fontWeight: FontWeight.w500,
           letterSpacing: 4,
@@ -105,7 +105,7 @@ void main() {
         canvas,
         'A calm water-sort puzzle',
         const Offset(78, 330),
-        const TextStyle(fontSize: 26, color: DecantColors.subtle),
+        TextStyle(fontSize: 26, color: DecantColors.subtle),
       );
 
       final image =
