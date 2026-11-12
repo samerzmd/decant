@@ -6,7 +6,49 @@ All notable changes to Decant are documented here. The format loosely follows
 
 ## [Unreleased]
 
-- See [ROADMAP.md](ROADMAP.md) for what's planned next.
+### Added
+- Daylight, a light theme. Every screen now draws its colors from theme
+  tokens, and a test checks text contrast for each theme.
+- Release automation: pushing a `v*` tag builds the signed app bundle and
+  publishes a GitHub release with these notes.
+
+## [1.3.0] — 2026-11-11
+
+### Added
+- A new, game-like home screen with a bobbing tube shelf, chapter progress
+  and big Play, Daily and Challenges cards.
+- Daily challenge: one seeded level per day, the same for everyone, with its
+  own streak.
+- Streak reminders: an opt-in notification at a chosen hour when today's
+  daily isn't solved. The app offers them after a few wins.
+- Zen mode, which hides moves and stars.
+- Challenge modes: Move limit (no undo) and Against the clock.
+- Star targets while playing, and a perfect badge.
+- A hint pool: start with 3, hold up to 5, earn one back per solve.
+- Chapters of 20 levels with themed backgrounds.
+- Themes (Twilight, Midnight, High contrast) and colorblind-safe and
+  high-contrast liquid palettes.
+- Spanish, French and German, with a Language setting.
+- Tablet and landscape layouts.
+- A 1.5 s crossfade when switching ambience tracks.
+
+### Fixed
+- A crash in release builds while playing.
+- Text overflow at large system text sizes.
+
+## [1.1.0] — 2026-11-10
+
+### Added
+- A stats screen, pour speed and reduce motion settings, and a first-run
+  guide.
+- Realistic pouring: the tube tips over the target and the liquid drains.
+- 54 ambience sounds and 54 music tracks, the extra ones delivered by
+  Google Play asset packs.
+- A Keep screen awake setting.
+
+### Changed
+- Impeller is back on for Android.
+- Logging goes through one switchable logger, off in release builds.
 
 ## [1.0.0] — 2026-05-30
 

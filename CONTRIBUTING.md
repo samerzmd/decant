@@ -56,6 +56,7 @@ CI runs the same checks on every PR (`.github/workflows/ci.yml`).
   logs from a release build.
 - Match the existing style: small widgets, `const` where possible, single
   quotes, comments that explain *why* not *what*.
+- Note user-facing changes under `## [Unreleased]` in `CHANGELOG.md`.
 
 ## Adding levels
 
@@ -77,6 +78,40 @@ re-run it, then register the asset:
 All shipped sounds are synthesized originals released as CC0. If you contribute
 sourced audio instead, it must be CC0/public-domain and documented in the
 README license table.
+
+## Releasing
+
+Releases are built by `.github/workflows/release.yml` when a version tag is
+pushed.
+
+1. Bump `version:` in `pubspec.yaml` (for example `1.4.0+3`; the build number
+   must go up for every Play upload).
+2. In `CHANGELOG.md`, rename `## [Unreleased]` to `## [1.4.0] — YYYY-MM-DD`
+   and start a new empty `## [Unreleased]` above it. CI fails if the
+   pubspec version has no section.
+3. Commit, then tag and push:
+
+   ```bash
+   git tag -a v1.4.0 -m "Decant 1.4.0"
+   git push origin master v1.4.0
+   ```
+
+The workflow checks the tag matches the pubspec version, runs the tests,
+builds the signed `.aab`, checks it isn't signed with the debug key, and
+publishes a GitHub release with the bundle, a zip of its debug symbols and the
+CHANGELOG notes. Upload the `.aab` to Play Console from there.
+
+It needs these repository secrets (Settings → Secrets and variables →
+Actions). Encode files with `base64 -i <file> | pbcopy` on macOS:
+
+| Secret | Value |
+| --- | --- |
+| `ANDROID_KEYSTORE_BASE64` | the upload keystore (`.jks`), base64 |
+| `ANDROID_KEYSTORE_PASSWORD` | the keystore password |
+| `ANDROID_KEY_ALIAS` | the key alias |
+| `ANDROID_KEY_PASSWORD` | the key password |
+| `GOOGLE_SERVICES_JSON_BASE64` | `android/app/google-services.json`, base64 |
+| `FIREBASE_OPTIONS_DART_BASE64` | `lib/firebase_options.dart`, base64 |
 
 ## Reporting bugs
 

@@ -105,7 +105,9 @@ Bigger bets, only if the community wants them.
 
 - [x] GitHub Actions CI: format + analyze + test + algorithm verifier
       (`.github/workflows/ci.yml`, Flutter pinned via `.fvmrc`)
-- [ ] Release automation (tagged builds, CHANGELOG enforcement)
+- [x] Release automation: a `v*` tag builds the signed bundle and publishes
+      a GitHub release with the CHANGELOG notes; CI requires notes for the
+      pubspec version
 - [ ] Publish to Google Play and the App Store; explore F-Droid
 - [ ] Issue/PR templates and a `good first issue` set for newcomers
 

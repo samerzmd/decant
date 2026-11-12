@@ -1,0 +1,143 @@
+name: Release
+
+# Pushing a version tag (v1.4.0) builds the signed Play Store bundle and
+# publishes a GitHub release with the bundle, its debug symbols and the
+# matching CHANGELOG.md notes.
+#
+# The tag must match the version in pubspec.yaml, and CHANGELOG.md must have
+# a section for it. Signing and Firebase config come from repository secrets
+# (see CONTRIBUTING.md → Releasing); the job stops before building if any
+# are missing, so a release is never signed with the debug key.
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  android:
+    name: Build and publish the Android bundle
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check the tag, pubspec version and changelog
+        id: version
+        run: |
+          name="$(tool/release/pubspec_version.sh name)"
+          code="$(tool/release/pubspec_version.sh code)"
+          tag="${GITHUB_REF_NAME}"
+          if [[ "$tag" != "v$name" ]]; then
+            echo "::error::Tag $tag doesn't match pubspec.yaml version $name (expected v$name)."
+            exit 1
+          fi
+          tool/release/changelog_section.sh "$name" > "$RUNNER_TEMP/notes.md"
+          echo "name=$name" >> "$GITHUB_OUTPUT"
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+
+      - name: Check release secrets
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          GOOGLE_SERVICES_JSON_BASE64: ${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}
+          FIREBASE_OPTIONS_DART_BASE64: ${{ secrets.FIREBASE_OPTIONS_DART_BASE64 }}
+        run: |
+          missing=0
+          for s in ANDROID_KEYSTORE_BASE64 ANDROID_KEYSTORE_PASSWORD \
+                   ANDROID_KEY_ALIAS ANDROID_KEY_PASSWORD \
+                   GOOGLE_SERVICES_JSON_BASE64 FIREBASE_OPTIONS_DART_BASE64; do
+            if [[ -z "${!s}" ]]; then
+              echo "::error::Repository secret $s is not set."
+              missing=1
+            fi
+          done
+          exit "$missing"
+
+      - name: Write signing and Firebase config
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          GOOGLE_SERVICES_JSON_BASE64: ${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}
+          FIREBASE_OPTIONS_DART_BASE64: ${{ secrets.FIREBASE_OPTIONS_DART_BASE64 }}
+        run: |
+          keystore="$RUNNER_TEMP/upload.jks"
+          printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 --decode > "$keystore"
+          {
+            echo "storeFile=$keystore"
+            echo "storePassword=$ANDROID_KEYSTORE_PASSWORD"
+            echo "keyAlias=$ANDROID_KEY_ALIAS"
+            echo "keyPassword=$ANDROID_KEY_PASSWORD"
+          } > android/key.properties
+          printf '%s' "$GOOGLE_SERVICES_JSON_BASE64" | base64 --decode > android/app/google-services.json
+          printf '%s' "$FIREBASE_OPTIONS_DART_BASE64" | base64 --decode > lib/firebase_options.dart
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      # Use the same Flutter as local development (pinned in .fvmrc).
+      - name: Read Flutter version
+        id: fvm
+        run: echo "flutter=$(jq -r .flutter .fvmrc)" >> "$GITHUB_OUTPUT"
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: ${{ steps.fvm.outputs.flutter }}
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run tests
+        run: flutter test
+
+      # Debug symbols are kept so crash reports from this build can be read.
+      - name: Build the app bundle
+        run: flutter build appbundle --release --split-debug-info=build/symbols
+
+      - name: Check the bundle is signed with the upload key
+        run: |
+          aab=build/app/outputs/bundle/release/app-release.aab
+          cert="$(keytool -printcert -jarfile "$aab")"
+          if grep -q "Android Debug" <<<"$cert"; then
+            echo "::error::The bundle is signed with the debug key."
+            exit 1
+          fi
+          {
+            echo "### Signing certificate"
+            echo '```'
+            grep -E "Owner:|SHA256:" <<<"$cert"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Package the release files
+        run: |
+          base="decant-${{ steps.version.outputs.name }}-${{ steps.version.outputs.code }}"
+          mkdir -p dist
+          cp build/app/outputs/bundle/release/app-release.aab "dist/$base.aab"
+          (cd build/symbols && zip -qr "../../dist/$base-symbols.zip" .)
+          ls -lh dist
+
+      - name: Publish the GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Decant ${{ steps.version.outputs.name }}
+          body_path: ${{ runner.temp }}/notes.md
+          files: dist/*
+          fail_on_unmatched_files: true
+
+      - name: Remove signing files
+        if: always()
+        run: rm -f android/key.properties "$RUNNER_TEMP/upload.jks"

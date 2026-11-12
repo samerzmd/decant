@@ -63,6 +63,16 @@ jobs:
           path: test/failures/
           if-no-files-found: ignore
 
+  changelog:
+    name: Changelog has notes for this version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Every version in pubspec.yaml needs a CHANGELOG.md section, so the
+      # release workflow always has notes to publish.
+      - name: Check CHANGELOG.md
+        run: tool/release/changelog_section.sh "$(tool/release/pubspec_version.sh)" > /dev/null
+
   verify-algorithm:
     name: Verify level/solver algorithm (Python reference)
     runs-on: ubuntu-latest
