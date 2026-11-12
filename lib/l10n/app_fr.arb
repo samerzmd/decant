@@ -143,5 +143,6 @@
   "videoNotFinished": "La vidéo s’est arrêtée avant la fin : pas d’indice cette fois.",
   "privacy": "Confidentialité",
   "adPrivacyChoices": "Choix de confidentialité des annonces",
-  "adPrivacySubtitle": "Modifier l’usage de vos données par les annonces"
+  "adPrivacySubtitle": "Modifier l’usage de vos données par les annonces",
+  "levelTitle": "Niveau {level}"
 }

@@ -143,5 +143,6 @@
   "videoNotFinished": "El vídeo terminó antes de tiempo, así que esta vez no hay pista.",
   "privacy": "Privacidad",
   "adPrivacyChoices": "Opciones de privacidad de anuncios",
-  "adPrivacySubtitle": "Cambia cómo usan tus datos los anuncios"
+  "adPrivacySubtitle": "Cambia cómo usan tus datos los anuncios",
+  "levelTitle": "Nivel {level}"
 }

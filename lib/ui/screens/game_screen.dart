@@ -374,35 +374,41 @@ class _Header extends StatelessWidget {
             icon: Icon(Icons.arrow_back_rounded, color: DecantColors.onSurface),
             onPressed: onBack,
           ),
-          // Takes the leftover width and truncates, so the header never
-          // overflows on narrow screens or with large system text.
+          // Takes the width the pill doesn't need. The title shrinks a little
+          // rather than cutting off a long level number, and the line under
+          // it truncates, so the header never overflows on narrow screens or
+          // with large system text.
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  DailyChallenge.isDaily(levelId)
-                      ? context.l10n.dailyChallengeTitle(levelId)
-                      : Challenge.isChallenge(levelId)
-                          ? context.l10n.challengeTitle(levelId)
-                          : context.l10n.levelHeader(
-                              levelId,
-                              context.l10n
-                                  .chapterName(Chapter.forLevel(levelId))),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w800,
-                    color: DecantColors.onSurface,
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    DailyChallenge.isDaily(levelId)
+                        ? context.l10n.dailyChallengeTitle(levelId)
+                        : Challenge.isChallenge(levelId)
+                            ? context.l10n.challengeTitle(levelId)
+                            : context.l10n.levelTitle(levelId),
+                    maxLines: 1,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w800,
+                      color: DecantColors.onSurface,
+                    ),
                   ),
                 ),
                 Text(
-                  context.l10n.difficulty(
-                          '${'●' * difficulty}${'○' * (5 - difficulty)}') +
-                      (threeStarMoves == null
-                          ? ''
-                          : ' · ${context.l10n.threeStarsIn(threeStarMoves!)}'),
+                  [
+                    if (!DailyChallenge.isDaily(levelId) &&
+                        !Challenge.isChallenge(levelId))
+                      context.l10n.chapterName(Chapter.forLevel(levelId)),
+                    context.l10n.difficulty(
+                        '${'●' * difficulty}${'○' * (5 - difficulty)}'),
+                    if (threeStarMoves != null)
+                      context.l10n.threeStarsIn(threeStarMoves!),
+                  ].join(' · '),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -414,8 +420,10 @@ class _Header extends StatelessWidget {
             ),
           ),
           if (counter != null)
-            // Shrinks (rather than overflowing) at large text sizes.
-            Flexible(
+            // As wide as its text, up to a cap; past that (large system text)
+            // the text scales down instead of overflowing.
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 120),
               child: Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 14, vertical: 7),

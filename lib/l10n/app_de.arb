@@ -143,5 +143,6 @@
   "videoNotFinished": "Das Video wurde vorzeitig beendet, daher gibt es diesmal keinen Tipp.",
   "privacy": "Datenschutz",
   "adPrivacyChoices": "Datenschutzoptionen für Werbung",
-  "adPrivacySubtitle": "Ändern, wie Werbung deine Daten nutzt"
+  "adPrivacySubtitle": "Ändern, wie Werbung deine Daten nutzt",
+  "levelTitle": "Level {level}"
 }

@@ -505,4 +505,9 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get adPrivacySubtitle =>
       'Modifier l’usage de vos données par les annonces';
+
+  @override
+  String levelTitle(int level) {
+    return 'Niveau $level';
+  }
 }

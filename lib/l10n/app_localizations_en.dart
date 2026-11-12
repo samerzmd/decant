@@ -495,4 +495,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get adPrivacySubtitle => 'Change how ads use your data';
+
+  @override
+  String levelTitle(int level) {
+    return 'Level $level';
+  }
 }

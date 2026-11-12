@@ -965,6 +965,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Change how ads use your data'**
   String get adPrivacySubtitle;
+
+  /// No description provided for @levelTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Level {level}'**
+  String levelTitle(int level);
 }
 
 class _AppLocalizationsDelegate

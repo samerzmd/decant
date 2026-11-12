@@ -308,5 +308,13 @@
   "videoNotFinished": "The video ended early, so no hint this time.",
   "privacy": "Privacy",
   "adPrivacyChoices": "Ad privacy choices",
-  "adPrivacySubtitle": "Change how ads use your data"
+  "adPrivacySubtitle": "Change how ads use your data",
+  "levelTitle": "Level {level}",
+  "@levelTitle": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      }
+    }
+  }
 }

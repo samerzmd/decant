@@ -1,6 +1,7 @@
 // Every screen on a landscape phone, a tablet and a landscape tablet.
 // Any overflow fails.
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -79,4 +80,41 @@ void main() {
       });
     }
   }
+
+  // Four-digit levels on a narrow phone used to show "Level 10…".
+  testWidgets('level 1000 shows its whole number on a 360 dp phone',
+      (tester) async {
+    tester.view.physicalSize = const Size(1080, 2340);
+    tester.view.devicePixelRatio = 3;
+    addTearDown(tester.view.reset);
+    SharedPreferences.setMockInitialValues({'decant.unlocked': 1000});
+    final p = await PersistenceService.create();
+    await p.saveSettings(const AppSettings(tutorialSeen: true));
+    await tester.pumpWidget(ProviderScope(
+      overrides: [
+        persistenceProvider.overrideWithValue(p),
+        audioServiceProvider.overrideWithValue(AudioService()),
+        analyticsServiceProvider.overrideWithValue(_Q()),
+      ],
+      child: const MaterialApp(
+        locale: Locale('en'),
+        supportedLocales: AppLocalizations.supportedLocales,
+        localizationsDelegates: [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        home: GameScreen(levelId: 1000),
+      ),
+    ));
+    await tester.pump();
+
+    final title = find.text('Level 1000');
+    expect(title, findsOneWidget);
+    expect(
+        tester.renderObject<RenderParagraph>(title).didExceedMaxLines, isFalse);
+    // The chapter moved to the line under the title.
+    expect(find.textContaining('Tide · Difficulty'), findsOneWidget);
+  });
 }

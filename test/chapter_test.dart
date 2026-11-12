@@ -93,7 +93,8 @@ void main() {
 
   testWidgets('a campaign level wears its chapter', (tester) async {
     await pump(tester, const GameScreen(levelId: 26));
-    expect(find.text('Level 26 · Tide'), findsOneWidget);
+    expect(find.text('Level 26'), findsOneWidget);
+    expect(find.textContaining('Tide · Difficulty'), findsOneWidget);
     expect(backgroundColors(tester), Chapter.forLevel(26).colors);
   });
 
