@@ -80,9 +80,9 @@ Give players reasons to come back.
 - [x] Dynamic type / larger-text support audit: every screen is checked at
       1.5× and 2× text, and in German, on a small phone.
 - [x] Additional colorblind palettes and a high-contrast theme
-- [x] Theme system (Twilight, Midnight, High contrast) set in Settings.
-      A light theme is still to come: it needs the hard-coded text colors
-      moved into theme tokens first.
+- [x] Theme system (Twilight, Midnight, High contrast, Daylight) set in
+      Settings. Every screen draws from theme tokens, and a test checks WCAG
+      contrast for each theme.
 - [x] More ambient beds + crossfade when switching tracks (the 50+ sound
       catalog, now with a 1.5 s crossfade)
 - [x] Tablet / large-screen and landscape layouts: rotation unlocked, menus

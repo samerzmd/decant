@@ -34,7 +34,7 @@ class SettingsScreen extends ConsumerWidget {
                   child: Row(
                     children: [
                       IconButton(
-                        icon: const Icon(Icons.arrow_back_rounded,
+                        icon: Icon(Icons.arrow_back_rounded,
                             color: DecantColors.onSurface),
                         onPressed: () => Navigator.of(context).pop(),
                       ),
@@ -43,7 +43,7 @@ class SettingsScreen extends ConsumerWidget {
                           context.l10n.settings,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w800,
                             color: DecantColors.onSurface,
@@ -263,7 +263,7 @@ class _ChoiceTile<T> extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.06),
+        color: DecantColors.ink.withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -276,7 +276,7 @@ class _ChoiceTile<T> extends StatelessWidget {
               Expanded(
                 child: Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: DecantColors.onSurface,
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
@@ -320,7 +320,7 @@ class _ChoiceTile<T> extends StatelessWidget {
           decoration: BoxDecoration(
             color: selected
                 ? DecantColors.accent
-                : Colors.white.withValues(alpha: 0.06),
+                : DecantColors.ink.withValues(alpha: 0.06),
             borderRadius: BorderRadius.circular(12),
           ),
           child: FittedBox(
@@ -330,7 +330,8 @@ class _ChoiceTile<T> extends StatelessWidget {
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
-                color: selected ? DecantColors.bgTop : DecantColors.onSurface,
+                color:
+                    selected ? DecantColors.onAccent : DecantColors.onSurface,
               ),
             ),
           ),
@@ -382,7 +383,7 @@ class _SwitchTile extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.06),
+        color: DecantColors.ink.withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
@@ -394,7 +395,7 @@ class _SwitchTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(label,
-                    style: const TextStyle(
+                    style: TextStyle(
                         color: DecantColors.onSurface,
                         fontSize: 15,
                         fontWeight: FontWeight.w600)),
@@ -440,7 +441,7 @@ class _SliderTile extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 10),
         padding: const EdgeInsets.fromLTRB(16, 8, 12, 8),
         decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.06),
+          color: DecantColors.ink.withValues(alpha: 0.06),
           borderRadius: BorderRadius.circular(16),
         ),
         child: Row(
@@ -450,7 +451,7 @@ class _SliderTile extends StatelessWidget {
             SizedBox(
               width: 96,
               child: Text(label,
-                  style: const TextStyle(
+                  style: TextStyle(
                       color: DecantColors.onSurface,
                       fontSize: 14,
                       fontWeight: FontWeight.w600)),
@@ -503,7 +504,7 @@ class _NavTile extends StatelessWidget {
           margin: const EdgeInsets.only(bottom: 10),
           padding: const EdgeInsets.fromLTRB(14, 12, 10, 12),
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.06),
+            color: DecantColors.ink.withValues(alpha: 0.06),
             borderRadius: BorderRadius.circular(16),
           ),
           child: Row(
@@ -529,7 +530,7 @@ class _NavTile extends StatelessWidget {
                             fontWeight: FontWeight.w600)),
                     const SizedBox(height: 2),
                     Text(value,
-                        style: const TextStyle(
+                        style: TextStyle(
                             color: DecantColors.onSurface,
                             fontSize: 15,
                             fontWeight: FontWeight.w700)),
@@ -540,8 +541,7 @@ class _NavTile extends StatelessWidget {
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right_rounded,
-                  color: DecantColors.subtle),
+              Icon(Icons.chevron_right_rounded, color: DecantColors.subtle),
             ],
           ),
         ),

@@ -15,7 +15,7 @@ Future<bool> showDecantConfirm(
 }) async {
   final result = await showDialog<bool>(
     context: context,
-    barrierColor: Colors.black.withValues(alpha: 0.55),
+    barrierColor: DecantColors.scrim,
     builder: (ctx) => _ConfirmDialog(
       title: title,
       message: message,
@@ -55,16 +55,16 @@ class _ConfirmDialog extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.fromLTRB(26, 26, 26, 22),
           decoration: BoxDecoration(
-            gradient: const LinearGradient(
+            gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [Color(0xFF2A3766), Color(0xFF31265C)],
+              colors: DecantColors.panel,
             ),
             borderRadius: BorderRadius.circular(26),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.12)),
+            border: Border.all(color: DecantColors.ink.withValues(alpha: 0.12)),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.35),
+                color: DecantColors.shadow,
                 blurRadius: 30,
                 offset: const Offset(0, 12),
               ),
@@ -78,7 +78,7 @@ class _ConfirmDialog extends StatelessWidget {
               Text(
                 title,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
                   color: DecantColors.onSurface,

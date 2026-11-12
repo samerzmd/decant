@@ -32,9 +32,8 @@ class _DecantButtonState extends State<DecantButton> {
     final enabled = widget.onPressed != null;
     final bg = widget.primary
         ? DecantColors.accent
-        : Colors.white.withValues(alpha: 0.06);
-    final fg =
-        widget.primary ? const Color(0xFF0E1530) : DecantColors.onSurface;
+        : DecantColors.ink.withValues(alpha: 0.06);
+    final fg = widget.primary ? DecantColors.onAccent : DecantColors.onSurface;
 
     return Opacity(
       opacity: enabled ? 1 : 0.4,
@@ -55,7 +54,7 @@ class _DecantButtonState extends State<DecantButton> {
               borderRadius: BorderRadius.circular(18),
               border: widget.primary
                   ? null
-                  : Border.all(color: Colors.white.withValues(alpha: 0.16)),
+                  : Border.all(color: DecantColors.ink.withValues(alpha: 0.16)),
               boxShadow: widget.primary
                   ? [
                       BoxShadow(
@@ -133,10 +132,10 @@ class DecantIconButton extends StatelessWidget {
                 width: 54,
                 height: 54,
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.07),
+                  color: DecantColors.ink.withValues(alpha: 0.07),
                   shape: BoxShape.circle,
-                  border:
-                      Border.all(color: Colors.white.withValues(alpha: 0.12)),
+                  border: Border.all(
+                      color: DecantColors.ink.withValues(alpha: 0.12)),
                 ),
                 child:
                     Icon(icon, color: tint ?? DecantColors.onSurface, size: 24),

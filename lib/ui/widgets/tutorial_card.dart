@@ -37,16 +37,16 @@ class TutorialCard extends StatelessWidget {
       margin: const EdgeInsets.fromLTRB(16, 4, 16, 0),
       padding: const EdgeInsets.fromLTRB(18, 16, 18, 14),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
+        gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xF22A3766), Color(0xF231265C)],
+          colors: DecantColors.panelTranslucent,
         ),
         borderRadius: BorderRadius.circular(22),
         border: Border.all(color: DecantColors.accent.withValues(alpha: 0.35)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.35),
+            color: DecantColors.shadow,
             blurRadius: 24,
             offset: const Offset(0, 10),
           ),
@@ -85,10 +85,10 @@ class TutorialCard extends StatelessWidget {
 }
 
 class _Instruction extends StatelessWidget {
-  static const _bodyStyle = TextStyle(
-    fontSize: 13.5,
-    color: DecantColors.subtle,
-  );
+  static TextStyle get _bodyStyle => TextStyle(
+        fontSize: 13.5,
+        color: DecantColors.subtle,
+      );
 
   final IconData icon;
   final String title;
@@ -128,7 +128,7 @@ class _Instruction extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.w800,
                       color: DecantColors.onSurface,
@@ -139,7 +139,7 @@ class _Instruction extends StatelessWidget {
                   // so the board doesn't jump between the pick and pour steps.
                   Stack(
                     children: [
-                      const Text('\n', style: _bodyStyle),
+                      Text('\n', style: _bodyStyle),
                       Text(body, style: _bodyStyle),
                     ],
                   ),
@@ -180,7 +180,7 @@ class _Goal extends StatelessWidget {
       children: [
         Text(
           context.l10n.tutorialGoal,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 17,
             fontWeight: FontWeight.w800,
             color: DecantColors.onSurface,
@@ -189,7 +189,7 @@ class _Goal extends StatelessWidget {
         const SizedBox(height: 4),
         Text(
           context.l10n.tutorialStars,
-          style: const TextStyle(fontSize: 13.5, color: DecantColors.subtle),
+          style: TextStyle(fontSize: 13.5, color: DecantColors.subtle),
         ),
         const SizedBox(height: 12),
         _Tool(icon: Icons.undo_rounded, label: context.l10n.tutorialUndo),
@@ -234,8 +234,7 @@ class _Tool extends StatelessWidget {
           const SizedBox(width: 12),
           Flexible(
             child: Text(label,
-                style: const TextStyle(
-                    fontSize: 14, color: DecantColors.onSurface)),
+                style: TextStyle(fontSize: 14, color: DecantColors.onSurface)),
           ),
         ],
       ),
@@ -262,7 +261,7 @@ class _Dots extends StatelessWidget {
             decoration: BoxDecoration(
               color: i == active
                   ? DecantColors.accent
-                  : Colors.white.withValues(alpha: 0.25),
+                  : DecantColors.ink.withValues(alpha: 0.25),
               borderRadius: BorderRadius.circular(3),
             ),
           ),

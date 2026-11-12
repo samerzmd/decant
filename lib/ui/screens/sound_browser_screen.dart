@@ -97,7 +97,7 @@ class _SoundBrowserScreenState extends ConsumerState<SoundBrowserScreen> {
 
     final slivers = <Widget>[];
     if (matches.isEmpty) {
-      slivers.add(const SliverFillRemaining(
+      slivers.add(SliverFillRemaining(
         hasScrollBody: false,
         child: Center(
           child: Text('No sounds match your search',
@@ -128,7 +128,7 @@ class _SoundBrowserScreenState extends ConsumerState<SoundBrowserScreen> {
                 child: Row(
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.arrow_back_rounded,
+                      icon: Icon(Icons.arrow_back_rounded,
                           color: DecantColors.onSurface),
                       onPressed: () => Navigator.of(context).pop(),
                     ),
@@ -137,7 +137,7 @@ class _SoundBrowserScreenState extends ConsumerState<SoundBrowserScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(_isMusic ? 'Music' : 'Ambience',
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.w800,
                                   color: DecantColors.onSurface)),
@@ -309,12 +309,12 @@ class _SoundTile extends StatelessWidget {
             decoration: BoxDecoration(
               color: active
                   ? DecantColors.accent.withValues(alpha: 0.18)
-                  : Colors.white.withValues(alpha: 0.06),
+                  : DecantColors.ink.withValues(alpha: 0.06),
               borderRadius: BorderRadius.circular(18),
               border: Border.all(
                 color: active
                     ? DecantColors.accent
-                    : Colors.white.withValues(alpha: 0.08),
+                    : DecantColors.ink.withValues(alpha: 0.08),
                 width: active ? 1.6 : 1.0,
               ),
             ),
@@ -346,7 +346,7 @@ class _SoundTile extends StatelessWidget {
                               child: Icon(track.icon,
                                   size: 24,
                                   color: active
-                                      ? DecantColors.bgTop
+                                      ? DecantColors.onAccent
                                       : DecantColors.accent),
                             ),
                             const SizedBox(height: 10),
@@ -372,7 +372,7 @@ class _SoundTile extends StatelessWidget {
                   ),
                 ),
                 if (active)
-                  const Positioned(
+                  Positioned(
                     top: 0,
                     right: 0,
                     child: Icon(Icons.graphic_eq_rounded,
@@ -392,7 +392,7 @@ class _SoundTile extends StatelessWidget {
                               color: DecantColors.accent,
                             ),
                           )
-                        : const Icon(Icons.cloud_download_rounded,
+                        : Icon(Icons.cloud_download_rounded,
                             size: 16, color: DecantColors.subtle),
                   ),
               ],
@@ -430,12 +430,12 @@ class _FilterChip extends StatelessWidget {
           decoration: BoxDecoration(
             color: active
                 ? DecantColors.accent.withValues(alpha: 0.22)
-                : Colors.white.withValues(alpha: 0.05),
+                : DecantColors.ink.withValues(alpha: 0.05),
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
               color: active
                   ? DecantColors.accent
-                  : Colors.white.withValues(alpha: 0.12),
+                  : DecantColors.ink.withValues(alpha: 0.12),
               width: 1.3,
             ),
           ),
@@ -479,23 +479,21 @@ class _SearchField extends StatelessWidget {
     return TextField(
       controller: controller,
       onChanged: onChanged,
-      style: const TextStyle(color: DecantColors.onSurface, fontSize: 15),
+      style: TextStyle(color: DecantColors.onSurface, fontSize: 15),
       cursorColor: DecantColors.accent,
       textInputAction: TextInputAction.search,
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: TextStyle(color: DecantColors.subtle.withValues(alpha: 0.7)),
-        prefixIcon:
-            const Icon(Icons.search_rounded, color: DecantColors.subtle),
+        prefixIcon: Icon(Icons.search_rounded, color: DecantColors.subtle),
         suffixIcon: controller.text.isEmpty
             ? null
             : IconButton(
-                icon:
-                    const Icon(Icons.close_rounded, color: DecantColors.subtle),
+                icon: Icon(Icons.close_rounded, color: DecantColors.subtle),
                 onPressed: onClear,
               ),
         filled: true,
-        fillColor: Colors.white.withValues(alpha: 0.07),
+        fillColor: DecantColors.ink.withValues(alpha: 0.07),
         contentPadding: const EdgeInsets.symmetric(vertical: 12),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
@@ -556,7 +554,7 @@ class _PackBanner extends StatelessWidget {
                 minHeight: 3,
                 value: pack.total > 0 ? pack.progress : null,
                 color: DecantColors.accent,
-                backgroundColor: Colors.white.withValues(alpha: 0.08),
+                backgroundColor: DecantColors.ink.withValues(alpha: 0.08),
               ),
             ),
           ],

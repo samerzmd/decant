@@ -400,9 +400,9 @@ class _Counter extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.fromLTRB(10, 7, 14, 7),
         decoration: BoxDecoration(
-          color: Colors.black.withValues(alpha: 0.22),
+          color: DecantColors.recess,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
+          border: Border.all(color: DecantColors.ink.withValues(alpha: 0.08)),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -411,7 +411,7 @@ class _Counter extends StatelessWidget {
             const SizedBox(width: 6),
             Text(
               '$value',
-              style: const TextStyle(
+              style: TextStyle(
                 color: DecantColors.onSurface,
                 fontSize: 15,
                 fontWeight: FontWeight.w800,
@@ -431,10 +431,13 @@ class _Title extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ShaderMask(
-      shaderCallback: (rect) => const LinearGradient(
+      shaderCallback: (rect) => LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
-        colors: [Colors.white, DecantColors.accent],
+        colors: [
+          DecantColors.isLight ? DecantColors.onSurface : Colors.white,
+          DecantColors.accent
+        ],
       ).createShader(rect),
       child: const Text(
         'Decant',
@@ -476,9 +479,9 @@ class _ChapterCard extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.fromLTRB(16, 12, 10, 14),
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.06),
+            color: DecantColors.ink.withValues(alpha: 0.06),
             borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
+            border: Border.all(color: DecantColors.ink.withValues(alpha: 0.08)),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -490,7 +493,7 @@ class _ChapterCard extends StatelessWidget {
                       l.chapter(chapter),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: DecantColors.onSurface,
                         fontSize: 15,
                         fontWeight: FontWeight.w800,
@@ -500,13 +503,13 @@ class _ChapterCard extends StatelessWidget {
                   const SizedBox(width: 8),
                   Text(
                     l.levels,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: DecantColors.subtle,
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const Icon(Icons.chevron_right_rounded,
+                  Icon(Icons.chevron_right_rounded,
                       color: DecantColors.subtle, size: 20),
                 ],
               ),
@@ -522,12 +525,12 @@ class _ChapterCard extends StatelessWidget {
                           fit: StackFit.expand,
                           children: [
                             ColoredBox(
-                              color: Colors.white.withValues(alpha: 0.08),
+                              color: DecantColors.ink.withValues(alpha: 0.08),
                             ),
                             FractionallySizedBox(
                               alignment: Alignment.centerLeft,
                               widthFactor: solved / Chapter.size,
-                              child: const DecoratedBox(
+                              child: DecoratedBox(
                                 decoration: BoxDecoration(
                                   gradient: LinearGradient(colors: [
                                     DecantColors.accentDeep,
@@ -594,7 +597,7 @@ class _PlayButton extends StatelessWidget {
             gradient: const LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [Color(0xFF6BE8D6), DecantColors.accentDeep],
+              colors: [Color(0xFF6BE8D6), Color(0xFF2BB6A6)],
             ),
             boxShadow: [
               BoxShadow(
@@ -618,7 +621,7 @@ class _PlayButton extends StatelessWidget {
                   color: _ink,
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.play_arrow_rounded,
+                child: Icon(Icons.play_arrow_rounded,
                     color: DecantColors.accent, size: 38),
               ),
               const SizedBox(width: 14),

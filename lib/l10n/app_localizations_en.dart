@@ -136,6 +136,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get themeMidnight => 'Midnight';
 
   @override
+  String get themeDaylight => 'Daylight';
+
+  @override
   String get highContrast => 'High contrast';
 
   @override

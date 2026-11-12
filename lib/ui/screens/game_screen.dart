@@ -327,8 +327,7 @@ class _Header extends StatelessWidget {
       child: Row(
         children: [
           IconButton(
-            icon: const Icon(Icons.arrow_back_rounded,
-                color: DecantColors.onSurface),
+            icon: Icon(Icons.arrow_back_rounded, color: DecantColors.onSurface),
             onPressed: onBack,
           ),
           // Takes the leftover width and truncates, so the header never
@@ -348,7 +347,7 @@ class _Header extends StatelessWidget {
                                   .chapterName(Chapter.forLevel(levelId))),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w800,
                     color: DecantColors.onSurface,
@@ -377,14 +376,14 @@ class _Header extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.06),
+                  color: DecantColors.ink.withValues(alpha: 0.06),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: FittedBox(
                   fit: BoxFit.scaleDown,
                   child: Text(
                     counter!,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: DecantColors.onSurface,
                       fontWeight: FontWeight.w700,
                     ),
@@ -399,8 +398,7 @@ class _Header extends StatelessWidget {
             onPressed: onToggleMute,
           ),
           IconButton(
-            icon: const Icon(Icons.refresh_rounded,
-                color: DecantColors.onSurface),
+            icon: Icon(Icons.refresh_rounded, color: DecantColors.onSurface),
             onPressed: onRestart,
           ),
         ],
@@ -482,14 +480,13 @@ class _StuckBanner extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Icon(Icons.info_outline_rounded,
-              color: Color(0xFFF08AA6), size: 18),
+          Icon(Icons.info_outline_rounded,
+              color: DecantColors.danger, size: 18),
           const SizedBox(width: 10),
           Expanded(
             child: Text(
               context.l10n.stuckBanner,
-              style:
-                  const TextStyle(color: DecantColors.onSurface, fontSize: 13),
+              style: TextStyle(color: DecantColors.onSurface, fontSize: 13),
             ),
           ),
         ],

@@ -73,11 +73,17 @@ enum UiTheme {
 
   /// Pure black, for the strongest contrast with tubes and text.
   highContrast('High contrast',
-      [Color(0xFF000000), Color(0xFF000000), Color(0xFF000000)]);
+      [Color(0xFF000000), Color(0xFF000000), Color(0xFF000000)]),
+
+  /// Soft morning paper and pale sky: the light theme.
+  daylight(
+      'Daylight', [Color(0xFFF3F6FB), Color(0xFFE6EDF7), Color(0xFFEEE8F6)],
+      isLight: true);
 
   final String label;
   final List<Color> colors;
-  const UiTheme(this.label, this.colors);
+  final bool isLight;
+  const UiTheme(this.label, this.colors, {this.isLight = false});
 
   static UiTheme fromName(String? name) => UiTheme.values
       .firstWhere((t) => t.name == name, orElse: () => UiTheme.twilight);

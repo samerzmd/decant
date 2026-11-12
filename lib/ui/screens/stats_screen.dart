@@ -29,7 +29,7 @@ class StatsScreen extends ConsumerWidget {
                   child: Row(
                     children: [
                       IconButton(
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.arrow_back_rounded,
                           color: DecantColors.onSurface,
                         ),
@@ -40,7 +40,7 @@ class StatsScreen extends ConsumerWidget {
                           context.l10n.stats,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w800,
                             color: DecantColors.onSurface,
@@ -148,10 +148,10 @@ class _StreakCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
+        gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xF22A3766), Color(0xF231265C)],
+          colors: DecantColors.panelTranslucent,
         ),
         borderRadius: BorderRadius.circular(22),
         border: Border.all(color: DecantColors.accent.withValues(alpha: 0.35)),
@@ -178,7 +178,7 @@ class _StreakCard extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w800,
                     color: DecantColors.onSurface,
@@ -187,7 +187,7 @@ class _StreakCard extends StatelessWidget {
                 const SizedBox(height: 3),
                 Text(
                   body,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 13.5,
                     color: DecantColors.subtle,
                   ),
@@ -200,13 +200,13 @@ class _StreakCard extends StatelessWidget {
             children: [
               Text(
                 '$best',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
                   color: DecantColors.onSurface,
                 ),
               ),
-              const Text(
+              Text(
                 'best',
                 style: TextStyle(fontSize: 12, color: DecantColors.subtle),
               ),
@@ -238,7 +238,7 @@ class _Tile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.06),
+        color: DecantColors.ink.withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(18),
       ),
       child: Column(
@@ -250,7 +250,7 @@ class _Tile extends StatelessWidget {
             value,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.w800,
               color: DecantColors.onSurface,
@@ -260,7 +260,7 @@ class _Tile extends StatelessWidget {
             label,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w700,
               color: DecantColors.onSurface,
@@ -271,7 +271,7 @@ class _Tile extends StatelessWidget {
             detail,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(fontSize: 12, color: DecantColors.subtle),
+            style: TextStyle(fontSize: 12, color: DecantColors.subtle),
           ),
         ],
       ),
@@ -285,11 +285,11 @@ class _StarBreakdown extends StatelessWidget {
   const _StarBreakdown({required this.counts});
 
   // Brightest for three stars, fading down to one.
-  static const _shades = [
-    Color(0x66FFD66B),
-    Color(0xAAFFD66B),
-    DecantColors.star
-  ];
+  static List<Color> get _shades => [
+        DecantColors.star.withValues(alpha: 0.4),
+        DecantColors.star.withValues(alpha: 0.67),
+        DecantColors.star
+      ];
 
   @override
   Widget build(BuildContext context) {
@@ -299,14 +299,14 @@ class _StarBreakdown extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
         child: Text(
           context.l10n.statsEmpty,
-          style: const TextStyle(fontSize: 13.5, color: DecantColors.subtle),
+          style: TextStyle(fontSize: 13.5, color: DecantColors.subtle),
         ),
       );
     }
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.06),
+        color: DecantColors.ink.withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(18),
       ),
       child: Column(
@@ -340,12 +340,12 @@ class _StarBreakdown extends StatelessWidget {
                       size: 18,
                       color: i < s
                           ? _shades[s - 1]
-                          : Colors.white.withValues(alpha: 0.12),
+                          : DecantColors.ink.withValues(alpha: 0.12),
                     ),
                   const SizedBox(width: 12),
                   Text(
                     '${counts[s - 1]} ${counts[s - 1] == 1 ? 'level' : 'levels'}',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 14,
                       color: DecantColors.onSurface,
                     ),
@@ -369,7 +369,7 @@ class _SectionLabel extends StatelessWidget {
       padding: const EdgeInsets.only(left: 4, bottom: 10),
       child: Text(
         text.toUpperCase(),
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.w700,
           letterSpacing: 1.4,

@@ -21,19 +21,19 @@ class FailOverlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.black.withValues(alpha: 0.55),
+      color: DecantColors.scrim,
       alignment: Alignment.center,
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 36),
         padding: const EdgeInsets.fromLTRB(28, 28, 28, 24),
         decoration: BoxDecoration(
-          gradient: const LinearGradient(
+          gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Color(0xFF2A3766), Color(0xFF31265C)],
+            colors: DecantColors.panel,
           ),
           borderRadius: BorderRadius.circular(28),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.12)),
+          border: Border.all(color: DecantColors.ink.withValues(alpha: 0.12)),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -46,7 +46,7 @@ class FailOverlay extends StatelessWidget {
             const SizedBox(height: 12),
             Text(
               timedOut ? context.l10n.timesUp : context.l10n.outOfMoves,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.w800,
                 color: DecantColors.onSurface,

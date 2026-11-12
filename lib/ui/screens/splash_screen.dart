@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_theme.dart';
 import '../widgets/decant_logo.dart';
 import 'home_screen.dart';
 import '../../l10n/l10n.dart';
@@ -51,8 +50,8 @@ class _SplashScreenState extends State<SplashScreen>
   Widget build(BuildContext context) {
     final fade = CurvedAnimation(parent: _c, curve: Curves.easeOut);
     return Scaffold(
-      // Solid color matches the native splash background exactly.
-      backgroundColor: DecantColors.bgMid,
+      // Fixed twilight colors match the native splash on every theme.
+      backgroundColor: const Color(0xFF243156),
       body: Stack(
         children: [
           // Logo stays dead-centre — same place as the native splash mark — so
@@ -71,7 +70,7 @@ class _SplashScreenState extends State<SplashScreen>
                       fontSize: 40,
                       fontWeight: FontWeight.w800,
                       letterSpacing: 1.2,
-                      color: DecantColors.onSurface,
+                      color: Color(0xFFEFF3FF),
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -80,7 +79,7 @@ class _SplashScreenState extends State<SplashScreen>
                     style: TextStyle(
                       fontSize: 15,
                       letterSpacing: 1.8,
-                      color: DecantColors.accent.withValues(alpha: 0.95),
+                      color: const Color(0xFF49D6C3).withValues(alpha: 0.95),
                     ),
                   ),
                 ],

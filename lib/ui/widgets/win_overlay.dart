@@ -58,7 +58,7 @@ class WinOverlay extends StatelessWidget {
         child: child,
       ),
       child: Container(
-        color: Colors.black.withValues(alpha: 0.55),
+        color: DecantColors.scrim,
         alignment: Alignment.center,
         child: TweenAnimationBuilder<double>(
           tween: Tween(begin: 0.7, end: 1),
@@ -70,13 +70,14 @@ class WinOverlay extends StatelessWidget {
             margin: const EdgeInsets.symmetric(horizontal: 36),
             padding: const EdgeInsets.fromLTRB(28, 30, 28, 26),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
+              gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [Color(0xFF2A3766), Color(0xFF31265C)],
+                colors: DecantColors.panel,
               ),
               borderRadius: BorderRadius.circular(28),
-              border: Border.all(color: Colors.white.withValues(alpha: 0.12)),
+              border:
+                  Border.all(color: DecantColors.ink.withValues(alpha: 0.12)),
               boxShadow: [
                 BoxShadow(
                   color: DecantColors.accent.withValues(alpha: 0.25),
@@ -90,7 +91,7 @@ class WinOverlay extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w800,
                     color: DecantColors.onSurface,
@@ -113,7 +114,7 @@ class WinOverlay extends StatelessWidget {
                   const SizedBox(height: 18),
                   Text(
                     context.l10n.moveCount(moves),
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: DecantColors.subtle,
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
@@ -195,12 +196,11 @@ class _PerfectChip extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.verified_rounded,
-              color: DecantColors.accent, size: 16),
+          Icon(Icons.verified_rounded, color: DecantColors.accent, size: 16),
           const SizedBox(width: 6),
           Text(
             context.l10n.perfect,
-            style: const TextStyle(
+            style: TextStyle(
               color: DecantColors.onSurface,
               fontWeight: FontWeight.w700,
               fontSize: 13,

@@ -67,8 +67,7 @@ class _Header extends StatelessWidget {
       child: Row(
         children: [
           IconButton(
-            icon: const Icon(Icons.arrow_back_rounded,
-                color: DecantColors.onSurface),
+            icon: Icon(Icons.arrow_back_rounded, color: DecantColors.onSurface),
             onPressed: () => Navigator.of(context).pop(),
           ),
           Expanded(
@@ -76,17 +75,17 @@ class _Header extends StatelessWidget {
               context.l10n.levels,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.w800,
                 color: DecantColors.onSurface,
               ),
             ),
           ),
-          const Icon(Icons.star_rounded, color: DecantColors.star, size: 20),
+          Icon(Icons.star_rounded, color: DecantColors.star, size: 20),
           const SizedBox(width: 6),
           Text('$stars',
-              style: const TextStyle(
+              style: TextStyle(
                   color: DecantColors.onSurface,
                   fontWeight: FontWeight.w700,
                   fontSize: 16)),
@@ -119,12 +118,12 @@ class _LevelTile extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: locked
-              ? Colors.white.withValues(alpha: 0.04)
-              : Colors.white.withValues(alpha: 0.08),
+              ? DecantColors.ink.withValues(alpha: 0.04)
+              : DecantColors.ink.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
             color: locked
-                ? Colors.white.withValues(alpha: 0.06)
+                ? DecantColors.ink.withValues(alpha: 0.06)
                 : diffColor.withValues(alpha: 0.55),
             width: 1.4,
           ),
@@ -142,7 +141,7 @@ class _LevelTile extends StatelessWidget {
               else
                 Text(
                   '$levelId',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w800,
                     color: DecantColors.onSurface,
@@ -237,7 +236,7 @@ class _ChapterSection extends StatelessWidget {
                   shape: BoxShape.circle,
                   gradient: LinearGradient(colors: chapter.colors),
                   border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.35),
+                    color: DecantColors.ink.withValues(alpha: 0.35),
                   ),
                 ),
               ),
@@ -247,7 +246,7 @@ class _ChapterSection extends StatelessWidget {
                   context.l10n.chapter(chapter),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w800,
                     color: DecantColors.onSurface,

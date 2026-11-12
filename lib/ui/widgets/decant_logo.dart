@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_theme.dart';
-
 /// The Decant mark: a glass test tube holding three sorted liquid layers
 /// (ruby, amber, teal) with a teal droplet falling in.
 ///
@@ -29,7 +27,7 @@ class DecantMarkPainter extends CustomPainter {
 
   static const _ruby = Color(0xFFE2425B);
   static const _amber = Color(0xFFF2913D);
-  static const _teal = DecantColors.accent;
+  static const _teal = Color(0xFF49D6C3); // brand teal, the same on every theme
 
   /// Soft teal light behind the tube. Off for the adaptive/splash images,
   /// where the launcher supplies its own background.

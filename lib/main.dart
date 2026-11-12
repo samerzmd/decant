@@ -137,7 +137,13 @@ class _DecantAppState extends ConsumerState<DecantApp>
     ref.listen(settingsProvider, (_, __) => _syncReminder());
     ref.listen(progressProvider, (_, __) => _syncReminder());
     activeLiquidPalette = settings.liquidPalette;
-    activeUiTheme = settings.uiTheme;
+    return UiThemeScope(
+      theme: settings.uiTheme,
+      builder: (_) => _buildApp(settings),
+    );
+  }
+
+  Widget _buildApp(AppSettings settings) {
     return MaterialApp(
       title: 'Decant',
       debugShowCheckedModeBanner: false,

@@ -342,6 +342,12 @@ abstract class AppLocalizations {
   /// **'Midnight'**
   String get themeMidnight;
 
+  /// No description provided for @themeDaylight.
+  ///
+  /// In en, this message translates to:
+  /// **'Daylight'**
+  String get themeDaylight;
+
   /// No description provided for @highContrast.
   ///
   /// In en, this message translates to:

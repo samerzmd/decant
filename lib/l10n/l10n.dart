@@ -30,6 +30,7 @@ extension L10nLabels on AppLocalizations {
         UiTheme.twilight => themeTwilight,
         UiTheme.midnight => themeMidnight,
         UiTheme.highContrast => highContrast,
+        UiTheme.daylight => themeDaylight,
       };
 
   String liquidPaletteLabel(LiquidPalette p) => switch (p) {

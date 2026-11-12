@@ -1,51 +1,112 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../models/liquid_palette.dart';
 
 /// Decant's calm visual identity: deep twilight gradients, soft glass, a single
 /// warm-teal accent. Centralized so every screen stays on-brand.
+///
+/// Every color follows [activeUiTheme], so the same widgets work on the dark
+/// themes and on [UiTheme.daylight]. Screens never use raw white or black for
+/// text and surfaces; they use these tokens.
 class DecantColors {
-  static const Color bgTop = Color(0xFF1B2440);
-  static const Color bgMid = Color(0xFF243156);
-  static const Color bgBottom = Color(0xFF2E2150);
+  static bool get isLight => activeUiTheme.isLight;
 
-  static const Color accent = Color(0xFF49D6C3); // calm teal
-  static const Color accentDeep = Color(0xFF2BB6A6);
-  static const Color onSurface = Color(0xFFEFF3FF);
-  static const Color subtle = Color(0xFFA9B3D0);
-  static const Color glassEdge = Color(0x55FFFFFF);
-  static const Color star = Color(0xFFFFD66B);
+  static Color get bgTop => activeUiTheme.colors[0];
+  static Color get bgMid => activeUiTheme.colors[1];
+  static Color get bgBottom => activeUiTheme.colors[2];
+
+  /// The calm teal, darkened on light backgrounds so text stays readable.
+  static Color get accent =>
+      isLight ? const Color(0xFF0A7468) : const Color(0xFF49D6C3);
+  static Color get accentDeep =>
+      isLight ? const Color(0xFF075A51) : const Color(0xFF2BB6A6);
+
+  /// Text and icons drawn on top of [accent].
+  static Color get onAccent =>
+      isLight ? const Color(0xFFFFFFFF) : const Color(0xFF0E1530);
+
+  static Color get onSurface =>
+      isLight ? const Color(0xFF1B2440) : const Color(0xFFEFF3FF);
+  static Color get subtle =>
+      isLight ? const Color(0xFF515C78) : const Color(0xFFA9B3D0);
+
+  /// The base of translucent fills and borders (cards, chips, tracks): white
+  /// on dark themes, deep navy on light ones. Use it with an alpha.
+  static Color get ink =>
+      isLight ? const Color(0xFF1B2440) : const Color(0xFFFFFFFF);
+
+  /// A recessed, darker-than-background fill.
+  static Color get recess => isLight
+      ? const Color(0x0F1B2440)
+      : const Color(0x38000000); // black at 22%
+
+  static Color get glassEdge =>
+      isLight ? const Color(0x661B2440) : const Color(0x55FFFFFF);
+
+  /// Stars and gold highlights; deeper amber on light so it stays visible.
+  static Color get star =>
+      isLight ? const Color(0xFFAD6A00) : const Color(0xFFFFD66B);
+
+  /// Red for warnings, deepened on light themes.
+  static Color get danger =>
+      isLight ? const Color(0xFFC0304A) : const Color(0xFFF08AA6);
+
+  /// The two-stop gradient of dialogs, overlays and floating cards.
+  static List<Color> get panel => isLight
+      ? const [Color(0xFFFFFFFF), Color(0xFFF1EEF8)]
+      : const [Color(0xFF2A3766), Color(0xFF31265C)];
+
+  /// [panel], slightly see-through.
+  static List<Color> get panelTranslucent =>
+      [for (final c in panel) c.withValues(alpha: 0.95)];
+
+  /// The dimming layer behind dialogs and overlays.
+  static Color get scrim =>
+      isLight ? const Color(0x661B2440) : const Color(0x8C000000);
+
+  /// Drop shadows under floating cards.
+  static Color get shadow =>
+      isLight ? const Color(0x221B2440) : const Color(0x59000000);
 
   const DecantColors._();
 }
 
-/// The signature background gradient used across all screens.
-const LinearGradient kBackgroundGradient = LinearGradient(
-  begin: Alignment.topCenter,
-  end: Alignment.bottomCenter,
-  colors: [DecantColors.bgTop, DecantColors.bgMid, DecantColors.bgBottom],
-  stops: [0.0, 0.55, 1.0],
-);
-
 ThemeData buildDecantTheme() {
-  final base = ThemeData.dark(useMaterial3: true);
+  final light = activeUiTheme.isLight;
+  final base = light
+      ? ThemeData.light(useMaterial3: true)
+      : ThemeData.dark(useMaterial3: true);
   return base.copyWith(
     scaffoldBackgroundColor: DecantColors.bgMid,
     colorScheme: base.colorScheme.copyWith(
       primary: DecantColors.accent,
+      onPrimary: DecantColors.onAccent,
       secondary: DecantColors.accentDeep,
       surface: DecantColors.bgMid,
+      onSurface: DecantColors.onSurface,
     ),
     textTheme: base.textTheme.apply(
       bodyColor: DecantColors.onSurface,
       displayColor: DecantColors.onSurface,
       fontFamily: 'Roboto',
     ),
+    iconTheme: base.iconTheme.copyWith(color: DecantColors.onSurface),
     sliderTheme: base.sliderTheme.copyWith(
       activeTrackColor: DecantColors.accent,
       thumbColor: DecantColors.accent,
       inactiveTrackColor: DecantColors.subtle.withValues(alpha: 0.3),
     ),
+  );
+}
+
+/// Status bar and navigation bar icons that read on the active theme.
+SystemUiOverlayStyle decantOverlayStyle() {
+  final light = activeUiTheme.isLight;
+  return SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+    statusBarIconBrightness: light ? Brightness.dark : Brightness.light,
+    statusBarBrightness: light ? Brightness.light : Brightness.dark,
   );
 }
 
@@ -92,6 +153,49 @@ class DecantBackground extends StatelessWidget {
         ),
       ),
       child: child,
+    );
+  }
+}
+
+/// Applies [theme] to [activeUiTheme] and the system bars, and rebuilds the
+/// whole subtree when it changes.
+///
+/// Screens read [DecantColors] directly rather than through an inherited
+/// widget, so a switch marks every element below for rebuild, including
+/// routes further down the navigator stack.
+class UiThemeScope extends StatefulWidget {
+  final UiTheme theme;
+  final WidgetBuilder builder;
+  const UiThemeScope({super.key, required this.theme, required this.builder});
+
+  @override
+  State<UiThemeScope> createState() => _UiThemeScopeState();
+}
+
+class _UiThemeScopeState extends State<UiThemeScope> {
+  @override
+  void didUpdateWidget(UiThemeScope old) {
+    super.didUpdateWidget(old);
+    if (old.theme != widget.theme) {
+      WidgetsBinding.instance.addPostFrameCallback(_rebuildEverything);
+    }
+  }
+
+  void _rebuildEverything(Duration _) {
+    if (mounted) context.visitChildElements(_markForRebuild);
+  }
+
+  static void _markForRebuild(Element e) {
+    e.markNeedsBuild();
+    e.visitChildren(_markForRebuild);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    activeUiTheme = widget.theme;
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: decantOverlayStyle(),
+      child: Builder(builder: widget.builder),
     );
   }
 }

@@ -27,7 +27,7 @@ class ChallengesScreen extends ConsumerWidget {
                 Row(
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.arrow_back_rounded,
+                      icon: Icon(Icons.arrow_back_rounded,
                           color: DecantColors.onSurface),
                       onPressed: () => Navigator.of(context).pop(),
                     ),
@@ -36,7 +36,7 @@ class ChallengesScreen extends ConsumerWidget {
                         context.l10n.challenges,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.w800,
                           color: DecantColors.onSurface,
@@ -85,9 +85,9 @@ class _ModeCard extends StatelessWidget {
       margin: const EdgeInsets.fromLTRB(12, 8, 12, 8),
       padding: const EdgeInsets.fromLTRB(20, 18, 20, 18),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.06),
+        color: DecantColors.ink.withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
+        border: Border.all(color: DecantColors.ink.withValues(alpha: 0.08)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,7 +106,7 @@ class _ModeCard extends StatelessWidget {
                   context.l10n.challengeMode(mode),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 19,
                     fontWeight: FontWeight.w800,
                     color: DecantColors.onSurface,
@@ -126,7 +126,7 @@ class _ModeCard extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             best > 0 ? context.l10n.bestStage(best) : context.l10n.notPlayed,
-            style: const TextStyle(
+            style: TextStyle(
               color: DecantColors.onSurface,
               fontWeight: FontWeight.w600,
               fontSize: 13,
