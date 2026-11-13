@@ -74,7 +74,7 @@ Give players reasons to come back.
 - [x] Streak reminders: an opt-in local notification at a chosen hour when
       today's daily isn't solved, naming the streak at stake
 
-## 💡 v1.3 — Accessibility & reach
+## ✅ v1.3 — Accessibility & reach
 
 - [x] Localization (i18n) scaffolding + first translations: gen-l10n ARB
       files with Spanish, French and German, and a Language setting. Sound and
@@ -94,7 +94,8 @@ Give players reasons to come back.
 
 Bigger bets, only if the community wants them.
 
-- [ ] Cloud save / cross-device sync
+- [x] Cloud save / cross-device sync: optional Google sign-in in Settings,
+      progress merged and kept in Firestore (v1.5.0)
 - [ ] Leaderboards & shareable daily results
 - [ ] **Level editor** + share-by-code/QR
 - [ ] Achievements
@@ -110,7 +111,8 @@ Bigger bets, only if the community wants them.
 - [x] Release automation: a `v*` tag builds the signed bundle and publishes
       a GitHub release with the CHANGELOG notes; CI requires notes for the
       pubspec version
-- [ ] Publish to Google Play and the App Store; explore F-Droid
+- [x] Publish to Google Play (live since v1.3)
+- [ ] Publish to the App Store; explore F-Droid
 - [ ] Issue/PR templates and a `good first issue` set for newcomers
 
 ## ⚠️ Known limitations / tech debt

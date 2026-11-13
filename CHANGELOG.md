@@ -6,6 +6,15 @@ All notable changes to Decant are documented here. The format loosely follows
 
 ## [Unreleased]
 
+## [1.5.0] — 2026-11-13
+
+### Added
+- Optional cloud save. Sign in with Google in Settings → Cloud save to back
+  up your progress and continue on another device. Progress from two
+  devices is merged, so nothing either one earned is lost. You can sign out
+  or delete the cloud copy and account at any time; the game works exactly
+  as before without signing in.
+
 ## [1.4.2] — 2026-11-13
 
 ### Changed
