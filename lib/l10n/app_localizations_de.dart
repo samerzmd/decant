@@ -503,4 +503,60 @@ class AppLocalizationsDe extends AppLocalizations {
   String levelTitle(int level) {
     return 'Level $level';
   }
+
+  @override
+  String get cloudSave => 'Cloud-Speicher';
+
+  @override
+  String get cloudSaveSubtitle =>
+      'Sichere deinen Fortschritt und spiel auf jedem Gerät weiter.';
+
+  @override
+  String get signInWithGoogle => 'Mit Google anmelden';
+
+  @override
+  String cloudSignedInAs(String account) {
+    return 'Angemeldet als $account';
+  }
+
+  @override
+  String get cloudSyncing => 'Wird synchronisiert …';
+
+  @override
+  String get cloudSynced => 'Fortschritt gesichert';
+
+  @override
+  String get cloudSyncFailed =>
+      'Die Cloud ist nicht erreichbar. Es wird erneut versucht.';
+
+  @override
+  String get syncNow => 'Jetzt synchronisieren';
+
+  @override
+  String get signOut => 'Abmelden';
+
+  @override
+  String get signedOutNotice =>
+      'Abgemeldet. Dein Fortschritt bleibt auf diesem Handy.';
+
+  @override
+  String get signInFailed =>
+      'Anmeldung fehlgeschlagen. Prüfe deine Verbindung und versuch es noch einmal.';
+
+  @override
+  String get deleteCloudSave => 'Cloud-Speicher löschen';
+
+  @override
+  String get deleteCloudSaveMessage =>
+      'Dein in der Cloud gespeicherter Fortschritt und dein Decant-Konto werden gelöscht. Der Fortschritt auf diesem Handy bleibt.';
+
+  @override
+  String get delete => 'Löschen';
+
+  @override
+  String get cloudDeleted => 'Cloud-Speicher gelöscht.';
+
+  @override
+  String get cloudDeleteFailed =>
+      'Löschen fehlgeschlagen. Prüfe deine Verbindung und versuch es noch einmal.';
 }

@@ -503,4 +503,60 @@ class AppLocalizationsEs extends AppLocalizations {
   String levelTitle(int level) {
     return 'Nivel $level';
   }
+
+  @override
+  String get cloudSave => 'Guardado en la nube';
+
+  @override
+  String get cloudSaveSubtitle =>
+      'Guarda tu progreso y continúa en cualquier dispositivo.';
+
+  @override
+  String get signInWithGoogle => 'Iniciar sesión con Google';
+
+  @override
+  String cloudSignedInAs(String account) {
+    return 'Sesión iniciada como $account';
+  }
+
+  @override
+  String get cloudSyncing => 'Sincronizando…';
+
+  @override
+  String get cloudSynced => 'Progreso guardado';
+
+  @override
+  String get cloudSyncFailed =>
+      'No se pudo conectar con la nube. Se volverá a intentar.';
+
+  @override
+  String get syncNow => 'Sincronizar ahora';
+
+  @override
+  String get signOut => 'Cerrar sesión';
+
+  @override
+  String get signedOutNotice =>
+      'Sesión cerrada. Tu progreso sigue en este teléfono.';
+
+  @override
+  String get signInFailed =>
+      'No se pudo iniciar sesión. Revisa tu conexión e inténtalo de nuevo.';
+
+  @override
+  String get deleteCloudSave => 'Eliminar guardado en la nube';
+
+  @override
+  String get deleteCloudSaveMessage =>
+      'Se eliminarán tu progreso guardado en la nube y tu cuenta de Decant. El progreso en este teléfono se conserva.';
+
+  @override
+  String get delete => 'Eliminar';
+
+  @override
+  String get cloudDeleted => 'Guardado en la nube eliminado.';
+
+  @override
+  String get cloudDeleteFailed =>
+      'No se pudo eliminar. Revisa tu conexión e inténtalo de nuevo.';
 }

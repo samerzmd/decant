@@ -10,6 +10,7 @@ import '../models/app_settings.dart';
 import '../models/level.dart';
 import '../services/ad_service.dart';
 import '../services/analytics_service.dart';
+import '../services/cloud_sync_service.dart';
 import '../services/persistence_service.dart';
 import 'game_controller.dart';
 import 'game_session.dart';
@@ -32,6 +33,10 @@ final reminderServiceProvider =
 /// Rewarded video ads. Overridden in main; this default shows no ads, as in
 /// tests.
 final adServiceProvider = Provider<AdService>((_) => AdService.off());
+
+/// Optional cloud save. Off (hidden in Settings) unless the app overrides it.
+final cloudSyncProvider =
+    Provider<CloudSyncService>((_) => CloudSyncService.off());
 
 final audioServiceProvider = Provider<AudioService>(
   (_) => throw UnimplementedError('audioServiceProvider must be overridden'),

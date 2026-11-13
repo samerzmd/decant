@@ -316,5 +316,28 @@
         "type": "int"
       }
     }
+  },
+  "cloudSave": "Cloud save",
+  "cloudSaveSubtitle": "Back up your progress and pick it up on any device.",
+  "signInWithGoogle": "Sign in with Google",
+  "cloudSignedInAs": "Signed in as {account}",
+  "cloudSyncing": "Syncing…",
+  "cloudSynced": "Progress backed up",
+  "cloudSyncFailed": "Couldn't reach the cloud. It'll try again.",
+  "syncNow": "Sync now",
+  "signOut": "Sign out",
+  "signedOutNotice": "Signed out. Your progress stays on this phone.",
+  "signInFailed": "Couldn't sign in. Check your connection and try again.",
+  "deleteCloudSave": "Delete cloud save",
+  "deleteCloudSaveMessage": "This deletes your saved progress from the cloud and your Decant account. Progress on this phone stays.",
+  "delete": "Delete",
+  "cloudDeleted": "Cloud save deleted.",
+  "cloudDeleteFailed": "Couldn't delete it. Check your connection and try again.",
+  "@cloudSignedInAs": {
+    "placeholders": {
+      "account": {
+        "type": "String"
+      }
+    }
   }
 }

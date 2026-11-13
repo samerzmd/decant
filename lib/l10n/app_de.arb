@@ -144,5 +144,21 @@
   "privacy": "Datenschutz",
   "adPrivacyChoices": "Datenschutzoptionen für Werbung",
   "adPrivacySubtitle": "Ändern, wie Werbung deine Daten nutzt",
-  "levelTitle": "Level {level}"
+  "levelTitle": "Level {level}",
+  "cloudSave": "Cloud-Speicher",
+  "cloudSaveSubtitle": "Sichere deinen Fortschritt und spiel auf jedem Gerät weiter.",
+  "signInWithGoogle": "Mit Google anmelden",
+  "cloudSignedInAs": "Angemeldet als {account}",
+  "cloudSyncing": "Wird synchronisiert …",
+  "cloudSynced": "Fortschritt gesichert",
+  "cloudSyncFailed": "Die Cloud ist nicht erreichbar. Es wird erneut versucht.",
+  "syncNow": "Jetzt synchronisieren",
+  "signOut": "Abmelden",
+  "signedOutNotice": "Abgemeldet. Dein Fortschritt bleibt auf diesem Handy.",
+  "signInFailed": "Anmeldung fehlgeschlagen. Prüfe deine Verbindung und versuch es noch einmal.",
+  "deleteCloudSave": "Cloud-Speicher löschen",
+  "deleteCloudSaveMessage": "Dein in der Cloud gespeicherter Fortschritt und dein Decant-Konto werden gelöscht. Der Fortschritt auf diesem Handy bleibt.",
+  "delete": "Löschen",
+  "cloudDeleted": "Cloud-Speicher gelöscht.",
+  "cloudDeleteFailed": "Löschen fehlgeschlagen. Prüfe deine Verbindung und versuch es noch einmal."
 }

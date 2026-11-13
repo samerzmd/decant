@@ -144,5 +144,21 @@
   "privacy": "Privacidad",
   "adPrivacyChoices": "Opciones de privacidad de anuncios",
   "adPrivacySubtitle": "Cambia cómo usan tus datos los anuncios",
-  "levelTitle": "Nivel {level}"
+  "levelTitle": "Nivel {level}",
+  "cloudSave": "Guardado en la nube",
+  "cloudSaveSubtitle": "Guarda tu progreso y continúa en cualquier dispositivo.",
+  "signInWithGoogle": "Iniciar sesión con Google",
+  "cloudSignedInAs": "Sesión iniciada como {account}",
+  "cloudSyncing": "Sincronizando…",
+  "cloudSynced": "Progreso guardado",
+  "cloudSyncFailed": "No se pudo conectar con la nube. Se volverá a intentar.",
+  "syncNow": "Sincronizar ahora",
+  "signOut": "Cerrar sesión",
+  "signedOutNotice": "Sesión cerrada. Tu progreso sigue en este teléfono.",
+  "signInFailed": "No se pudo iniciar sesión. Revisa tu conexión e inténtalo de nuevo.",
+  "deleteCloudSave": "Eliminar guardado en la nube",
+  "deleteCloudSaveMessage": "Se eliminarán tu progreso guardado en la nube y tu cuenta de Decant. El progreso en este teléfono se conserva.",
+  "delete": "Eliminar",
+  "cloudDeleted": "Guardado en la nube eliminado.",
+  "cloudDeleteFailed": "No se pudo eliminar. Revisa tu conexión e inténtalo de nuevo."
 }

@@ -8,6 +8,7 @@ import '../../models/liquid_palette.dart';
 import '../../state/providers.dart';
 import '../theme/app_theme.dart';
 import '../reminder_prompt.dart';
+import '../widgets/cloud_save_section.dart';
 import 'sound_browser_screen.dart';
 import '../../l10n/l10n.dart';
 
@@ -57,6 +58,11 @@ class SettingsScreen extends ConsumerWidget {
                   child: ListView(
                     padding: const EdgeInsets.fromLTRB(22, 6, 22, 24),
                     children: [
+                      if (ref.watch(cloudSyncProvider).available) ...[
+                        _SectionLabel(context.l10n.cloudSave),
+                        const CloudSaveSection(),
+                        const SizedBox(height: 18),
+                      ],
                       _SectionLabel(context.l10n.audio),
                       _SwitchTile(
                         label: context.l10n.muteAll,

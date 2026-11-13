@@ -144,5 +144,21 @@
   "privacy": "Confidentialité",
   "adPrivacyChoices": "Choix de confidentialité des annonces",
   "adPrivacySubtitle": "Modifier l’usage de vos données par les annonces",
-  "levelTitle": "Niveau {level}"
+  "levelTitle": "Niveau {level}",
+  "cloudSave": "Sauvegarde cloud",
+  "cloudSaveSubtitle": "Sauvegardez votre progression et reprenez-la sur n’importe quel appareil.",
+  "signInWithGoogle": "Se connecter avec Google",
+  "cloudSignedInAs": "Connecté en tant que {account}",
+  "cloudSyncing": "Synchronisation…",
+  "cloudSynced": "Progression sauvegardée",
+  "cloudSyncFailed": "Impossible de joindre le cloud. Nouvel essai plus tard.",
+  "syncNow": "Synchroniser",
+  "signOut": "Se déconnecter",
+  "signedOutNotice": "Déconnecté. Votre progression reste sur ce téléphone.",
+  "signInFailed": "Connexion impossible. Vérifiez votre connexion et réessayez.",
+  "deleteCloudSave": "Supprimer la sauvegarde cloud",
+  "deleteCloudSaveMessage": "Votre progression sauvegardée dans le cloud et votre compte Decant seront supprimés. La progression sur ce téléphone est conservée.",
+  "delete": "Supprimer",
+  "cloudDeleted": "Sauvegarde cloud supprimée.",
+  "cloudDeleteFailed": "Suppression impossible. Vérifiez votre connexion et réessayez."
 }

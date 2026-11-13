@@ -91,6 +91,9 @@ class ProgressController extends StateNotifier<ProgressData> {
   /// The current local time, as seen by this controller (tests inject it).
   DateTime now() => _now();
 
+  /// Re-reads progress after storage changed underneath (a cloud sync).
+  void reload() => state = _read(_persistence);
+
   /// Persist a win (best result + lifetime stats) and refresh the snapshot.
   ///
   /// A daily challenge win counts toward lifetime wins and the daily streak,

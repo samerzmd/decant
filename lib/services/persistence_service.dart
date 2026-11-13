@@ -7,6 +7,7 @@ import '../models/challenge_stats.dart';
 import '../models/daily_stats.dart';
 import '../models/level_result.dart';
 import '../models/play_stats.dart';
+import '../models/progress_snapshot.dart';
 
 /// Persists settings and progress with `shared_preferences`.
 ///
@@ -162,4 +163,39 @@ class PersistenceService {
 
   Future<void> saveHints(int hints) =>
       _prefs.setInt(_kHints, hints.clamp(0, maxHints));
+
+  // ---- Cloud save -------------------------------------------------------- //
+
+  /// All progress as one value, for cloud save.
+  ProgressSnapshot exportSnapshot() {
+    final results = <int, LevelResult>{};
+    for (final key in _prefs.getKeys()) {
+      if (!key.startsWith(_kResultPrefix)) continue;
+      final id = int.tryParse(key.substring(_kResultPrefix.length));
+      final r = id == null ? null : resultFor(id);
+      if (r != null) results[id!] = r;
+    }
+    return ProgressSnapshot(
+      unlockedLevel: unlockedLevel(),
+      results: results,
+      stats: loadStats(),
+      daily: loadDaily(),
+      challenges: loadChallenges(),
+      hints: hints(),
+    );
+  }
+
+  /// Replaces local progress with [s] (normally local merged with the cloud
+  /// copy, so nothing is lost). Settings are left alone.
+  Future<void> importSnapshot(ProgressSnapshot s) async {
+    await _prefs.setInt(_kUnlocked, s.unlockedLevel < 1 ? 1 : s.unlockedLevel);
+    for (final e in s.results.entries) {
+      await _prefs.setString(
+          '$_kResultPrefix${e.key}', jsonEncode(e.value.toJson()));
+    }
+    await saveStats(s.stats);
+    await saveDaily(s.daily);
+    await saveChallenges(s.challenges);
+    await saveHints(s.hints);
+  }
 }

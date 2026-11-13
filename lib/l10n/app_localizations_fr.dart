@@ -510,4 +510,60 @@ class AppLocalizationsFr extends AppLocalizations {
   String levelTitle(int level) {
     return 'Niveau $level';
   }
+
+  @override
+  String get cloudSave => 'Sauvegarde cloud';
+
+  @override
+  String get cloudSaveSubtitle =>
+      'Sauvegardez votre progression et reprenez-la sur n’importe quel appareil.';
+
+  @override
+  String get signInWithGoogle => 'Se connecter avec Google';
+
+  @override
+  String cloudSignedInAs(String account) {
+    return 'Connecté en tant que $account';
+  }
+
+  @override
+  String get cloudSyncing => 'Synchronisation…';
+
+  @override
+  String get cloudSynced => 'Progression sauvegardée';
+
+  @override
+  String get cloudSyncFailed =>
+      'Impossible de joindre le cloud. Nouvel essai plus tard.';
+
+  @override
+  String get syncNow => 'Synchroniser';
+
+  @override
+  String get signOut => 'Se déconnecter';
+
+  @override
+  String get signedOutNotice =>
+      'Déconnecté. Votre progression reste sur ce téléphone.';
+
+  @override
+  String get signInFailed =>
+      'Connexion impossible. Vérifiez votre connexion et réessayez.';
+
+  @override
+  String get deleteCloudSave => 'Supprimer la sauvegarde cloud';
+
+  @override
+  String get deleteCloudSaveMessage =>
+      'Votre progression sauvegardée dans le cloud et votre compte Decant seront supprimés. La progression sur ce téléphone est conservée.';
+
+  @override
+  String get delete => 'Supprimer';
+
+  @override
+  String get cloudDeleted => 'Sauvegarde cloud supprimée.';
+
+  @override
+  String get cloudDeleteFailed =>
+      'Suppression impossible. Vérifiez votre connexion et réessayez.';
 }

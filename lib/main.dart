@@ -11,6 +11,8 @@ import 'logic/streak_reminder.dart';
 import 'models/app_settings.dart';
 import 'services/ad_service.dart';
 import 'services/analytics_service.dart';
+import 'services/cloud_sync_service.dart';
+import 'services/firebase_cloud_backend.dart';
 import 'services/persistence_service.dart';
 import 'services/reminder_service.dart';
 import 'state/providers.dart';
@@ -40,6 +42,7 @@ Future<void> main() async {
   final audio = AudioService();
   final reminders = ReminderService();
   final ads = AdService();
+  final cloud = CloudSyncService(persistence, FirebaseCloudBackend());
   WidgetsBinding.instance.addPostFrameCallback((_) {
     audio.init();
   });
@@ -52,6 +55,7 @@ Future<void> main() async {
         analyticsServiceProvider.overrideWithValue(analytics),
         reminderServiceProvider.overrideWithValue(reminders),
         adServiceProvider.overrideWithValue(ads),
+        cloudSyncProvider.overrideWithValue(cloud),
       ],
       child: const DecantApp(),
     ),
@@ -71,6 +75,11 @@ class _DecantAppState extends ConsumerState<DecantApp>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    // Cloud save: merged progress from the cloud refreshes the screens, and
+    // a player who's already signed in syncs at launch.
+    final cloud = ref.read(cloudSyncProvider);
+    cloud.onLocalChanged = () => ref.read(progressProvider.notifier).reload();
+    cloud.init();
     // Reminders load the timezone database, so start them after the first
     // frame, then plan the next one.
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -123,6 +132,8 @@ class _DecantAppState extends ConsumerState<DecantApp>
         audio.handleAppResumed();
         // A new day may have started while away.
         _syncReminder();
+        // Another device may have played meanwhile.
+        ref.read(cloudSyncProvider).sync();
       case AppLifecycleState.detached:
         // Activity being destroyed — fully release the audio engine so that if
         // the process is reused (Android recreates the Activity), a fresh init
@@ -141,7 +152,10 @@ class _DecantAppState extends ConsumerState<DecantApp>
     // Painters read the liquid palette directly, so set it before building.
     final settings = ref.watch(settingsProvider);
     ref.listen(settingsProvider, (_, __) => _syncReminder());
-    ref.listen(progressProvider, (_, __) => _syncReminder());
+    ref.listen(progressProvider, (_, __) {
+      _syncReminder();
+      ref.read(cloudSyncProvider).schedulePush();
+    });
     activeLiquidPalette = settings.liquidPalette;
     return UiThemeScope(
       theme: settings.uiTheme,

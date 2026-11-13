@@ -1,16 +1,42 @@
 # Decant privacy policy
 
-*Last updated: 12 November 2026*
+*Last updated: 13 November 2026*
 
-Decant is a single-player puzzle game. It has no accounts and no in-app
-purchases. The only ads are optional videos you can choose to watch for a hint
-when you have none left.
+Decant is a single-player puzzle game with no in-app purchases. You can play
+without an account; signing in is only needed for the optional cloud save. The
+only ads are optional videos you can choose to watch for a hint when you have
+none left.
 
 ## What stays on your device
 
 Your progress (levels, stars, best moves), stats (wins and streak) and
-settings are saved only on your device. They are never uploaded. Uninstalling
-Decant deletes them.
+settings are saved on your device. Unless you turn on cloud save, they are
+never uploaded, and uninstalling Decant deletes them.
+
+## Cloud save (optional)
+
+If you choose **Sign in with Google** in **Settings → Cloud save**, Decant
+backs up your progress so you can restore it after reinstalling or continue on
+another device. Nothing is uploaded unless you sign in.
+
+- **Sign-in** uses **Firebase Authentication** with your Google account. It
+  receives your Google account ID, email address, name and profile picture
+  link, and creates a Decant account ID for you.
+- **Your progress** is stored in **Cloud Firestore** under that account ID:
+  levels and their stars, best moves and perfect badges, the highest unlocked
+  level, wins and streaks, daily challenge results from the last 60 days,
+  challenge-mode best stages, and hints in your pool. Settings are not
+  uploaded.
+- Only you can read or change your saved progress. It is sent encrypted and
+  handled by Google under
+  [Google's privacy policy](https://policies.google.com/privacy).
+
+**Deleting it:** in **Settings → Cloud save**, tap **Delete cloud save**. This
+deletes your saved progress and your Decant account right away; progress on
+your device stays. Signing out stops syncing but keeps the cloud copy. If you
+can no longer open the app, ask for deletion by opening an issue at
+<https://github.com/samerzmd/decant/issues> or by emailing
+<samerzmd@gmail.com> from the Google account you signed in with.
 
 ## What is collected
 
@@ -27,8 +53,9 @@ played, so levels and features can be improved. It records:
 
 Analytics also records whether a hint video was watched through.
 
-Decant does not collect your name, email, contacts, precise location or any
-other personal information.
+Apart from the optional cloud save sign-in above, Decant does not collect your
+name, email, contacts, precise location or any other personal information.
+Analytics is not linked to your cloud save account.
 
 ## Ads
 

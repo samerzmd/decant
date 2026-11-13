@@ -500,4 +500,59 @@ class AppLocalizationsEn extends AppLocalizations {
   String levelTitle(int level) {
     return 'Level $level';
   }
+
+  @override
+  String get cloudSave => 'Cloud save';
+
+  @override
+  String get cloudSaveSubtitle =>
+      'Back up your progress and pick it up on any device.';
+
+  @override
+  String get signInWithGoogle => 'Sign in with Google';
+
+  @override
+  String cloudSignedInAs(String account) {
+    return 'Signed in as $account';
+  }
+
+  @override
+  String get cloudSyncing => 'Syncing…';
+
+  @override
+  String get cloudSynced => 'Progress backed up';
+
+  @override
+  String get cloudSyncFailed => 'Couldn\'t reach the cloud. It\'ll try again.';
+
+  @override
+  String get syncNow => 'Sync now';
+
+  @override
+  String get signOut => 'Sign out';
+
+  @override
+  String get signedOutNotice =>
+      'Signed out. Your progress stays on this phone.';
+
+  @override
+  String get signInFailed =>
+      'Couldn\'t sign in. Check your connection and try again.';
+
+  @override
+  String get deleteCloudSave => 'Delete cloud save';
+
+  @override
+  String get deleteCloudSaveMessage =>
+      'This deletes your saved progress from the cloud and your Decant account. Progress on this phone stays.';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get cloudDeleted => 'Cloud save deleted.';
+
+  @override
+  String get cloudDeleteFailed =>
+      'Couldn\'t delete it. Check your connection and try again.';
 }

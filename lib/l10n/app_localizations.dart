@@ -971,6 +971,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Level {level}'**
   String levelTitle(int level);
+
+  /// No description provided for @cloudSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Cloud save'**
+  String get cloudSave;
+
+  /// No description provided for @cloudSaveSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Back up your progress and pick it up on any device.'**
+  String get cloudSaveSubtitle;
+
+  /// No description provided for @signInWithGoogle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with Google'**
+  String get signInWithGoogle;
+
+  /// No description provided for @cloudSignedInAs.
+  ///
+  /// In en, this message translates to:
+  /// **'Signed in as {account}'**
+  String cloudSignedInAs(String account);
+
+  /// No description provided for @cloudSyncing.
+  ///
+  /// In en, this message translates to:
+  /// **'Syncing…'**
+  String get cloudSyncing;
+
+  /// No description provided for @cloudSynced.
+  ///
+  /// In en, this message translates to:
+  /// **'Progress backed up'**
+  String get cloudSynced;
+
+  /// No description provided for @cloudSyncFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t reach the cloud. It\'ll try again.'**
+  String get cloudSyncFailed;
+
+  /// No description provided for @syncNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync now'**
+  String get syncNow;
+
+  /// No description provided for @signOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get signOut;
+
+  /// No description provided for @signedOutNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Signed out. Your progress stays on this phone.'**
+  String get signedOutNotice;
+
+  /// No description provided for @signInFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t sign in. Check your connection and try again.'**
+  String get signInFailed;
+
+  /// No description provided for @deleteCloudSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete cloud save'**
+  String get deleteCloudSave;
+
+  /// No description provided for @deleteCloudSaveMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This deletes your saved progress from the cloud and your Decant account. Progress on this phone stays.'**
+  String get deleteCloudSaveMessage;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// No description provided for @cloudDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Cloud save deleted.'**
+  String get cloudDeleted;
+
+  /// No description provided for @cloudDeleteFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t delete it. Check your connection and try again.'**
+  String get cloudDeleteFailed;
 }
 
 class _AppLocalizationsDelegate
