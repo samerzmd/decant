@@ -74,8 +74,8 @@ class _SoundBrowserScreenState extends ConsumerState<SoundBrowserScreen> {
           : 'Downloading more $what…',
     };
     if (pack.status != PackStatus.unavailable) SoundPacks.instance.fetch(_pack);
-    final failed = pack.status == PackStatus.failed ||
-        pack.status == PackStatus.canceled;
+    final failed =
+        pack.status == PackStatus.failed || pack.status == PackStatus.canceled;
     showDecantNotice(
       context,
       msg,
