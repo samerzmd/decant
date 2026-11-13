@@ -6,18 +6,19 @@ import '../models/app_settings.dart';
 import '../state/progress_controller.dart';
 import '../state/providers.dart';
 import 'widgets/confirm_dialog.dart';
+import 'widgets/decant_notice.dart';
 
 /// Turns streak reminders on, asking the system for notification permission
 /// first. If it's refused, reminders stay off and the player is told why.
 /// Returns whether reminders are now on.
 Future<bool> turnOnReminders(BuildContext context, WidgetRef ref) async {
-  final messenger = ScaffoldMessenger.maybeOf(context);
   final blocked = context.l10n.notificationsBlocked;
   final granted = await ref.read(reminderServiceProvider).requestPermission();
   if (granted) {
     ref.read(settingsProvider.notifier).setStreakReminders(true);
-  } else {
-    messenger?.showSnackBar(SnackBar(content: Text(blocked)));
+  } else if (context.mounted) {
+    showDecantNotice(context, blocked,
+        icon: Icons.notifications_off_outlined, tone: NoticeTone.warning);
   }
   return granted;
 }

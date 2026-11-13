@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../audio/audio_service.dart';
 import '../../state/providers.dart';
 import '../theme/app_theme.dart';
+import '../widgets/decant_notice.dart';
 
 /// Which library a [SoundBrowserScreen] shows.
 enum SoundKind { ambient, music }
@@ -73,10 +74,20 @@ class _SoundBrowserScreenState extends ConsumerState<SoundBrowserScreen> {
           : 'Downloading more $what…',
     };
     if (pack.status != PackStatus.unavailable) SoundPacks.instance.fetch(_pack);
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-          SnackBar(content: Text(msg), duration: const Duration(seconds: 3)));
+    final failed = pack.status == PackStatus.failed ||
+        pack.status == PackStatus.canceled;
+    showDecantNotice(
+      context,
+      msg,
+      icon: switch (pack.status) {
+        PackStatus.unavailable => Icons.storefront_outlined,
+        PackStatus.waitingForWifi => Icons.wifi_rounded,
+        _ when failed => Icons.refresh_rounded,
+        _ => Icons.download_rounded,
+      },
+      tone: failed ? NoticeTone.warning : NoticeTone.info,
+      duration: const Duration(seconds: 3),
+    );
   }
 
   Widget _build(BuildContext context, PackState pack) {

@@ -9,6 +9,7 @@ import '../../state/providers.dart';
 import '../theme/app_theme.dart';
 import '../widgets/confirm_dialog.dart';
 import '../widgets/decant_button.dart';
+import '../widgets/decant_notice.dart';
 import '../widgets/game_board.dart';
 import '../widgets/tutorial_card.dart';
 import '../widgets/win_overlay.dart';
@@ -57,11 +58,14 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   bool get _videoHintsOffered =>
       ref.read(adServiceProvider).enabled && !Challenge.isChallenge(levelId);
 
-  void _toast(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), duration: const Duration(seconds: 2)),
-    );
+  /// A short notice floating just above the control bar, so it never covers
+  /// the undo / hint buttons.
+  void _notice(String message, IconData icon, NoticeTone tone) {
+    showDecantNotice(context, message, icon: icon, tone: tone, bottom: 84);
   }
+
+  void _noMovesNotice() => _notice(context.l10n.noMovesHint,
+      Icons.do_not_disturb_alt_rounded, NoticeTone.blocked);
 
   /// Out of hints: offers a short rewarded video for one, then shows it.
   Future<void> _offerVideoHint() async {
@@ -77,7 +81,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     if (!watch || !mounted) return;
     final ads = ref.read(adServiceProvider);
     if (!ads.rewardedReady) {
-      _toast(l10n.noVideoReady);
+      _notice(l10n.noVideoReady, Icons.hourglass_top_rounded, NoticeTone.info);
       return;
     }
     // On Android the video is its own activity, so the app lifecycle pauses
@@ -86,7 +90,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     ref.read(analyticsServiceProvider).logRewardedHint(earned: earned);
     if (!mounted) return;
     if (!earned) {
-      _toast(l10n.videoNotFinished);
+      _notice(l10n.videoNotFinished, Icons.videocam_off_rounded,
+          NoticeTone.warning);
       return;
     }
     await ref.read(progressProvider.notifier).grantHint();
@@ -94,7 +99,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     final outcome =
         ref.read(gameControllerProvider(levelId).notifier).requestHint();
     // The board may have no useful move; the earned hint stays in the pool.
-    if (outcome == HintOutcome.noMove) _toast(l10n.noMovesHint);
+    if (outcome == HintOutcome.noMove) _noMovesNotice();
   }
 
   void _startGuide({required bool replay}) {
@@ -258,22 +263,25 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                           _offerVideoHint();
                           return;
                         }
-                        final message = switch (outcome) {
-                          HintOutcome.shown => null,
-                          HintOutcome.noMove => context.l10n.noMovesHint,
-                          HintOutcome.noHintsLeft => context.l10n.noHintsLeft,
-                        };
-                        if (message != null) _toast(message);
+                        switch (outcome) {
+                          case HintOutcome.shown:
+                            break;
+                          case HintOutcome.noMove:
+                            _noMovesNotice();
+                          case HintOutcome.noHintsLeft:
+                            _notice(
+                                context.l10n.noHintsLeft,
+                                Icons.lightbulb_outline_rounded,
+                                NoticeTone.warning);
+                        }
                       },
                       onAddTube: () {
                         final ok = controller.addEmptyTube();
                         if (!ok) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(context.l10n.noExtraTubes),
-                              duration: const Duration(seconds: 2),
-                            ),
-                          );
+                          _notice(
+                              context.l10n.noExtraTubes,
+                              Icons.add_circle_outline_rounded,
+                              NoticeTone.warning);
                         }
                       },
                       onHelp: _step == null
