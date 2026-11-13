@@ -11,11 +11,14 @@ enum NoticeTone {
   warning,
 
   /// A dead end (no moves left), in the warning red.
-  blocked;
+  blocked,
+
+  /// Good news (an achievement), in gold.
+  reward;
 
   Color get color => switch (this) {
         NoticeTone.info => DecantColors.accent,
-        NoticeTone.warning => DecantColors.star,
+        NoticeTone.warning || NoticeTone.reward => DecantColors.star,
         NoticeTone.blocked => DecantColors.danger,
       };
 }

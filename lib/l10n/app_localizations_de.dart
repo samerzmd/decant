@@ -559,4 +559,190 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get cloudDeleteFailed =>
       'Löschen fehlgeschlagen. Prüfe deine Verbindung und versuch es noch einmal.';
+
+  @override
+  String get share => 'Teilen';
+
+  @override
+  String dailyShareTitle(String date) {
+    return 'Decant Tagesrätsel · $date';
+  }
+
+  @override
+  String dailyShareStreak(int days) {
+    return '$days Tage in Folge';
+  }
+
+  @override
+  String get dailyShareInvite => 'Schaffst du es besser?';
+
+  @override
+  String get achievements => 'Erfolge';
+
+  @override
+  String achievementsProgress(int done, int total) {
+    return '$done von $total freigeschaltet';
+  }
+
+  @override
+  String achievementUnlocked(String name) {
+    return 'Erfolg freigeschaltet: $name';
+  }
+
+  @override
+  String achLevels(num count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Löse $countString Level',
+      one: 'Löse dein erstes Level',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String achStars(int count) {
+    return 'Sammle $count Sterne';
+  }
+
+  @override
+  String achPerfect(num count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString perfekte Lösungen',
+      one: 'Löse ein Level perfekt',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String achDailies(num count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Löse $countString Tagesrätsel',
+      one: 'Löse ein Tagesrätsel',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String achDailyStreak(int count) {
+    return 'Tagesserie von $count Tagen';
+  }
+
+  @override
+  String achPlayStreak(int count) {
+    return 'Spiel $count Tage in Folge';
+  }
+
+  @override
+  String achChallengeStage(int count) {
+    return 'Erreiche Stufe $count in einer Herausforderung';
+  }
+
+  @override
+  String get create => 'Erstellen';
+
+  @override
+  String get createSubtitle => 'Rätsel bauen und teilen';
+
+  @override
+  String get levelEditor => 'Level-Editor';
+
+  @override
+  String get editorHelp =>
+      'Wähle eine Farbe und tippe auf ein Röhrchen, um eine Schicht hinzuzufügen. Lange drücken entfernt die oberste Schicht.';
+
+  @override
+  String get editorColors => 'Farben';
+
+  @override
+  String get editorShuffle => 'Mischen';
+
+  @override
+  String get editorClear => 'Leeren';
+
+  @override
+  String get editorPlay => 'Spielen';
+
+  @override
+  String get editorShare => 'Code teilen';
+
+  @override
+  String get editorEnterCode => 'Code eingeben';
+
+  @override
+  String get editorCodeHint => 'Level-Code einfügen';
+
+  @override
+  String get editorOpen => 'Öffnen';
+
+  @override
+  String get editorInvalidCode => 'Das ist kein gültiger Decant-Level-Code.';
+
+  @override
+  String editorIncomplete(int count) {
+    return 'Jede Farbe braucht genau $count Schichten.';
+  }
+
+  @override
+  String get editorUnsolvable =>
+      'Dieses Rätsel ist nicht lösbar. Verschiebe ein paar Schichten.';
+
+  @override
+  String get editorAlreadySolved =>
+      'Dieses Rätsel ist schon sortiert. Misch die Schichten zuerst.';
+
+  @override
+  String get editorShareInvite =>
+      'Kannst du mein Decant-Rätsel lösen? Öffne Decant, tippe auf Erstellen → Code eingeben und füge ein:';
+
+  @override
+  String get customLevel => 'Eigenes Level';
+
+  @override
+  String get myLevels => 'Meine Level';
+
+  @override
+  String get leaderboard => 'Bestenliste';
+
+  @override
+  String get leaderboardToday => 'Heutiges Tagesrätsel';
+
+  @override
+  String get leaderboardSignIn =>
+      'Melde dich unter Einstellungen → Cloud-Speicher mit Google an, um bei der heutigen Bestenliste mitzumachen.';
+
+  @override
+  String get leaderboardEmpty =>
+      'Heute noch keine Ergebnisse. Sei die erste Person!';
+
+  @override
+  String get leaderboardFailed =>
+      'Die Bestenliste konnte nicht geladen werden. Prüfe deine Verbindung.';
+
+  @override
+  String leaderboardYouAs(String name) {
+    return 'Du erscheinst als $name';
+  }
+
+  @override
+  String get you => 'Du';
 }

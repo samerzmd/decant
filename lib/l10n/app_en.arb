@@ -339,5 +339,142 @@
         "type": "String"
       }
     }
+  },
+  "share": "Share",
+  "dailyShareTitle": "Decant Daily · {date}",
+  "dailyShareStreak": "{days}-day streak",
+  "dailyShareInvite": "Can you beat it?",
+  "@dailyShareTitle": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@dailyShareStreak": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "achievements": "Achievements",
+  "achievementsProgress": "{done} of {total} unlocked",
+  "achievementUnlocked": "Achievement unlocked: {name}",
+  "achLevels": "{count, plural, =1{Solve your first level} other{Solve {count} levels}}",
+  "achStars": "Earn {count} stars",
+  "achPerfect": "{count, plural, =1{Solve a level perfectly} other{{count} perfect solves}}",
+  "achDailies": "{count, plural, =1{Solve a daily challenge} other{Solve {count} daily challenges}}",
+  "achDailyStreak": "Daily streak of {count} days",
+  "achPlayStreak": "Play {count} days in a row",
+  "achChallengeStage": "Reach stage {count} in a challenge",
+  "create": "Create",
+  "createSubtitle": "Make and share puzzles",
+  "levelEditor": "Level editor",
+  "editorHelp": "Pick a color, then tap a tube to add a layer. Long-press a tube to remove its top layer.",
+  "editorColors": "Colors",
+  "editorShuffle": "Shuffle",
+  "editorClear": "Clear",
+  "editorPlay": "Play",
+  "editorShare": "Share code",
+  "editorEnterCode": "Enter a code",
+  "editorCodeHint": "Paste a level code",
+  "editorOpen": "Open",
+  "editorInvalidCode": "That isn't a valid Decant level code.",
+  "editorIncomplete": "Every color needs exactly {count} layers.",
+  "editorUnsolvable": "This puzzle can't be solved. Try moving a few layers.",
+  "editorAlreadySolved": "This puzzle is already sorted. Mix the layers up first.",
+  "editorShareInvite": "Can you solve my Decant puzzle? Open Decant, tap Create → Enter a code, and paste:",
+  "customLevel": "Custom level",
+  "myLevels": "My levels",
+  "leaderboard": "Leaderboard",
+  "leaderboardToday": "Today's daily",
+  "leaderboardSignIn": "Sign in with Google in Settings → Cloud save to join today's leaderboard.",
+  "leaderboardEmpty": "No scores yet today. Be the first!",
+  "leaderboardFailed": "Couldn't load the leaderboard. Check your connection.",
+  "leaderboardYouAs": "You appear as {name}",
+  "you": "You",
+  "@achievementsProgress": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@achievementUnlocked": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@achLevels": {
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "format": "compact"
+      }
+    }
+  },
+  "@achStars": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@achPerfect": {
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "format": "compact"
+      }
+    }
+  },
+  "@achDailies": {
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "format": "compact"
+      }
+    }
+  },
+  "@achDailyStreak": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@achPlayStreak": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@achChallengeStage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@editorIncomplete": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@leaderboardYouAs": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
   }
 }

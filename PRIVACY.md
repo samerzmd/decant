@@ -57,6 +57,16 @@ Apart from the optional cloud save sign-in above, Decant does not collect your
 name, email, contacts, precise location or any other personal information.
 Analytics is not linked to your cloud save account.
 
+## Daily leaderboard
+
+If you're signed in to cloud save, your best result on each day's daily
+challenge (moves and stars) is added to that day's public leaderboard. It
+appears under a random name made from your account ID, such as "Teal Otter
+42", never your real name or email. Other Decant players can see it. Deleting
+your cloud save and account (see above) stops new entries; ask through the
+contacts above to have past entries removed. Without signing in, nothing is
+added.
+
 ## Ads
 
 When your hint pool is empty, Decant offers a short video ad in exchange for a

@@ -2,15 +2,18 @@ import 'dart:ui' as ui;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../audio/audio_service.dart';
 import '../audio/haptic_service.dart';
+import '../logic/custom_level.dart';
 import '../logic/level_generator.dart';
 import '../models/app_settings.dart';
 import '../models/level.dart';
 import '../services/ad_service.dart';
 import '../services/analytics_service.dart';
 import '../services/cloud_sync_service.dart';
+import '../services/leaderboard_service.dart';
 import '../services/persistence_service.dart';
 import 'game_controller.dart';
 import 'game_session.dart';
@@ -33,6 +36,18 @@ final reminderServiceProvider =
 /// Rewarded video ads. Overridden in main; this default shows no ads, as in
 /// tests.
 final adServiceProvider = Provider<AdService>((_) => AdService.off());
+
+/// Opens the system share sheet with [text]; [origin] anchors it on iPads.
+typedef ShareText = Future<void> Function(String text, ui.Rect? origin);
+
+final shareProvider = Provider<ShareText>(
+  (_) => (text, origin) => SharePlus.instance
+      .share(ShareParams(text: text, sharePositionOrigin: origin)),
+);
+
+/// The daily leaderboard. Off unless the app overrides it.
+final leaderboardProvider =
+    Provider<LeaderboardService>((_) => LeaderboardService.off());
 
 /// Optional cloud save. Off (hidden in Settings) unless the app overrides it.
 final cloudSyncProvider =
@@ -66,8 +81,14 @@ final progressProvider =
 
 /// Generated (cached) level for a given 1-based id.
 final levelProvider = Provider.family<Level, int>(
-  (ref, id) => LevelGenerator.generate(id),
+  (ref, id) => CustomLevel.isCustom(id)
+      ? ref.watch(customLevelsProvider)[id] ?? LevelGenerator.generate(1)
+      : LevelGenerator.generate(id),
 );
+
+/// Player-made levels opened this session (from the editor or a code), by id.
+final customLevelsProvider =
+    StateProvider<Map<int, Level>>((_) => const <int, Level>{});
 
 /// The active game session for a level id. Auto-disposes when the screen leaves.
 final gameControllerProvider = StateNotifierProvider.autoDispose

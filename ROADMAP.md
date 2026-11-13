@@ -96,11 +96,15 @@ Bigger bets, only if the community wants them.
 
 - [x] Cloud save / cross-device sync: optional Google sign-in in Settings,
       progress merged and kept in Firestore (v1.5.0)
-- [ ] Leaderboards & shareable daily results
-- [ ] **Level editor** + share-by-code/QR
-- [ ] Achievements
-- [ ] Flutter **web** build (playable demo) and desktop targets
-- [ ] Richer 3D pass (real refraction, caustics) where performance allows
+- [x] Leaderboards & shareable daily results: a Share button on the daily
+      win card, and a daily leaderboard (fewest moves) for signed-in players
+- [x] **Level editor** + share-by-code (`DCT1-…` codes, My levels); QR codes
+      still to come
+- [x] Achievements: 22 tiered badges derived from progress, with toasts
+- [x] Flutter **web** build (playable demo); desktop targets still to come
+- [x] Richer 3D pass: Fresnel rims, wall thickness, bounce light and
+      caustics in the glass shader. True refraction (sampling the liquid
+      behind the glass) is still open; it needs an offscreen pass per tube.
 
 ---
 

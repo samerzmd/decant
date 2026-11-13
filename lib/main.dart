@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -13,6 +14,7 @@ import 'services/ad_service.dart';
 import 'services/analytics_service.dart';
 import 'services/cloud_sync_service.dart';
 import 'services/firebase_cloud_backend.dart';
+import 'services/leaderboard_service.dart';
 import 'services/persistence_service.dart';
 import 'services/reminder_service.dart';
 import 'state/providers.dart';
@@ -24,8 +26,13 @@ import 'ui/theme/palette.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  final analytics = AnalyticsService();
+  // The web build is a playable demo with no Firebase app: no analytics,
+  // cloud save, leaderboard or ads there.
+  if (!kIsWeb) {
+    await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform);
+  }
+  final analytics = kIsWeb ? AnalyticsService.off() : AnalyticsService();
 
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
@@ -41,8 +48,11 @@ Future<void> main() async {
   // a no-op until ready, and the ambient bed auto-starts once loading finishes.
   final audio = AudioService();
   final reminders = ReminderService();
-  final ads = AdService();
-  final cloud = CloudSyncService(persistence, FirebaseCloudBackend());
+  final ads = kIsWeb ? AdService.off() : AdService();
+  final cloud = kIsWeb
+      ? CloudSyncService.off()
+      : CloudSyncService(persistence, FirebaseCloudBackend());
+  final leaderboard = kIsWeb ? LeaderboardService.off() : LeaderboardService();
   WidgetsBinding.instance.addPostFrameCallback((_) {
     audio.init();
   });
@@ -56,6 +66,7 @@ Future<void> main() async {
         reminderServiceProvider.overrideWithValue(reminders),
         adServiceProvider.overrideWithValue(ads),
         cloudSyncProvider.overrideWithValue(cloud),
+        leaderboardProvider.overrideWithValue(leaderboard),
       ],
       child: const DecantApp(),
     ),

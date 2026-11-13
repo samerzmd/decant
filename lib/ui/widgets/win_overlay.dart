@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../logic/challenge.dart';
+import '../../logic/custom_level.dart';
 import '../../logic/daily_challenge.dart';
 import '../theme/app_theme.dart';
 import 'decant_button.dart';
@@ -15,6 +16,13 @@ class WinOverlay extends StatelessWidget {
   final VoidCallback onNext;
   final VoidCallback onReplay;
   final VoidCallback onLevels;
+
+  /// Shares a daily result; null hides the button (other levels never show
+  /// it).
+  final VoidCallback? onShare;
+
+  /// Opens today's leaderboard (dailies only); null hides the link.
+  final VoidCallback? onLeaderboard;
 
   /// For a daily challenge: the daily streak after this win.
   final int dailyStreak;
@@ -34,6 +42,8 @@ class WinOverlay extends StatelessWidget {
     required this.onNext,
     required this.onReplay,
     required this.onLevels,
+    this.onShare,
+    this.onLeaderboard,
     this.dailyStreak = 0,
     this.zen = false,
     this.perfect = false,
@@ -42,13 +52,18 @@ class WinOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final daily = DailyChallenge.isDaily(levelId);
+    final custom = CustomLevel.isCustom(levelId);
+    // Dailies and custom levels are one-offs: "Done" goes back, and the
+    // second button shares instead of opening the level list.
+    final daily = DailyChallenge.isDaily(levelId) || custom;
     final challenge = Challenge.isChallenge(levelId);
-    final title = daily
-        ? context.l10n.dailySolved
-        : challenge
-            ? context.l10n.stageCleared(Challenge.stageOf(levelId))
-            : context.l10n.levelSolved(levelId);
+    final title = custom
+        ? context.l10n.customLevel
+        : daily
+            ? context.l10n.dailySolved
+            : challenge
+                ? context.l10n.stageCleared(Challenge.stageOf(levelId))
+                : context.l10n.levelSolved(levelId);
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0, end: 1),
       duration: const Duration(milliseconds: 320),
@@ -155,7 +170,21 @@ class WinOverlay extends StatelessWidget {
                         onPressed: onReplay,
                       ),
                     ),
-                    // A daily has no next level, and "Done" already goes home.
+                    // A daily has no next level, and "Done" already goes home,
+                    // so its second button shares the result instead.
+                    if (daily && onShare != null) ...[
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: DecantButton(
+                          label: custom
+                              ? context.l10n.editorShare
+                              : context.l10n.share,
+                          icon: Icons.share_rounded,
+                          primary: false,
+                          onPressed: onShare,
+                        ),
+                      ),
+                    ],
                     if (!daily) ...[
                       const SizedBox(width: 12),
                       Expanded(
@@ -171,6 +200,21 @@ class WinOverlay extends StatelessWidget {
                     ],
                   ],
                 ),
+                if (onLeaderboard != null) ...[
+                  const SizedBox(height: 6),
+                  TextButton.icon(
+                    onPressed: onLeaderboard,
+                    icon: Icon(Icons.leaderboard_rounded,
+                        size: 18, color: DecantColors.accent),
+                    label: Text(
+                      context.l10n.leaderboard,
+                      style: TextStyle(
+                        color: DecantColors.accent,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ],
               ],
             ),
           ),

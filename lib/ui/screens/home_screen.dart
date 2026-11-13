@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../l10n/l10n.dart';
+import '../../logic/achievements.dart';
 import '../../logic/challenge.dart';
 import '../../logic/daily_challenge.dart';
 import '../../models/chapter.dart';
@@ -17,8 +18,11 @@ import '../theme/app_theme.dart';
 import '../widgets/confirm_dialog.dart';
 import '../widgets/decant_button.dart';
 import '../widgets/tube_widget.dart';
+import 'achievements_screen.dart';
 import 'challenges_screen.dart';
 import 'game_screen.dart';
+import 'leaderboard_screen.dart';
+import 'level_editor_screen.dart';
 import 'level_select_screen.dart';
 import 'settings_screen.dart';
 import 'stats_screen.dart';
@@ -144,6 +148,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                   stars: progress.totalStars,
                   solved: progress.levelsCompleted,
                   onStats: () => _push(const StatsScreen(), '/stats'),
+                  onLeaderboard: ref.read(leaderboardProvider).enabled
+                      ? () => _push(
+                          LeaderboardScreen(
+                              dailyId: DailyChallenge.idFor(today)),
+                          '/leaderboard')
+                      : null,
                   onSettings: () => _push(const SettingsScreen(), '/settings'),
                 ),
                 const Spacer(),
@@ -204,6 +214,38 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           colors: const [Color(0xFF8E5BD9), Color(0xFF4C63D2)],
                           onTap: () =>
                               _push(const ChallengesScreen(), '/challenges'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 12),
+                IntrinsicHeight(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        child: _ModeCard(
+                          title: l.create,
+                          subtitle: l.createSubtitle,
+                          icon: Icons.science_rounded,
+                          colors: const [Color(0xFF2BB6A6), Color(0xFF2F7FC1)],
+                          onTap: () =>
+                              _push(const LevelEditorScreen(), '/editor'),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: _ModeCard(
+                          title: l.achievements,
+                          subtitle: l.achievementsProgress(
+                            Achievements.unlockedIds(progress).length,
+                            Achievements.all.length,
+                          ),
+                          icon: Icons.emoji_events_rounded,
+                          colors: const [Color(0xFFE0A93B), Color(0xFFC9673A)],
+                          onTap: () => _push(
+                              const AchievementsScreen(), '/achievements'),
                         ),
                       ),
                     ],
@@ -325,12 +367,14 @@ class _TopBar extends StatelessWidget {
   final int stars;
   final int solved;
   final VoidCallback onStats;
+  final VoidCallback? onLeaderboard;
   final VoidCallback onSettings;
 
   const _TopBar({
     required this.stars,
     required this.solved,
     required this.onStats,
+    required this.onLeaderboard,
     required this.onSettings,
   });
 
@@ -368,6 +412,14 @@ class _TopBar extends StatelessWidget {
           tooltip: context.l10n.stats,
           onPressed: onStats,
         ),
+        if (onLeaderboard != null) ...[
+          const SizedBox(width: 10),
+          DecantIconButton(
+            icon: Icons.leaderboard_rounded,
+            tooltip: context.l10n.leaderboard,
+            onPressed: onLeaderboard,
+          ),
+        ],
         const SizedBox(width: 10),
         DecantIconButton(
           icon: Icons.tune_rounded,

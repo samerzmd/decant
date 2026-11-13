@@ -18,6 +18,12 @@ import '../../logic/star_rating.dart';
 import '../../models/chapter.dart';
 import '../../models/liquid_palette.dart';
 import '../../logic/daily_challenge.dart';
+import '../../logic/achievements.dart';
+import '../../logic/custom_level.dart';
+import '../../logic/daily_share.dart';
+import '../../state/progress_controller.dart';
+import 'achievements_screen.dart';
+import 'leaderboard_screen.dart';
 import '../widgets/fail_overlay.dart';
 import '../../l10n/l10n.dart';
 
@@ -102,6 +108,76 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     if (outcome == HintOutcome.noMove) _noMovesNotice();
   }
 
+  /// A win that earns a badge says so. Several at once (a long-awaited
+  /// milestone) show the highest tier.
+  void _onProgress(ProgressData? before, ProgressData after) {
+    if (before == null) return;
+    final fresh = Achievements.newlyUnlocked(before, after);
+    if (fresh.isEmpty) return;
+    final analytics = ref.read(analyticsServiceProvider);
+    for (final a in fresh) {
+      analytics.logAchievement(a.id);
+    }
+    final best = fresh.reduce((a, b) => b.tier > a.tier ? b : a);
+    showDecantNotice(
+      context,
+      context.l10n.achievementUnlocked(achievementName(context.l10n, best)),
+      icon: Icons.emoji_events_rounded,
+      tone: NoticeTone.reward,
+      duration: const Duration(seconds: 4),
+    );
+  }
+
+  /// A signed-in player's daily solve goes on the leaderboard (Zen mode
+  /// hides moves, so it doesn't).
+  void _onDailyWin(GameSession? before, GameSession after) {
+    if (!DailyChallenge.isDaily(levelId)) return;
+    if (after.status != GameStatus.won || before?.status == GameStatus.won) {
+      return;
+    }
+    final user = ref.read(cloudSyncProvider).state.value.user;
+    if (user == null || ref.read(settingsProvider).zenMode) return;
+    ref.read(leaderboardProvider).submit(
+          dailyId: levelId,
+          uid: user.uid,
+          moves: after.moves,
+          stars: after.stars,
+        );
+  }
+
+  void _openLeaderboard() => Navigator.of(context).push(MaterialPageRoute<void>(
+        settings: const RouteSettings(name: '/leaderboard'),
+        builder: (_) => LeaderboardScreen(dailyId: levelId),
+      ));
+
+  /// Shares the code of the custom level being played.
+  Future<void> _shareCustom() async {
+    final level = ref.read(levelProvider(levelId));
+    final code = CustomLevel.encode(level.filledTubes);
+    await ref.read(shareProvider)(
+        '${context.l10n.editorShareInvite}\n$code', null);
+  }
+
+  /// Opens the system share sheet with today's daily result.
+  Future<void> _shareDaily(GameSession session) async {
+    final text = DailyShare.text(
+      l10n: context.l10n,
+      levelId: levelId,
+      stars: session.stars,
+      moves: session.moves,
+      perfect: session.perfect,
+      streak: ref.read(progressProvider).daily.streak,
+      zen: ref.read(settingsProvider).zenMode,
+    );
+    ref.read(analyticsServiceProvider).logDailyShared();
+    // iPads anchor the share sheet to the button's area.
+    final box = context.findRenderObject() as RenderBox?;
+    await ref.read(shareProvider)(
+      text,
+      box == null ? null : box.localToGlobal(Offset.zero) & box.size,
+    );
+  }
+
   void _startGuide({required bool replay}) {
     final controller = ref.read(gameControllerProvider(levelId).notifier);
     var session = ref.read(gameControllerProvider(levelId));
@@ -169,6 +245,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   @override
   Widget build(BuildContext context) {
     ref.listen(gameControllerProvider(levelId), _onSession);
+    ref.listen(progressProvider, _onProgress);
+    ref.listen(gameControllerProvider(levelId), _onDailyWin);
     final session = ref.watch(gameControllerProvider(levelId));
     final controller = ref.read(gameControllerProvider(levelId).notifier);
     final muted = ref.watch(settingsProvider).audio.muted;
@@ -311,7 +389,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                           Challenge.isChallenge(levelId),
                       perfect: session.perfect,
                       par: session.par,
-                      onNext: DailyChallenge.isDaily(levelId)
+                      onNext: DailyChallenge.isDaily(levelId) ||
+                              CustomLevel.isCustom(levelId)
                           ? () => Navigator.of(context).pop()
                           : () => Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
@@ -322,6 +401,15 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                               ),
                       onReplay: controller.restart,
                       onLevels: () => Navigator.of(context).pop(),
+                      onShare: DailyChallenge.isDaily(levelId)
+                          ? () => _shareDaily(session)
+                          : CustomLevel.isCustom(levelId)
+                              ? _shareCustom
+                              : null,
+                      onLeaderboard: DailyChallenge.isDaily(levelId) &&
+                              ref.read(leaderboardProvider).enabled
+                          ? _openLeaderboard
+                          : null,
                     ),
                   ),
               ],
@@ -394,11 +482,13 @@ class _Header extends StatelessWidget {
                   fit: BoxFit.scaleDown,
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    DailyChallenge.isDaily(levelId)
-                        ? context.l10n.dailyChallengeTitle(levelId)
-                        : Challenge.isChallenge(levelId)
-                            ? context.l10n.challengeTitle(levelId)
-                            : context.l10n.levelTitle(levelId),
+                    CustomLevel.isCustom(levelId)
+                        ? context.l10n.customLevel
+                        : DailyChallenge.isDaily(levelId)
+                            ? context.l10n.dailyChallengeTitle(levelId)
+                            : Challenge.isChallenge(levelId)
+                                ? context.l10n.challengeTitle(levelId)
+                                : context.l10n.levelTitle(levelId),
                     maxLines: 1,
                     style: TextStyle(
                       fontSize: 20,
@@ -409,8 +499,7 @@ class _Header extends StatelessWidget {
                 ),
                 Text(
                   [
-                    if (!DailyChallenge.isDaily(levelId) &&
-                        !Challenge.isChallenge(levelId))
+                    if (_isCampaign(levelId))
                       context.l10n.chapterName(Chapter.forLevel(levelId)),
                     context.l10n.difficulty(
                         '${'●' * difficulty}${'○' * (5 - difficulty)}'),
@@ -557,4 +646,6 @@ class _StuckBanner extends StatelessWidget {
 
 /// Campaign levels are the positive ids below the challenge ranges.
 bool _isCampaign(int levelId) =>
-    !DailyChallenge.isDaily(levelId) && !Challenge.isChallenge(levelId);
+    !DailyChallenge.isDaily(levelId) &&
+    !Challenge.isChallenge(levelId) &&
+    !CustomLevel.isCustom(levelId);

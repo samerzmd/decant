@@ -13,6 +13,26 @@ service cloud.firestore {
         && request.resource.data.progress is map
         && request.resource.data.updatedAt == request.time;
     }
+    // Daily leaderboard: daily/{yyyymmdd}/scores/{uid} = { name, moves,
+    // stars, at }. Anyone can read. A signed-in player writes only their
+    // own row, with sane values, and an update must beat their best.
+    match /daily/{day}/scores/{uid} {
+      allow read: if true;
+      allow create: if validScore(uid, day);
+      allow update: if validScore(uid, day)
+        && request.resource.data.moves < resource.data.moves;
+    }
+    function validScore(uid, day) {
+      let d = request.resource.data;
+      return request.auth != null
+        && request.auth.uid == uid
+        && day.matches('^20[0-9]{6}$')
+        && d.keys().hasOnly(['name', 'moves', 'stars', 'at'])
+        && d.name is string && d.name.size() <= 32
+        && d.moves is int && d.moves >= 1 && d.moves <= 500
+        && d.stars is int && d.stars >= 0 && d.stars <= 3
+        && d.at == request.time;
+    }
     // Nothing else is readable or writable.
     match /{document=**} {
       allow read, write: if false;

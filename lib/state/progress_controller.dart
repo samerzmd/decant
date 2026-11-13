@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/legacy.dart';
 
 import '../logic/challenge.dart';
+import '../logic/custom_level.dart';
 import '../logic/daily_challenge.dart';
 import '../models/challenge_stats.dart';
 import '../models/daily_stats.dart';
@@ -119,6 +120,8 @@ class ProgressController extends StateNotifier<ProgressData> {
     int moves, {
     bool perfect = false,
   }) async {
+    // Player-made levels are for fun: no progress, stats or hints.
+    if (CustomLevel.isCustom(levelId)) return;
     // Every solve earns a hint back (the pool is capped).
     await _persistence.saveHints(_persistence.hints() + 1);
     if (Challenge.isChallenge(levelId)) {

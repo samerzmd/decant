@@ -12,7 +12,8 @@ class DailyChallenge {
   static int idFor(DateTime day) =>
       -(day.year * 10000 + day.month * 100 + day.day);
 
-  static bool isDaily(int levelId) => levelId < 0;
+  /// Dailies are minus `yyyymmdd`; anything further below is a custom level.
+  static bool isDaily(int levelId) => levelId < 0 && levelId > -100000000;
 
   /// The local day a daily [levelId] belongs to.
   static DateTime dateOf(int levelId) {

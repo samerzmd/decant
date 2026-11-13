@@ -1067,6 +1067,246 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Couldn\'t delete it. Check your connection and try again.'**
   String get cloudDeleteFailed;
+
+  /// No description provided for @share.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get share;
+
+  /// No description provided for @dailyShareTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Decant Daily · {date}'**
+  String dailyShareTitle(String date);
+
+  /// No description provided for @dailyShareStreak.
+  ///
+  /// In en, this message translates to:
+  /// **'{days}-day streak'**
+  String dailyShareStreak(int days);
+
+  /// No description provided for @dailyShareInvite.
+  ///
+  /// In en, this message translates to:
+  /// **'Can you beat it?'**
+  String get dailyShareInvite;
+
+  /// No description provided for @achievements.
+  ///
+  /// In en, this message translates to:
+  /// **'Achievements'**
+  String get achievements;
+
+  /// No description provided for @achievementsProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{done} of {total} unlocked'**
+  String achievementsProgress(int done, int total);
+
+  /// No description provided for @achievementUnlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Achievement unlocked: {name}'**
+  String achievementUnlocked(String name);
+
+  /// No description provided for @achLevels.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Solve your first level} other{Solve {count} levels}}'**
+  String achLevels(num count);
+
+  /// No description provided for @achStars.
+  ///
+  /// In en, this message translates to:
+  /// **'Earn {count} stars'**
+  String achStars(int count);
+
+  /// No description provided for @achPerfect.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Solve a level perfectly} other{{count} perfect solves}}'**
+  String achPerfect(num count);
+
+  /// No description provided for @achDailies.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Solve a daily challenge} other{Solve {count} daily challenges}}'**
+  String achDailies(num count);
+
+  /// No description provided for @achDailyStreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily streak of {count} days'**
+  String achDailyStreak(int count);
+
+  /// No description provided for @achPlayStreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Play {count} days in a row'**
+  String achPlayStreak(int count);
+
+  /// No description provided for @achChallengeStage.
+  ///
+  /// In en, this message translates to:
+  /// **'Reach stage {count} in a challenge'**
+  String achChallengeStage(int count);
+
+  /// No description provided for @create.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get create;
+
+  /// No description provided for @createSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Make and share puzzles'**
+  String get createSubtitle;
+
+  /// No description provided for @levelEditor.
+  ///
+  /// In en, this message translates to:
+  /// **'Level editor'**
+  String get levelEditor;
+
+  /// No description provided for @editorHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a color, then tap a tube to add a layer. Long-press a tube to remove its top layer.'**
+  String get editorHelp;
+
+  /// No description provided for @editorColors.
+  ///
+  /// In en, this message translates to:
+  /// **'Colors'**
+  String get editorColors;
+
+  /// No description provided for @editorShuffle.
+  ///
+  /// In en, this message translates to:
+  /// **'Shuffle'**
+  String get editorShuffle;
+
+  /// No description provided for @editorClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get editorClear;
+
+  /// No description provided for @editorPlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Play'**
+  String get editorPlay;
+
+  /// No description provided for @editorShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share code'**
+  String get editorShare;
+
+  /// No description provided for @editorEnterCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a code'**
+  String get editorEnterCode;
+
+  /// No description provided for @editorCodeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste a level code'**
+  String get editorCodeHint;
+
+  /// No description provided for @editorOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get editorOpen;
+
+  /// No description provided for @editorInvalidCode.
+  ///
+  /// In en, this message translates to:
+  /// **'That isn\'t a valid Decant level code.'**
+  String get editorInvalidCode;
+
+  /// No description provided for @editorIncomplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Every color needs exactly {count} layers.'**
+  String editorIncomplete(int count);
+
+  /// No description provided for @editorUnsolvable.
+  ///
+  /// In en, this message translates to:
+  /// **'This puzzle can\'t be solved. Try moving a few layers.'**
+  String get editorUnsolvable;
+
+  /// No description provided for @editorAlreadySolved.
+  ///
+  /// In en, this message translates to:
+  /// **'This puzzle is already sorted. Mix the layers up first.'**
+  String get editorAlreadySolved;
+
+  /// No description provided for @editorShareInvite.
+  ///
+  /// In en, this message translates to:
+  /// **'Can you solve my Decant puzzle? Open Decant, tap Create → Enter a code, and paste:'**
+  String get editorShareInvite;
+
+  /// No description provided for @customLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom level'**
+  String get customLevel;
+
+  /// No description provided for @myLevels.
+  ///
+  /// In en, this message translates to:
+  /// **'My levels'**
+  String get myLevels;
+
+  /// No description provided for @leaderboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Leaderboard'**
+  String get leaderboard;
+
+  /// No description provided for @leaderboardToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s daily'**
+  String get leaderboardToday;
+
+  /// No description provided for @leaderboardSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with Google in Settings → Cloud save to join today\'s leaderboard.'**
+  String get leaderboardSignIn;
+
+  /// No description provided for @leaderboardEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No scores yet today. Be the first!'**
+  String get leaderboardEmpty;
+
+  /// No description provided for @leaderboardFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load the leaderboard. Check your connection.'**
+  String get leaderboardFailed;
+
+  /// No description provided for @leaderboardYouAs.
+  ///
+  /// In en, this message translates to:
+  /// **'You appear as {name}'**
+  String leaderboardYouAs(String name);
+
+  /// No description provided for @you.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get you;
 }
 
 class _AppLocalizationsDelegate

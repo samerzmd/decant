@@ -164,6 +164,20 @@ class PersistenceService {
   Future<void> saveHints(int hints) =>
       _prefs.setInt(_kHints, hints.clamp(0, maxHints));
 
+  // ---- Custom levels ----------------------------------------------------- //
+
+  static const _kCustom = 'decant.custom';
+  static const maxCustomLevels = 20;
+
+  /// Codes of levels the player made or opened, newest first.
+  List<String> customLevelCodes() => _prefs.getStringList(_kCustom) ?? const [];
+
+  /// Remembers [code] at the front of "My levels" (no duplicates).
+  Future<void> rememberCustomLevel(String code) {
+    final codes = [code, ...customLevelCodes().where((c) => c != code)];
+    return _prefs.setStringList(_kCustom, codes.take(maxCustomLevels).toList());
+  }
+
   // ---- Cloud save -------------------------------------------------------- //
 
   /// All progress as one value, for cloud save.

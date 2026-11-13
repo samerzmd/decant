@@ -6,6 +6,24 @@ All notable changes to Decant are documented here. The format loosely follows
 
 ## [Unreleased]
 
+### Added
+- Share your daily result: a Share button on the daily win card sends your
+  stars, moves and streak, with a link to the game.
+- Daily leaderboard: signed-in players are ranked by fewest moves on each
+  day's daily, under a friendly random name like "Teal Otter 42".
+- Achievements: 22 badges (levels, stars, perfect solves, dailies, streaks,
+  challenge stages) in bronze, silver and gold, with a toast when you earn
+  one. Worked out from your progress, so cloud save carries them too.
+- Level editor: build a puzzle, check that it's solvable, play it, and share
+  it as a code friends can paste into Create → Enter a code. Your last 20
+  puzzles are kept under My levels.
+- A playable web build (no sign-in, ads or leaderboard there).
+
+### Changed
+- Richer glass: Fresnel rims, visible wall thickness, a soft second
+  reflection and shimmering caustics at the base of every tube.
+- Buttons side by side no longer cut their labels off ("Rep…").
+
 ## [1.5.0] — 2026-11-13
 
 ### Added
