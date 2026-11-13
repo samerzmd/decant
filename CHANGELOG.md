@@ -6,6 +6,8 @@ All notable changes to Decant are documented here. The format loosely follows
 
 ## [Unreleased]
 
+## [1.6.0] — 2026-11-13
+
 ### Added
 - Share your daily result: a Share button on the daily win card sends your
   stars, moves and streak, with a link to the game.
