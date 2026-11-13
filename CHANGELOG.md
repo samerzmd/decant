@@ -6,6 +6,13 @@ All notable changes to Decant are documented here. The format loosely follows
 
 ## [Unreleased]
 
+## [1.4.2] — 2026-11-13
+
+### Changed
+- In-game messages, such as "No moves left" or "No video is ready", now
+  appear as a card in the app's own colours with an icon, floating above
+  the buttons instead of covering them.
+
 ## [1.4.1] — 2026-11-12
 
 ### Fixed
