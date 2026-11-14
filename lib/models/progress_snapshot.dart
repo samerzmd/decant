@@ -20,6 +20,9 @@ class ProgressSnapshot {
   final ChallengeStats challenges;
   final int hints;
 
+  /// When [hints] last changed (ms since epoch); 0 if unknown.
+  final int hintsChangedAt;
+
   const ProgressSnapshot({
     this.unlockedLevel = 1,
     this.results = const {},
@@ -27,6 +30,7 @@ class ProgressSnapshot {
     this.daily = const DailyStats(),
     this.challenges = const ChallengeStats(),
     required this.hints,
+    this.hintsChangedAt = 0,
   });
 
   /// No level, daily or challenge has been played.
@@ -46,20 +50,28 @@ class ProgressSnapshot {
         stats: _mergeStats(stats, other.stats),
         daily: _mergeDaily(daily, other.daily),
         challenges: _mergeChallenges(challenges, other.challenges),
-        // Either device may have spent or earned some; keep the larger pool.
-        hints: _max(hints, other.hints),
+        // Hints are spent as well as earned, so the most recent count wins;
+        // keeping the larger one would hand back every hint spent since the
+        // last sync. Without timestamps (older saves), keep the larger pool.
+        hints: hintsChangedAt == other.hintsChangedAt
+            ? _max(hints, other.hints)
+            : hintsChangedAt > other.hintsChangedAt
+                ? hints
+                : other.hints,
+        hintsChangedAt: _max(hintsChangedAt, other.hintsChangedAt),
       );
 
   Map<String, dynamic> toJson() => {
         'v': version,
         'unlocked': unlockedLevel,
         'results': {
-          for (final e in results.entries) '${e.key}': e.value.toJson(),
+          for (final e in results.entries) '${e.key}': e.value.toJson()
         },
         'stats': stats.toJson(),
         'daily': daily.toJson(),
         'challenges': challenges.toJson(),
         'hints': hints,
+        'hintsAt': hintsChangedAt,
       };
 
   factory ProgressSnapshot.fromJson(Map<String, dynamic> j) {
@@ -79,6 +91,7 @@ class ProgressSnapshot {
       daily: DailyStats.fromJson(map(j['daily'])),
       challenges: ChallengeStats.fromJson(map(j['challenges'])),
       hints: (j['hints'] as num?)?.toInt() ?? 0,
+      hintsChangedAt: (j['hintsAt'] as num?)?.toInt() ?? 0,
     );
   }
 
@@ -96,14 +109,19 @@ class ProgressSnapshot {
 int _max(int a, int b) => a > b ? a : b;
 
 Map<int, LevelResult> _mergeResults(
-    Map<int, LevelResult> a, Map<int, LevelResult> b) {
+  Map<int, LevelResult> a,
+  Map<int, LevelResult> b,
+) {
   final out = Map<int, LevelResult>.of(a);
   for (final e in b.entries) {
     final mine = out[e.key];
     out[e.key] = mine == null
         ? e.value
-        : mine.mergedWith(e.value.stars, e.value.bestMoves,
-            perfect: e.value.perfect);
+        : mine.mergedWith(
+            e.value.stars,
+            e.value.bestMoves,
+            perfect: e.value.perfect,
+          );
   }
   return out;
 }
@@ -170,8 +188,10 @@ int _runEndingOn(String? lastDay, Map<String, int> stars) {
 }
 
 ChallengeStats _mergeChallenges(ChallengeStats a, ChallengeStats b) =>
-    ChallengeStats(best: {
-      for (final mode in ChallengeMode.values)
-        if (_max(a.bestStage(mode), b.bestStage(mode)) > 0)
-          mode: _max(a.bestStage(mode), b.bestStage(mode)),
-    });
+    ChallengeStats(
+      best: {
+        for (final mode in ChallengeMode.values)
+          if (_max(a.bestStage(mode), b.bestStage(mode)) > 0)
+            mode: _max(a.bestStage(mode), b.bestStage(mode)),
+      },
+    );
