@@ -1,5 +1,4 @@
 import 'dart:math' as math;
-import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,6 +13,7 @@ import '../../models/tube.dart';
 import '../../state/progress_controller.dart';
 import '../../state/providers.dart';
 import '../reminder_prompt.dart';
+import '../painters/glass_shaders.dart';
 import '../theme/app_theme.dart';
 import '../widgets/confirm_dialog.dart';
 import '../widgets/decant_button.dart';
@@ -314,7 +314,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     int i,
     double phase,
     double time,
-    ui.FragmentShader? shader,
+    GlassShaders? shader,
     bool colorblind,
   ) {
     final bob = math.sin(phase + i * 1.4) * 4;

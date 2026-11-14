@@ -19,8 +19,8 @@ import 'game_controller.dart';
 import 'game_session.dart';
 import 'progress_controller.dart';
 import 'settings_controller.dart';
-import '../services/log.dart';
 import '../services/reminder_service.dart';
+import '../ui/painters/glass_shaders.dart';
 
 /// Overridden in `main()` with the loaded instance.
 final persistenceProvider = Provider<PersistenceService>(
@@ -103,14 +103,8 @@ final gameControllerProvider = StateNotifierProvider.autoDispose
   return GameController(ref, ref.watch(levelProvider(id)));
 });
 
-/// Loads the glass fragment shader once. Null if the platform can't compile it
-/// (the painter then falls back to a gradient-only glass look).
-final glassShaderProvider = FutureProvider<ui.FragmentShader?>((ref) async {
-  try {
-    final program = await ui.FragmentProgram.fromAsset('shaders/glass.frag');
-    return program.fragmentShader();
-  } catch (e) {
-    Log.w('Shader', 'unavailable, using fallback', e);
-    return null;
-  }
-});
+/// Loads the tube shaders once. Each is null if the platform can't compile it
+/// (the painter then falls back to plain drawing).
+final glassShaderProvider = FutureProvider<GlassShaders>(
+  (ref) => GlassShaders.load(),
+);

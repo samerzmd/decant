@@ -61,6 +61,7 @@ flutter:
   # GLSL fragment shader used by the glass-tube painter.
   shaders:
     - shaders/glass.frag
+    - shaders/refract.frag
 
 # ---------------------------------------------------------------------------
 # Launcher icon — run:  dart run flutter_launcher_icons

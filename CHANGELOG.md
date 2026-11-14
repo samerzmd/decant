@@ -13,6 +13,9 @@ All notable changes to Decant are documented here. The format loosely follows
   it, and nothing it sees leaves the phone.
 - Desktop apps for macOS, Windows and Linux: the offline game in a tall,
   resizable window, attached to each GitHub release.
+- Real refraction in the glass: liquid is seen through the curved tube,
+  so the middle of the column looks magnified, the edges bend, the liquid
+  shows through the thick wall, and a tipped surface curves near the glass.
 
 ### Changed
 - Built with Flutter 3.47 (was 3.44), which lets the macOS and iOS apps

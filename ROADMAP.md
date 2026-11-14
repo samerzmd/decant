@@ -104,8 +104,9 @@ Bigger bets, only if the community wants them.
 - [x] Flutter **web** build (playable demo) and **desktop** apps for macOS,
       Windows and Linux, built in CI and attached to each release
 - [x] Richer 3D pass: Fresnel rims, wall thickness, bounce light and
-      caustics in the glass shader. True refraction (sampling the liquid
-      behind the glass) is still open; it needs an offscreen pass per tube.
+      caustics in the glass shader, and true refraction: each tube's liquid
+      is drawn offscreen (cached while it's still) and seen through the
+      curved glass with Snell's law, slight dispersion at the edges
 
 ---
 

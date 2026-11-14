@@ -1,14 +1,13 @@
-import 'dart:ui' as ui;
-
 import 'package:flutter/material.dart';
 
 import '../../models/tube.dart';
+import '../painters/glass_shaders.dart';
 import '../painters/tube_painter.dart';
 
 /// A single tappable tube. Pure presentation: it paints [tube] via
 /// [LiquidTubePainter] and applies selection-lift and pour-tilt transforms.
 /// All game logic lives in the controller; this just reports taps.
-class TubeWidget extends StatelessWidget {
+class TubeWidget extends StatefulWidget {
   final Tube tube;
   final double width;
   final double height;
@@ -42,7 +41,7 @@ class TubeWidget extends StatelessWidget {
   /// Churn from a stream landing in this tube.
   final double agitation;
 
-  final ui.FragmentShader? shader;
+  final GlassShaders? shader;
   final VoidCallback onTap;
 
   const TubeWidget({
@@ -72,39 +71,59 @@ class TubeWidget extends StatelessWidget {
   });
 
   @override
+  State<TubeWidget> createState() => _TubeWidgetState();
+}
+
+class _TubeWidgetState extends State<TubeWidget> {
+  /// This tube's offscreen liquid image, reused while the liquid is still.
+  final _layer = LiquidLayerCache();
+
+  @override
+  void dispose() {
+    _layer.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final dpr = MediaQuery.maybeDevicePixelRatioOf(context) ??
+        View.maybeOf(context)?.devicePixelRatio ??
+        1.0;
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: onTap,
+      onTap: widget.onTap,
       child: Transform.translate(
-        offset: offset,
+        offset: widget.offset,
         child: AnimatedSlide(
           duration: const Duration(milliseconds: 160),
           curve: Curves.easeOut,
-          offset: Offset(0, selected ? -0.08 : 0),
+          offset: Offset(0, widget.selected ? -0.08 : 0),
           child: Transform.rotate(
-            angle: tilt,
-            alignment: pivot,
+            angle: widget.tilt,
+            alignment: widget.pivot,
             child: CustomPaint(
-              size: Size(width, height),
+              size: Size(widget.width, widget.height),
               painter: LiquidTubePainter(
-                tube: tube,
-                colorblind: colorblind,
-                time: time,
-                risingCount: risingCount,
-                risingProgress: risingProgress,
-                risingColor: risingColor,
-                selected: selected,
-                hintSource: hintSource,
-                hintTarget: hintTarget,
-                justCompleted: justCompleted,
-                wobble: wobble,
-                glassShader: shader,
-                drainCount: drainCount,
-                drainProgress: drainProgress,
-                drainColor: drainColor,
-                liquidTilt: tilt,
-                agitation: agitation,
+                tube: widget.tube,
+                colorblind: widget.colorblind,
+                time: widget.time,
+                risingCount: widget.risingCount,
+                risingProgress: widget.risingProgress,
+                risingColor: widget.risingColor,
+                selected: widget.selected,
+                hintSource: widget.hintSource,
+                hintTarget: widget.hintTarget,
+                justCompleted: widget.justCompleted,
+                wobble: widget.wobble,
+                glassShader: widget.shader?.glass,
+                refractShader: widget.shader?.refract,
+                layerCache: _layer,
+                devicePixelRatio: dpr,
+                drainCount: widget.drainCount,
+                drainProgress: widget.drainProgress,
+                drainColor: widget.drainColor,
+                liquidTilt: widget.tilt,
+                agitation: widget.agitation,
               ),
             ),
           ),

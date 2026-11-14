@@ -1,5 +1,4 @@
 import 'dart:math' as math;
-import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,6 +7,7 @@ import '../../models/move.dart';
 import '../../state/game_controller.dart';
 import '../../state/game_session.dart';
 import '../../state/providers.dart';
+import '../painters/glass_shaders.dart';
 import '../painters/liquid_geometry.dart';
 import '../painters/pour_stream_painter.dart';
 import 'tube_widget.dart';
@@ -134,7 +134,7 @@ class _GameBoardState extends ConsumerState<GameBoard>
     required GameController controller,
     required bool colorblind,
     required bool reduceMotion,
-    required ui.FragmentShader? shader,
+    required GlassShaders? shader,
     required double boardWidth,
   }) {
     final time = _bubble.value * 8.0;

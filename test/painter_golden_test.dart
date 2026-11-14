@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:decant/models/tube.dart';
+import 'package:decant/ui/painters/glass_shaders.dart';
 import 'package:decant/ui/painters/pour_stream_painter.dart';
 import 'package:decant/ui/widgets/tube_widget.dart';
 
@@ -26,6 +27,7 @@ Widget _tube(
   double agitation = 0,
   bool colorblind = false,
   bool selected = false,
+  GlassShaders? shaders,
 }) {
   return SizedBox(
     // A tipped tube pivots on its top-right corner and swings left, so it
@@ -50,6 +52,7 @@ Widget _tube(
         risingProgress: risingProgress,
         risingColor: risingColor,
         agitation: agitation,
+        shader: shaders,
         onTap: () {},
       ),
     ),
@@ -107,6 +110,36 @@ void main() {
     await expectLater(
       find.byType(RepaintBoundary).first,
       matchesGoldenFile('goldens/tubes.png'),
+    );
+  });
+
+  testWidgets('tubes through the glass shaders', (tester) async {
+    final shaders = (await tester.runAsync(GlassShaders.load))!;
+    expect(shaders.refract, isNotNull);
+    expect(shaders.glass, isNotNull);
+    await _pump(
+      tester,
+      Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _tube([0, 1, 2], shaders: shaders),
+          _tube([3, 3, 4, 5], colorblind: true, shaders: shaders),
+          _tube(
+            [1, 2],
+            tilt: 1.0,
+            drainCount: 2,
+            drainProgress: 0.4,
+            drainColor: 4,
+            shaders: shaders,
+          ),
+          _tube([], selected: true, shaders: shaders),
+        ],
+      ),
+      const Size(600, 270),
+    );
+    await expectLater(
+      find.byType(RepaintBoundary).first,
+      matchesGoldenFile('goldens/tubes_refracted.png'),
     );
   });
 

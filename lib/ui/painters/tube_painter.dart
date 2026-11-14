@@ -6,12 +6,18 @@ import 'package:flutter/material.dart';
 import '../../models/tube.dart';
 import '../theme/app_theme.dart';
 import '../theme/palette.dart';
+import 'glass_shaders.dart';
 import 'liquid_geometry.dart';
 
 /// Paints a single glass tube with a 2.5-D look: rounded-bottom glass body,
 /// soft shadow, layered liquid segments with a rounded meniscus and glossy
 /// reflections, rising bubbles, optional colorblind symbols, and a GLSL glass
 /// highlight overlay (with a gradient fallback when the shader is unavailable).
+///
+/// With the refraction shader, the liquid is drawn into an offscreen image
+/// and then seen through the curved glass: magnified in the middle, squeezed
+/// at the edges and filling part of the wall. The image is kept in
+/// [layerCache] until the liquid changes.
 ///
 /// Pour animation: the destination tube passes [risingCount] + [risingProgress]
 /// so the newly-poured liquid grows upward; selection/hint states add glows.
@@ -41,6 +47,15 @@ class LiquidTubePainter extends CustomPainter {
 
   final ui.FragmentShader? glassShader;
 
+  /// Draws the liquid as seen through the glass; null draws it flat.
+  final ui.FragmentShader? refractShader;
+
+  /// Where this tube keeps its offscreen liquid image between frames.
+  final LiquidLayerCache? layerCache;
+
+  /// Physical pixels per logical pixel, for a sharp offscreen image.
+  final double devicePixelRatio;
+
   /// Liquid still leaving this tube (source of an active pour): [drainCount]
   /// segments of [drainColor] sit on top of [tube], [drainProgress] of the way
   /// out.
@@ -68,6 +83,9 @@ class LiquidTubePainter extends CustomPainter {
     this.justCompleted = false,
     this.wobble = 0.0,
     this.glassShader,
+    this.refractShader,
+    this.layerCache,
+    this.devicePixelRatio = 1.0,
     this.drainCount = 0,
     this.drainProgress = 0.0,
     this.drainColor,
@@ -106,11 +124,13 @@ class LiquidTubePainter extends CustomPainter {
       bottomRight: Radius.circular((botR.x - wall).clamp(0, w)),
     );
 
-    canvas.save();
-    canvas.clipRRect(innerRRect);
-    _paintLiquid(canvas, innerRect);
-    _paintBubbles(canvas, innerRect);
-    canvas.restore();
+    if (!_paintRefracted(canvas, size, bodyRRect, innerRect, innerRRect)) {
+      canvas.save();
+      canvas.clipRRect(innerRRect);
+      if (_paintLiquid(canvas, innerRect)) _paintGloss(canvas, innerRect);
+      _paintBubbles(canvas, innerRect);
+      canvas.restore();
+    }
 
     _paintGlassOverlay(canvas, bodyRRect, size);
     _paintRim(canvas, bodyRRect, w);
@@ -143,7 +163,99 @@ class LiquidTubePainter extends CustomPainter {
     canvas.drawRRect(body, glassPaint);
   }
 
-  void _paintLiquid(Canvas canvas, Rect inner) {
+  /// Liquid through the glass, or false to draw it flat instead (no shader,
+  /// or the offscreen image failed).
+  bool _paintRefracted(
+    Canvas canvas,
+    Size size,
+    RRect body,
+    Rect inner,
+    RRect innerRRect,
+  ) {
+    final shader = refractShader;
+    final cache = layerCache;
+    if (shader == null || cache == null) return false;
+    final pouring = risingCount > 0 || drainCount > 0;
+    if (tube.isEmpty && !pouring) return true;
+
+    final dpr = devicePixelRatio;
+    final segH = inner.height / tube.capacity;
+    // Quarter-pixel steps of the surface ripple, so a faint idle wobble
+    // doesn't redraw the image every frame.
+    final ripple = (_ripple(segH) * 4).round();
+    final key = (
+      tube,
+      risingCount,
+      risingProgress,
+      risingColor,
+      drainCount,
+      drainProgress,
+      drainColor,
+      liquidTilt,
+      ripple,
+      agitation,
+      agitation > 0.01 ? time : 0.0, // the froth moves
+      colorblind,
+      size,
+      dpr,
+    );
+    try {
+      var image = cache.lookup(key);
+      if (image == null) {
+        final recorder = ui.PictureRecorder();
+        final layer = Canvas(recorder)
+          ..scale(dpr)
+          ..translate(-inner.left, -inner.top)
+          ..clipRRect(innerRRect);
+        _paintLiquid(layer, inner);
+        final picture = recorder.endRecording();
+        image = picture.toImageSync(
+          math.max(1, (inner.width * dpr).ceil()),
+          math.max(1, (inner.height * dpr).ceil()),
+        );
+        picture.dispose();
+        cache.store(key, image);
+      }
+
+      // The liquid appears to reach halfway into the glass wall.
+      final half = size.width / 2;
+      final edge = (inner.width / 2 + (half - inner.width / 2) * 0.5) / half;
+      shader
+        ..setFloat(0, size.width)
+        ..setFloat(1, size.height)
+        ..setFloat(2, inner.left)
+        ..setFloat(3, inner.top)
+        ..setFloat(4, inner.width)
+        ..setFloat(5, inner.height)
+        ..setFloat(6, 1.33)
+        ..setFloat(7, edge)
+        ..setImageSampler(0, image, filterQuality: FilterQuality.low);
+      canvas.save();
+      canvas.clipRRect(body);
+      canvas.drawRect(Offset.zero & size, Paint()..shader = shader);
+      canvas.restore();
+    } catch (_) {
+      return false;
+    }
+
+    // Reflections sit on the glass, so they aren't bent; the bubbles drift
+    // every frame, so they stay out of the cached image.
+    canvas.save();
+    canvas.clipRRect(innerRRect);
+    _paintGloss(canvas, inner);
+    _paintBubbles(canvas, inner);
+    canvas.restore();
+    return true;
+  }
+
+  /// How far the surface is lifted by the landing wobble and a stream's
+  /// churn, in logical pixels.
+  double _ripple(double segH) =>
+      math.sin(time * 9) * wobble * segH * 0.10 +
+      math.sin(time * 31) * agitation * segH * 0.05;
+
+  /// Draws the liquid layers (no reflections). False if the tube is empty.
+  bool _paintLiquid(Canvas canvas, Rect inner) {
     final capacity = tube.capacity;
     final segH = inner.height / capacity;
     final len = tube.segments.length;
@@ -168,7 +280,7 @@ class LiquidTubePainter extends CustomPainter {
         volumes.add(v);
       }
     }
-    if (colors.isEmpty) return;
+    if (colors.isEmpty) return false;
 
     final tilt = liquidTilt;
     var below = double.infinity; // depth of the previous layer's surface
@@ -188,7 +300,6 @@ class LiquidTubePainter extends CustomPainter {
     }
 
     _paintMeniscus(canvas, inner, below, segH, colors.last);
-    _paintGloss(canvas, inner);
     if (colorblind) {
       // Symbols only on whole settled segments, not liquid on the move.
       _paintSymbols(
@@ -199,6 +310,7 @@ class LiquidTubePainter extends CustomPainter {
           ],
           centres);
     }
+    return true;
   }
 
   void _paintBand(Canvas canvas, Rect inner, List<Offset> poly, int colorId) {
@@ -235,8 +347,7 @@ class LiquidTubePainter extends CustomPainter {
     // Concave surface: a lighter elliptical cap lying along the (world-level)
     // surface, nudged by the landing [wobble] and by a stream's [agitation].
     final dip = segH * (0.32 - 0.12 * (liquidTilt.abs() / 1.6).clamp(0, 1));
-    final ripple = math.sin(time * 9) * wobble * segH * 0.10 +
-        math.sin(time * 31) * agitation * segH * 0.05;
+    final ripple = _ripple(segH);
     canvas.save();
     canvas.translate(mid.dx, mid.dy);
     canvas.rotate(-liquidTilt);
@@ -437,6 +548,8 @@ class LiquidTubePainter extends CustomPainter {
         old.liquidTilt != liquidTilt ||
         old.agitation != agitation ||
         old.colorblind != colorblind ||
-        old.glassShader != glassShader;
+        old.glassShader != glassShader ||
+        old.refractShader != refractShader ||
+        old.devicePixelRatio != devicePixelRatio;
   }
 }
