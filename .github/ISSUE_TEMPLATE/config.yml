@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: How to contribute
+    url: https://github.com/samerzmd/decant/blob/master/CONTRIBUTING.md
+    about: Setup, project layout and the checks to run before a PR.
+  - name: Privacy policy
+    url: https://github.com/samerzmd/decant/blob/master/PRIVACY.md
+    about: What Decant collects and how to ask for your data to be deleted.

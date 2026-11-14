@@ -1,0 +1,64 @@
+name: Bug report
+description: Something in Decant doesn't work or looks wrong.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this. The more of the form you
+        fill in, the quicker it can be fixed.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you see, and what did you expect instead?
+      placeholder: After pouring into the last tube, the hint count went back to 5.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open level 12
+        2. Use a hint
+        3. Make any move
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Where are you playing?
+      options:
+        - Android (Google Play)
+        - Android (built from source)
+        - Web
+        - macOS
+        - Windows
+        - Linux
+        - iOS (built from source)
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Decant version
+      description: From the Play Store page, the GitHub release, or `pubspec.yaml` if you built it.
+      placeholder: 1.6.1
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Device and OS
+      description: Rendering and audio bugs often depend on the exact model.
+      placeholder: Galaxy S22 Ultra, Android 16
+  - type: textarea
+    id: logs
+    attributes:
+      label: Screenshots, recordings or logs
+      description: |
+        A screenshot or screen recording helps a lot with drawing bugs. For a
+        crash or freeze from a source build, paste `flutter run` output (build
+        with `--dart-define=DECANT_LOG=true` to get logs from release mode).
+      render: text

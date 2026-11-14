@@ -1,0 +1,32 @@
+name: Translation
+description: Offer a new language, or report a wrong or awkward translation.
+labels: [translation]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Strings live in `lib/l10n/app_<code>.arb`, with English
+        (`app_en.arb`) as the source. See "Adding a language" in
+        [CONTRIBUTING.md](https://github.com/samerzmd/decant/blob/master/CONTRIBUTING.md).
+  - type: input
+    id: language
+    attributes:
+      label: Language
+      placeholder: Italian (it)
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What is it?
+      options:
+        - I'd like to add this language
+        - A string is wrong or reads badly
+        - A string isn't translated
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+      description: For a wrong string, where it appears, what it says now and what it should say.

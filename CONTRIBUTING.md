@@ -12,12 +12,17 @@ version.
 ```bash
 git clone https://github.com/<your-username>/decant.git
 cd decant
-flutter create .            # generate android/ and ios/ scaffolding (non-destructive)
 flutter pub get
-dart run flutter_launcher_icons          # branded launcher icon
-dart run flutter_native_splash:create    # branded splash
-flutter run
+# lib/firebase_options.dart holds a real Firebase project's config, so it
+# isn't in the repo. The stub lets everything compile.
+cp tool/ci/firebase_options_stub.dart lib/firebase_options.dart
+flutter run -d chrome       # or -d macos / windows / linux
 ```
+
+The web and desktop builds are the plain offline game and need nothing else.
+The phone builds start Firebase (analytics, cloud save, reminders), so to run
+on Android or iOS, connect your own Firebase project first: see the Firebase
+section of the [README](README.md).
 
 The Python scripts in `tool/` (used to (re)generate audio and brand art) need
 `numpy`/`Pillow`:
@@ -58,6 +63,26 @@ CI runs the same checks on every PR (`.github/workflows/ci.yml`).
 - Match the existing style: small widgets, `const` where possible, single
   quotes, comments that explain *why* not *what*.
 - Note user-facing changes under `## [Unreleased]` in `CHANGELOG.md`.
+
+## Finding something to work on
+
+Issues labelled
+[`good first issue`](https://github.com/samerzmd/decant/labels/good%20first%20issue)
+are small, self-contained and say which files to look at. Comment on one to
+say you're taking it, and ask there if anything is unclear.
+
+## Adding a language
+
+1. Copy `lib/l10n/app_en.arb` to `lib/l10n/app_<code>.arb` (for example
+   `app_it.arb`), set `"@@locale"` and translate the values. Leave the keys,
+   the `@…` descriptions and `{placeholders}` as they are.
+2. Add the language to `AppLanguage` in `lib/models/app_settings.dart`, with
+   its name written in that language.
+3. Run `flutter gen-l10n`, then check the screens at large text sizes:
+   longer words can wrap.
+
+`test/l10n_test.dart` checks that every language has every string and that
+every language in Settings is supported.
 
 ## Adding levels
 

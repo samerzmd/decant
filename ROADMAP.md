@@ -119,7 +119,9 @@ Bigger bets, only if the community wants them.
       pubspec version
 - [x] Publish to Google Play (live since v1.3)
 - [ ] Publish to the App Store; explore F-Droid
-- [ ] Issue/PR templates and a `good first issue` set for newcomers
+- [x] Issue forms (bug, idea, translation) and a PR checklist, a
+      `good first issue` set for newcomers, and setup steps in
+      CONTRIBUTING that work from a fresh clone
 
 ## ⚠️ Known limitations / tech debt
 
