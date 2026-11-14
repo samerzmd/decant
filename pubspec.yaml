@@ -1,7 +1,7 @@
 name: decant
 description: "Decant — Pour. Sort. Unwind. A calm, 3D-styled water sort puzzle with ASMR audio."
 publish_to: "none"
-version: 1.6.0+8
+version: 1.6.1+9
 
 environment:
   sdk: ">=3.3.0 <4.0.0"

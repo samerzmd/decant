@@ -20,6 +20,8 @@ All notable changes to Decant are documented here. The format loosely follows
 - On the web, Settings no longer shows streak reminders, which can't work
   there.
 
+## [1.6.1] — 2026-11-14
+
 ### Fixed
 - With cloud save on, hints you spent came back (up to 5) at the next
   sync. The most recent hint count now wins.
