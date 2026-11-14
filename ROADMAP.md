@@ -129,7 +129,9 @@ Bigger bets, only if the community wants them.
   freeze. It's back on and passes on an S22 Ultra; watch for reports from
   other devices (older Mali/PowerVR GPUs in particular).
 - `flutter_soloud` is fully torn down on `detached` to survive Activity
-  recreation; verify this plays nicely across the OEM matrix.
+  recreation. The lifecycle (pause, resume, detach, and a resume or detach
+  while sounds are still loading) is now covered by tests against a fake
+  engine; what's left is watching for device-specific audio driver reports.
 - Ambient loops use `LoadMode.disk`; if any device misbehaves on resume,
   in-memory loading is the fallback (startup is already deferred, so it's cheap).
 - Painter goldens are made on macOS and checked on Linux CI with a small

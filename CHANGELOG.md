@@ -23,6 +23,10 @@ All notable changes to Decant are documented here. The format loosely follows
 - On the web, Settings no longer shows streak reminders, which can't work
   there.
 
+### Fixed
+- Leaving the app in the first moments after opening it, while its sounds
+  were still loading, could leave it silent until it was restarted.
+
 ## [1.6.1] — 2026-11-14
 
 ### Fixed

@@ -132,10 +132,22 @@ class AudioSettings {
 /// (e.g. in unit tests or on an unsupported platform) the calls become no-ops
 /// instead of throwing, so gameplay never breaks because of audio.
 class AudioService {
+  /// [engine] stands in for the real one in tests.
+  AudioService({@visibleForTesting SoLoud? engine}) : _engine = engine;
+
+  final SoLoud? _engine;
+
   // Lazy: SoLoud.instance loads the native library, which throws where it
   // isn't available (e.g. tests on Linux CI). Every use is inside init()'s
   // try, behind _ready, or wrapped in _safe, so that stays a no-op.
-  late final SoLoud _soloud = SoLoud.instance;
+  late final SoLoud _soloud = _engine ?? SoLoud.instance;
+
+  // The load in progress, so a resume during the startup load joins it
+  // instead of resetting the engine underneath it.
+  Future<void>? _initializing;
+  // Bumped whenever the engine is released; a load from before then stops
+  // instead of marking a dead engine ready.
+  int _engineEpoch = 0;
 
   final Map<Sfx, AudioSource> _sfx = {};
   // Only the selected ambient bed is loaded (54 beds ship; loading them all
@@ -165,8 +177,22 @@ class AudioService {
   /// startup so it never blocks the first frame. Short SFX are decoded into
   /// memory for low latency; the long ambient loops stream from disk so init
   /// stays fast and light.
-  Future<void> init() async {
+  ///
+  /// A call while a load is already running joins it.
+  Future<void> init() {
+    final running = _initializing;
+    if (running != null) return running;
+    final load = _load();
+    _initializing = load;
+    return load.whenComplete(() {
+      if (identical(_initializing, load)) _initializing = null;
+    });
+  }
+
+  Future<void> _load() async {
     _watchPacks();
+    final epoch = _engineEpoch;
+    bool released() => epoch != _engineEpoch;
     try {
       // Always (re)initialise. After the app is exited with Back the Android
       // process can be reused with a fresh Dart isolate while the native
@@ -176,9 +202,15 @@ class AudioService {
       // itself, so calling it unconditionally is safe.
       await _soloud.init();
       for (final entry in _sfxAssets.entries) {
-        _sfx[entry.key] = await _soloud.loadAsset(entry.value);
+        if (released()) return;
+        final source = await _soloud.loadAsset(entry.value);
+        if (released()) return;
+        _sfx[entry.key] = source;
       }
-      _pourSource = await _soloud.loadAsset(_pourAsset);
+      if (released()) return;
+      final pour = await _soloud.loadAsset(_pourAsset);
+      if (released()) return;
+      _pourSource = pour;
       _ready = true;
       // If ambient/music was requested while we were still loading, start it.
       if (_pendingAmbient) {
@@ -527,6 +559,8 @@ class AudioService {
     _musicHandle = null;
     _ambientGen++;
     _musicGen++;
+    _engineEpoch++; // a load still running stops; the next resume starts anew
+    _initializing = null;
     _safe(_soloud.deinit); // also stops and disposes every voice/source
     _ready = false;
     _ambientSource = null;
@@ -585,6 +619,8 @@ class AudioService {
     await stopPour();
     await stopAmbient();
     await stopMusic();
+    _engineEpoch++;
+    _initializing = null;
     _safe(_soloud.deinit);
     _ready = false;
     _ambientSource = null;
