@@ -154,8 +154,9 @@ void main() {
         matching: find.byType(Switch),
       );
 
-  testWidgets('turning reminders on asks first, then offers times',
-      (tester) async {
+  testWidgets('turning reminders on asks first, then offers times', (
+    tester,
+  ) async {
     final (c, fake) = await pumpSettings(tester, grant: true);
     expect(find.text('Reminder time'), findsNothing);
     await tester.tap(reminderSwitch());
@@ -196,12 +197,16 @@ void main() {
     expect(shouldOfferReminders(fresh, progress(dailies: 1)), true);
     expect(
       shouldOfferReminders(
-          const AppSettings(reminderOffered: true), progress(levels: 5)),
+        const AppSettings(reminderOffered: true),
+        progress(levels: 5),
+      ),
       false,
     );
     expect(
       shouldOfferReminders(
-          const AppSettings(streakReminders: true), progress(levels: 5)),
+        const AppSettings(streakReminders: true),
+        progress(levels: 5),
+      ),
       false,
     );
   });
@@ -252,8 +257,9 @@ void main() {
     }
   }
 
-  testWidgets('back on Home after two wins, it offers reminders once',
-      (tester) async {
+  testWidgets('back on Home after two wins, it offers reminders once', (
+    tester,
+  ) async {
     final (c, fake) = await pumpHome(tester, solved: 2);
     expect(find.text('Keep your streak?'), findsNothing);
     await visitStats(tester);

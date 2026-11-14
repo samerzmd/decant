@@ -26,8 +26,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
 
   FlutterWindow window(project);
   Win32Window::Point origin(10, 10);
-  Win32Window::Size size(1280, 720);
-  if (!window.Create(L"decant", origin, size)) {
+  // A tall, phone-like window; the game lays out for any size.
+  Win32Window::Size size(480, 860);
+  if (!window.Create(L"Decant", origin, size)) {
     return EXIT_FAILURE;
   }
   window.SetQuitOnClose(true);

@@ -108,13 +108,17 @@ class _SoundBrowserScreenState extends ConsumerState<SoundBrowserScreen> {
 
     final slivers = <Widget>[];
     if (matches.isEmpty) {
-      slivers.add(SliverFillRemaining(
-        hasScrollBody: false,
-        child: Center(
-          child: Text('No sounds match your search',
-              style: TextStyle(color: DecantColors.subtle, fontSize: 14)),
+      slivers.add(
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: Center(
+            child: Text(
+              'No sounds match your search',
+              style: TextStyle(color: DecantColors.subtle, fontSize: 14),
+            ),
+          ),
         ),
-      ));
+      );
     } else if (grouped) {
       for (final cat in _categories) {
         final tracks = _items.where((t) => t.category == cat.id).toList();
@@ -139,19 +143,24 @@ class _SoundBrowserScreenState extends ConsumerState<SoundBrowserScreen> {
                 child: Row(
                   children: [
                     IconButton(
-                      icon: Icon(Icons.arrow_back_rounded,
-                          color: DecantColors.onSurface),
+                      icon: Icon(
+                        Icons.arrow_back_rounded,
+                        color: DecantColors.onSurface,
+                      ),
                       onPressed: () => Navigator.of(context).pop(),
                     ),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(_isMusic ? 'Music' : 'Ambience',
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w800,
-                                  color: DecantColors.onSurface)),
+                          Text(
+                            _isMusic ? 'Music' : 'Ambience',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w800,
+                              color: DecantColors.onSurface,
+                            ),
+                          ),
                           Text(
                             audio.muted
                                 ? 'Muted · ${selected.label}'
@@ -159,10 +168,10 @@ class _SoundBrowserScreenState extends ConsumerState<SoundBrowserScreen> {
                                     ? 'Off · ${selected.label}'
                                     : 'Now playing · ${selected.label}',
                             style: TextStyle(
-                                color:
-                                    DecantColors.accent.withValues(alpha: 0.9),
-                                fontSize: 12.5,
-                                fontWeight: FontWeight.w600),
+                              color: DecantColors.accent.withValues(alpha: 0.9),
+                              fontSize: 12.5,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ],
                       ),
@@ -201,7 +210,8 @@ class _SoundBrowserScreenState extends ConsumerState<SoundBrowserScreen> {
                         icon: c.icon,
                         active: _category == c.id,
                         onTap: () => setState(
-                            () => _category = _category == c.id ? null : c.id),
+                          () => _category = _category == c.id ? null : c.id,
+                        ),
                       ),
                   ],
                 ),
@@ -217,11 +227,12 @@ class _SoundBrowserScreenState extends ConsumerState<SoundBrowserScreen> {
   }
 
   Widget _grid(
-      List<SoundItem> tracks,
-      SoundItem selected,
-      ValueChanged<SoundItem> onSelect,
-      bool Function(SoundItem) available,
-      PackState pack) {
+    List<SoundItem> tracks,
+    SoundItem selected,
+    ValueChanged<SoundItem> onSelect,
+    bool Function(SoundItem) available,
+    PackState pack,
+  ) {
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       sliver: SliverGrid(
@@ -231,21 +242,18 @@ class _SoundBrowserScreenState extends ConsumerState<SoundBrowserScreen> {
           crossAxisSpacing: 10,
           childAspectRatio: 0.92,
         ),
-        delegate: SliverChildBuilderDelegate(
-          (context, i) {
-            final t = tracks[i];
-            return _SoundTile(
-              track: t,
-              categoryLabel: _categoryLabel(t.category),
-              active: t == selected,
-              available: available(t),
-              downloading: !available(t) && pack.inProgress,
-              progress: pack.progress,
-              onTap: () => onSelect(t),
-            );
-          },
-          childCount: tracks.length,
-        ),
+        delegate: SliverChildBuilderDelegate((context, i) {
+          final t = tracks[i];
+          return _SoundTile(
+            track: t,
+            categoryLabel: _categoryLabel(t.category),
+            active: t == selected,
+            available: available(t),
+            downloading: !available(t) && pack.inProgress,
+            progress: pack.progress,
+            onTap: () => onSelect(t),
+          );
+        }, childCount: tracks.length),
       ),
     );
   }
@@ -274,10 +282,13 @@ class _SectionHeader extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 8),
-          Text('$count',
-              style: TextStyle(
-                  color: DecantColors.subtle.withValues(alpha: 0.7),
-                  fontSize: 12)),
+          Text(
+            '$count',
+            style: TextStyle(
+              color: DecantColors.subtle.withValues(alpha: 0.7),
+              fontSize: 12,
+            ),
+          ),
         ],
       ),
     );
@@ -351,14 +362,17 @@ class _SoundTile extends StatelessWidget {
                                 shape: BoxShape.circle,
                                 color: active
                                     ? DecantColors.accent
-                                    : DecantColors.accent
-                                        .withValues(alpha: 0.12),
+                                    : DecantColors.accent.withValues(
+                                        alpha: 0.12,
+                                      ),
                               ),
-                              child: Icon(track.icon,
-                                  size: 24,
-                                  color: active
-                                      ? DecantColors.onAccent
-                                      : DecantColors.accent),
+                              child: Icon(
+                                track.icon,
+                                size: 24,
+                                color: active
+                                    ? DecantColors.onAccent
+                                    : DecantColors.accent,
+                              ),
                             ),
                             const SizedBox(height: 10),
                             Text(
@@ -386,8 +400,11 @@ class _SoundTile extends StatelessWidget {
                   Positioned(
                     top: 0,
                     right: 0,
-                    child: Icon(Icons.graphic_eq_rounded,
-                        size: 16, color: DecantColors.accent),
+                    child: Icon(
+                      Icons.graphic_eq_rounded,
+                      size: 16,
+                      color: DecantColors.accent,
+                    ),
                   ),
                 if (!available)
                   Positioned(
@@ -403,8 +420,11 @@ class _SoundTile extends StatelessWidget {
                               color: DecantColors.accent,
                             ),
                           )
-                        : Icon(Icons.cloud_download_rounded,
-                            size: 16, color: DecantColors.subtle),
+                        : Icon(
+                            Icons.cloud_download_rounded,
+                            size: 16,
+                            color: DecantColors.subtle,
+                          ),
                   ),
               ],
             ),
@@ -453,17 +473,20 @@ class _FilterChip extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(icon,
-                  size: 16,
-                  color: active ? DecantColors.accent : DecantColors.subtle),
+              Icon(
+                icon,
+                size: 16,
+                color: active ? DecantColors.accent : DecantColors.subtle,
+              ),
               const SizedBox(width: 6),
-              Text(label,
-                  style: TextStyle(
-                    color:
-                        active ? DecantColors.onSurface : DecantColors.subtle,
-                    fontSize: 13,
-                    fontWeight: active ? FontWeight.w700 : FontWeight.w600,
-                  )),
+              Text(
+                label,
+                style: TextStyle(
+                  color: active ? DecantColors.onSurface : DecantColors.subtle,
+                  fontSize: 13,
+                  fontWeight: active ? FontWeight.w700 : FontWeight.w600,
+                ),
+              ),
             ],
           ),
         ),
@@ -550,10 +573,13 @@ class _PackBanner extends StatelessWidget {
               ),
               const SizedBox(width: 6),
               Expanded(
-                child: Text(text,
-                    style: TextStyle(
-                        color: DecantColors.subtle.withValues(alpha: 0.9),
-                        fontSize: 12)),
+                child: Text(
+                  text,
+                  style: TextStyle(
+                    color: DecantColors.subtle.withValues(alpha: 0.9),
+                    fontSize: 12,
+                  ),
+                ),
               ),
             ],
           ),

@@ -22,9 +22,7 @@ class AnalyticsService {
         : FirebaseAnalyticsObserver(analytics: a);
   }
 
-  void logLevelStart(int levelId) => _log('level_start', {
-        'level_id': levelId,
-      });
+  void logLevelStart(int levelId) => _log('level_start', {'level_id': levelId});
 
   void logLevelComplete({
     required int levelId,

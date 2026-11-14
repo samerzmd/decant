@@ -1,5 +1,4 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -21,23 +20,28 @@ import 'state/providers.dart';
 import 'ui/screens/splash_screen.dart';
 import 'ui/theme/app_theme.dart';
 import 'services/log.dart';
+import 'services/platform_support.dart';
 import 'ui/theme/palette.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // The web build is a playable demo with no Firebase app: no analytics,
-  // cloud save, leaderboard or ads there.
-  if (!kIsWeb) {
+  // The web and desktop builds are the plain offline game with no Firebase
+  // app: no analytics, cloud save, leaderboard, ads or reminders there.
+  final phone = isPhone;
+  if (phone) {
     await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform);
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
   }
-  final analytics = kIsWeb ? AnalyticsService.off() : AnalyticsService();
+  final analytics = phone ? AnalyticsService() : AnalyticsService.off();
 
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
-    statusBarIconBrightness: Brightness.light,
-  ));
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light,
+    ),
+  );
 
   // Persistence is quick (SharedPreferences) and needed for first build.
   final persistence = await PersistenceService.create();
@@ -48,11 +52,11 @@ Future<void> main() async {
   // a no-op until ready, and the ambient bed auto-starts once loading finishes.
   final audio = AudioService();
   final reminders = ReminderService();
-  final ads = kIsWeb ? AdService.off() : AdService();
-  final cloud = kIsWeb
-      ? CloudSyncService.off()
-      : CloudSyncService(persistence, FirebaseCloudBackend());
-  final leaderboard = kIsWeb ? LeaderboardService.off() : LeaderboardService();
+  final ads = phone ? AdService() : AdService.off();
+  final cloud = phone
+      ? CloudSyncService(persistence, FirebaseCloudBackend())
+      : CloudSyncService.off();
+  final leaderboard = phone ? LeaderboardService() : LeaderboardService.off();
   WidgetsBinding.instance.addPostFrameCallback((_) {
     audio.init();
   });
@@ -123,8 +127,9 @@ class _DecantAppState extends ConsumerState<DecantApp>
   static AppLocalizations _strings(AppLanguage language) {
     final code = language.code ??
         WidgetsBinding.instance.platformDispatcher.locale.languageCode;
-    final known =
-        AppLocalizations.supportedLocales.any((l) => l.languageCode == code);
+    final known = AppLocalizations.supportedLocales.any(
+      (l) => l.languageCode == code,
+    );
     return lookupAppLocalizations(Locale(known ? code : 'en'));
   }
 

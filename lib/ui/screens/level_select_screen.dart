@@ -84,11 +84,14 @@ class _Header extends StatelessWidget {
           ),
           Icon(Icons.star_rounded, color: DecantColors.star, size: 20),
           const SizedBox(width: 6),
-          Text('$stars',
-              style: TextStyle(
-                  color: DecantColors.onSurface,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16)),
+          Text(
+            '$stars',
+            style: TextStyle(
+              color: DecantColors.onSurface,
+              fontWeight: FontWeight.w700,
+              fontSize: 16,
+            ),
+          ),
         ],
       ),
     );
@@ -100,11 +103,7 @@ class _LevelTile extends StatelessWidget {
   final ProgressData progress;
   final VoidCallback? onTap;
 
-  const _LevelTile({
-    required this.levelId,
-    required this.progress,
-    this.onTap,
-  });
+  const _LevelTile({required this.levelId, required this.progress, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -136,8 +135,11 @@ class _LevelTile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if (locked)
-                Icon(Icons.lock_rounded,
-                    color: DecantColors.subtle.withValues(alpha: 0.6), size: 22)
+                Icon(
+                  Icons.lock_rounded,
+                  color: DecantColors.subtle.withValues(alpha: 0.6),
+                  size: 22,
+                )
               else
                 Text(
                   '$levelId',
@@ -177,10 +179,13 @@ class _LevelTile extends StatelessWidget {
                   ],
                 )
               else
-                Text(context.l10n.levelShort(levelId),
-                    style: TextStyle(
-                        fontSize: 11,
-                        color: DecantColors.subtle.withValues(alpha: 0.6))),
+                Text(
+                  context.l10n.levelShort(levelId),
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: DecantColors.subtle.withValues(alpha: 0.6),
+                  ),
+                ),
             ],
           ),
         ),

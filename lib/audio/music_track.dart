@@ -23,8 +23,13 @@ class MusicTrack implements SoundItem {
   final String? pack;
 
   const MusicTrack(
-      this.name, this.label, this.category, this.icon, this.fileName,
-      {this.pack});
+    this.name,
+    this.label,
+    this.category,
+    this.icon,
+    this.fileName, {
+    this.pack,
+  });
 
   /// Flutter asset path — only valid for bundled tracks (`pack == null`).
   String get asset => 'assets/sounds/$fileName';

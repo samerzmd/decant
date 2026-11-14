@@ -71,10 +71,7 @@ void main() {
         final level = LevelGenerator.generate(
           DailyChallenge.idFor(monday.add(Duration(days: i))),
         );
-        expect(
-          Solver.isSolvable(GameState(tubes: level.buildTubes())),
-          isTrue,
-        );
+        expect(Solver.isSolvable(GameState(tubes: level.buildTubes())), isTrue);
       }
     });
   });

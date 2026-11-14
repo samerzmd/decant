@@ -68,8 +68,9 @@ class StatsScreen extends ConsumerWidget {
                               tint: DecantColors.accent,
                               value: '$solved',
                               label: context.l10n.levelsSolved,
-                              detail:
-                                  context.l10n.nextUp(progress.unlockedLevel),
+                              detail: context.l10n.nextUp(
+                                progress.unlockedLevel,
+                              ),
                             ),
                           ),
                           const SizedBox(width: 12),
@@ -187,10 +188,7 @@ class _StreakCard extends StatelessWidget {
                 const SizedBox(height: 3),
                 Text(
                   body,
-                  style: TextStyle(
-                    fontSize: 13.5,
-                    color: DecantColors.subtle,
-                  ),
+                  style: TextStyle(fontSize: 13.5, color: DecantColors.subtle),
                 ),
               ],
             ),
@@ -288,7 +286,7 @@ class _StarBreakdown extends StatelessWidget {
   static List<Color> get _shades => [
         DecantColors.star.withValues(alpha: 0.4),
         DecantColors.star.withValues(alpha: 0.67),
-        DecantColors.star
+        DecantColors.star,
       ];
 
   @override

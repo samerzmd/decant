@@ -152,9 +152,7 @@ class LiquidTubePainter extends CustomPainter {
     // Layers bottom → top: a color and a volume (in segments) each, kept in
     // two parallel lists. Volumes rather than heights, so the same liquid
     // looks right however far the tube is tilted.
-    final colors = <int>[
-      for (var i = 0; i < baseCount; i++) tube.segments[i],
-    ];
+    final colors = <int>[for (var i = 0; i < baseCount; i++) tube.segments[i]];
     final volumes = <double>[for (var i = 0; i < baseCount; i++) 1.0];
     if (risingCount > 0 && risingColor != null) {
       final v = risingCount * risingProgress.clamp(0.0, 1.0);
@@ -194,11 +192,12 @@ class LiquidTubePainter extends CustomPainter {
     if (colorblind) {
       // Symbols only on whole settled segments, not liquid on the move.
       _paintSymbols(
-        canvas,
-        segH,
-        [for (var i = 0; i < baseCount; i++) tube.segments[i]],
-        centres,
-      );
+          canvas,
+          segH,
+          [
+            for (var i = 0; i < baseCount; i++) tube.segments[i],
+          ],
+          centres);
     }
   }
 
@@ -220,7 +219,12 @@ class LiquidTubePainter extends CustomPainter {
   }
 
   void _paintMeniscus(
-      Canvas canvas, Rect inner, double level, double segH, int colorId) {
+    Canvas canvas,
+    Rect inner,
+    double level,
+    double segH,
+    int colorId,
+  ) {
     final chord = LiquidGeometry.chord(inner, liquidTilt, level);
     if (chord == null) return;
     final a = chord[0];
@@ -375,8 +379,12 @@ class LiquidTubePainter extends CustomPainter {
         ..color = DecantColors.glassEdge,
     );
     // Bright mouth rim (ellipse at the opening) for a 3-D tube feel.
-    final mouth =
-        Rect.fromLTWH(body.left + w * 0.07, -w * 0.02, w * 0.86, w * 0.22);
+    final mouth = Rect.fromLTWH(
+      body.left + w * 0.07,
+      -w * 0.02,
+      w * 0.86,
+      w * 0.22,
+    );
     canvas.drawArc(
       mouth,
       math.pi,

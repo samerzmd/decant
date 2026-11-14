@@ -91,7 +91,8 @@ class AdService {
     ConsentInformation.instance.requestConsentInfoUpdate(
       ConsentRequestParameters(),
       () => ConsentForm.loadAndShowConsentFormIfRequired(
-          (error) => finish(error?.message)),
+        (error) => finish(error?.message),
+      ),
       (error) => finish(error.message),
     );
     return done.future;
@@ -133,8 +134,9 @@ class AdService {
           _failures++;
           Log.w('Ads', 'rewarded load failed', error.message);
           // Back off: 30 s, 60 s, 120 s … up to 10 minutes.
-          final wait =
-              Duration(seconds: (15 << _failures.clamp(1, 6)).clamp(30, 600));
+          final wait = Duration(
+            seconds: (15 << _failures.clamp(1, 6)).clamp(30, 600),
+          );
           _retry?.cancel();
           _retry = Timer(wait, _load);
         },

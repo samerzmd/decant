@@ -18,8 +18,10 @@ void main() {
 
   group('Twilight Pad migration (ambient bed → music track)', () {
     test('saved "pad" ambience becomes Ocean + Twilight Pad music', () {
-      final s = AudioSettings.fromJson(
-          {'ambientTrack': 'pad', 'ambientEnabled': true});
+      final s = AudioSettings.fromJson({
+        'ambientTrack': 'pad',
+        'ambientEnabled': true,
+      });
       expect(s.ambientTrack, AmbientTrack.ocean);
       expect(s.musicEnabled, isTrue);
       expect(s.musicTrack, MusicTrack.twilightPad);
@@ -35,8 +37,10 @@ void main() {
     });
 
     test('ambience switched off: pad is not forced on as music', () {
-      final s = AudioSettings.fromJson(
-          {'ambientTrack': 'pad', 'ambientEnabled': false});
+      final s = AudioSettings.fromJson({
+        'ambientTrack': 'pad',
+        'ambientEnabled': false,
+      });
       expect(s.musicEnabled, isFalse);
     });
 

@@ -28,8 +28,13 @@ class AmbientTrack implements SoundItem {
   @override
   final String? pack;
 
-  const AmbientTrack(this.name, this.label, this.category, this.icon,
-      {this.pack});
+  const AmbientTrack(
+    this.name,
+    this.label,
+    this.category,
+    this.icon, {
+    this.pack,
+  });
 
   @override
   String get fileName => 'ambient_$name.ogg';

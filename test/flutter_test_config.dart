@@ -10,8 +10,9 @@ import 'package:flutter_test/flutter_test.dart';
 Future<void> testExecutable(FutureOr<void> Function() testMain) async {
   final base = goldenFileComparator;
   if (base is LocalFileComparator) {
-    goldenFileComparator =
-        _TolerantComparator(base.basedir.resolve('golden_test.dart'));
+    goldenFileComparator = _TolerantComparator(
+      base.basedir.resolve('golden_test.dart'),
+    );
   }
   await testMain();
 }

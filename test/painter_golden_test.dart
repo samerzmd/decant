@@ -64,7 +64,10 @@ Future<void> _pump(WidgetTester tester, Widget child, Size size) async {
     Directionality(
       textDirection: TextDirection.ltr,
       child: RepaintBoundary(
-        child: ColoredBox(color: _bg, child: Center(child: child)),
+        child: ColoredBox(
+          color: _bg,
+          child: Center(child: child),
+        ),
       ),
     ),
   );

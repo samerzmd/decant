@@ -64,20 +64,34 @@ enum LiquidPalette {
 /// their chapter colors only on [twilight].
 enum UiTheme {
   /// Deep twilight blues and violets: the original look.
-  twilight(
-      'Twilight', [Color(0xFF1B2440), Color(0xFF243156), Color(0xFF2E2150)]),
+  twilight('Twilight', [
+    Color(0xFF1B2440),
+    Color(0xFF243156),
+    Color(0xFF2E2150),
+  ]),
 
   /// Near-black: easier on the eyes at night, and on OLED screens.
-  midnight(
-      'Midnight', [Color(0xFF07090F), Color(0xFF0B0E18), Color(0xFF0E0B16)]),
+  midnight('Midnight', [
+    Color(0xFF07090F),
+    Color(0xFF0B0E18),
+    Color(0xFF0E0B16),
+  ]),
 
   /// Pure black, for the strongest contrast with tubes and text.
-  highContrast('High contrast',
-      [Color(0xFF000000), Color(0xFF000000), Color(0xFF000000)]),
+  highContrast('High contrast', [
+    Color(0xFF000000),
+    Color(0xFF000000),
+    Color(0xFF000000),
+  ]),
 
   /// Soft morning paper and pale sky: the light theme.
   daylight(
-      'Daylight', [Color(0xFFF3F6FB), Color(0xFFE6EDF7), Color(0xFFEEE8F6)],
+      'Daylight',
+      [
+        Color(0xFFF3F6FB),
+        Color(0xFFE6EDF7),
+        Color(0xFFEEE8F6),
+      ],
       isLight: true);
 
   final String label;
@@ -85,6 +99,8 @@ enum UiTheme {
   final bool isLight;
   const UiTheme(this.label, this.colors, {this.isLight = false});
 
-  static UiTheme fromName(String? name) => UiTheme.values
-      .firstWhere((t) => t.name == name, orElse: () => UiTheme.twilight);
+  static UiTheme fromName(String? name) => UiTheme.values.firstWhere(
+        (t) => t.name == name,
+        orElse: () => UiTheme.twilight,
+      );
 }

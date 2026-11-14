@@ -226,8 +226,10 @@ class AudioService {
   Future<AudioSource?> _loadSound(SoundItem t) async {
     final pack = t.pack;
     if (pack == null) {
-      return _soloud.loadAsset('assets/sounds/${t.fileName}',
-          mode: LoadMode.disk);
+      return _soloud.loadAsset(
+        'assets/sounds/${t.fileName}',
+        mode: LoadMode.disk,
+      );
     }
     final path = await SoundPacks.instance.resolve(pack, t.fileName);
     if (path == null) return null;
@@ -361,10 +363,12 @@ class AudioService {
       var source = await _ambientSourceFor(_settings.ambientTrack);
       _ambientStandIn = source == null;
       if (source == null) {
-        unawaited(SoundPacks.instance
-            .fetch(_settings.ambientTrack.pack ?? 'ambient'));
-        source =
-            await _ambientSourceFor(AmbientTrack.ocean); // bundled stand-in
+        unawaited(
+          SoundPacks.instance.fetch(_settings.ambientTrack.pack ?? 'ambient'),
+        );
+        source = await _ambientSourceFor(
+          AmbientTrack.ocean,
+        ); // bundled stand-in
       }
       if (gen != _ambientGen || source == null) return; // superseded meanwhile
       final h = _soloud.play(
@@ -436,7 +440,8 @@ class AudioService {
       _musicStandIn = source == null;
       if (source == null) {
         unawaited(
-            SoundPacks.instance.fetch(_settings.musicTrack.pack ?? 'music'));
+          SoundPacks.instance.fetch(_settings.musicTrack.pack ?? 'music'),
+        );
         source = await _musicSourceFor(MusicTrack.warmKeys); // bundled stand-in
       }
       if (gen != _musicGen || source == null) return; // superseded meanwhile

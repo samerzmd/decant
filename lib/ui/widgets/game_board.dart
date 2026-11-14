@@ -201,9 +201,11 @@ class _GameBoardState extends ConsumerState<GameBoard>
 
     final stream = pose?.stream;
     if (stream != null) {
-      children.add(Positioned.fill(
-        child: IgnorePointer(child: CustomPaint(painter: stream)),
-      ));
+      children.add(
+        Positioned.fill(
+          child: IgnorePointer(child: CustomPaint(painter: stream)),
+        ),
+      );
     }
     if (source != null) children.add(source);
     return Stack(clipBehavior: Clip.none, children: children);

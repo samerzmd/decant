@@ -745,4 +745,29 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get you => 'Du';
+
+  @override
+  String get editorQrHelp =>
+      'Freunde können ihn in Decant scannen: Erstellen → Code eingeben → QR-Code scannen.';
+
+  @override
+  String get editorSendText => 'Als Text senden';
+
+  @override
+  String get editorScanQr => 'QR-Code scannen';
+
+  @override
+  String get scanHelp =>
+      'Richte die Kamera auf den QR-Code eines Decant-Levels.';
+
+  @override
+  String get scanWrongCode => 'Dieser QR-Code ist kein Decant-Level.';
+
+  @override
+  String get scanNoPermission =>
+      'Decant kann die Kamera nicht nutzen. Erlaube es in den Einstellungen deines Handys oder füge den Code ein.';
+
+  @override
+  String get scanUnavailable =>
+      'Die Kamera ist nicht verfügbar. Füge den Code ein.';
 }

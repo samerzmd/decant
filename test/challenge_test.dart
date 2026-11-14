@@ -54,10 +54,7 @@ void main() {
           Challenge.idFor(ChallengeMode.moves, stage),
         );
         expect(level.colorCount, Challenge.colorsFor(stage));
-        expect(
-          Solver.isSolvable(GameState(tubes: level.buildTubes())),
-          isTrue,
-        );
+        expect(Solver.isSolvable(GameState(tubes: level.buildTubes())), isTrue);
       }
     });
 
@@ -70,10 +67,9 @@ void main() {
     test('best stages only go up and survive a save', () {
       var s = const ChallengeStats();
       expect(s.nextStage(ChallengeMode.moves), 1);
-      s = s.recordClear(ChallengeMode.moves, 3).recordClear(
-            ChallengeMode.moves,
-            2,
-          );
+      s = s
+          .recordClear(ChallengeMode.moves, 3)
+          .recordClear(ChallengeMode.moves, 2);
       expect(s.bestStage(ChallengeMode.moves), 3);
       expect(s.bestStage(ChallengeMode.timed), 0);
       final back = ChallengeStats.fromJson(s.toJson());
@@ -81,17 +77,19 @@ void main() {
     });
   });
 
-  test('clearing a stage counts as a win but leaves the campaign alone',
-      () async {
-    SharedPreferences.setMockInitialValues({});
-    final p = await PersistenceService.create();
-    final c = ProgressController(p);
-    await c.recordWin(Challenge.idFor(ChallengeMode.timed, 1), 3, 10);
-    expect(c.state.challenges.bestStage(ChallengeMode.timed), 1);
-    expect(c.state.stats.wins, 1);
-    expect(c.state.unlockedLevel, 1);
-    expect(c.state.totalStars, 0);
-  });
+  test(
+    'clearing a stage counts as a win but leaves the campaign alone',
+    () async {
+      SharedPreferences.setMockInitialValues({});
+      final p = await PersistenceService.create();
+      final c = ProgressController(p);
+      await c.recordWin(Challenge.idFor(ChallengeMode.timed, 1), 3, 10);
+      expect(c.state.challenges.bestStage(ChallengeMode.timed), 1);
+      expect(c.state.stats.wins, 1);
+      expect(c.state.unlockedLevel, 1);
+      expect(c.state.totalStars, 0);
+    },
+  );
 
   Future<ProviderContainer> pumpChallenges(WidgetTester tester) async {
     tester.view.physicalSize = const Size(1440, 3088);
@@ -197,7 +195,9 @@ void main() {
     expect(find.byType(WinOverlay), findsOneWidget);
     expect(find.text('Stage 1 cleared'), findsOneWidget);
     expect(
-        c.read(progressProvider).challenges.bestStage(ChallengeMode.moves), 1);
+      c.read(progressProvider).challenges.bestStage(ChallengeMode.moves),
+      1,
+    );
 
     await tester.tap(find.text('Next stage'));
     await settle(tester);

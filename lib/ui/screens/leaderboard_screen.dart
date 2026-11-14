@@ -48,8 +48,10 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen> {
                   child: Row(
                     children: [
                       IconButton(
-                        icon: Icon(Icons.arrow_back_rounded,
-                            color: DecantColors.onSurface),
+                        icon: Icon(
+                          Icons.arrow_back_rounded,
+                          color: DecantColors.onSurface,
+                        ),
                         onPressed: () => Navigator.of(context).pop(),
                       ),
                       Expanded(
@@ -71,7 +73,9 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen> {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                  color: DecantColors.subtle, fontSize: 12),
+                                color: DecantColors.subtle,
+                                fontSize: 12,
+                              ),
                             ),
                           ],
                         ),
@@ -87,9 +91,12 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen> {
                       s.user == null
                           ? l.leaderboardSignIn
                           : l.leaderboardYouAs(
-                              LeaderboardService.nameFor(s.user!.uid)),
-                      style:
-                          TextStyle(color: DecantColors.accent, fontSize: 13),
+                              LeaderboardService.nameFor(s.user!.uid),
+                            ),
+                      style: TextStyle(
+                        color: DecantColors.accent,
+                        fontSize: 13,
+                      ),
                     ),
                   ),
                 ),
@@ -101,7 +108,8 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen> {
                       builder: (context, snap) {
                         if (snap.connectionState != ConnectionState.done) {
                           return const Center(
-                              child: CircularProgressIndicator());
+                            child: CircularProgressIndicator(),
+                          );
                         }
                         final me = cloud.state.value.user?.uid;
                         final message = snap.hasError
@@ -110,16 +118,18 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen> {
                                 ? l.leaderboardEmpty
                                 : null;
                         if (message != null) {
-                          return ListView(children: [
-                            Padding(
-                              padding: const EdgeInsets.all(32),
-                              child: Text(
-                                message,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: DecantColors.subtle),
+                          return ListView(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(32),
+                                child: Text(
+                                  message,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: DecantColors.subtle),
+                                ),
                               ),
-                            ),
-                          ]);
+                            ],
+                          );
                         }
                         final rows = snap.data!;
                         return ListView.builder(

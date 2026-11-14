@@ -36,8 +36,12 @@ class _Card extends StatelessWidget {
     final failed = context.l10n.signInFailed;
     final result = await cloud.signIn();
     if (result == SignInResult.failed && context.mounted) {
-      showDecantNotice(context, failed,
-          icon: Icons.cloud_off_rounded, tone: NoticeTone.warning);
+      showDecantNotice(
+        context,
+        failed,
+        icon: Icons.cloud_off_rounded,
+        tone: NoticeTone.warning,
+      );
     }
   }
 
@@ -117,7 +121,9 @@ class _Card extends StatelessWidget {
                     ? Padding(
                         padding: const EdgeInsets.all(11),
                         child: CircularProgressIndicator(
-                            strokeWidth: 2.2, color: tint),
+                          strokeWidth: 2.2,
+                          color: tint,
+                        ),
                       )
                     : Icon(icon, color: tint, size: 22),
               ),
@@ -130,7 +136,8 @@ class _Card extends StatelessWidget {
                       user == null
                           ? l.cloudSave
                           : l.cloudSignedInAs(
-                              user.email ?? user.name ?? l.cloudSave),
+                              user.email ?? user.name ?? l.cloudSave,
+                            ),
                       style: TextStyle(
                         color: DecantColors.onSurface,
                         fontSize: 15,
@@ -182,8 +189,11 @@ class _Card extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: TextButton.icon(
                 onPressed: () => _delete(context),
-                icon: Icon(Icons.delete_outline_rounded,
-                    size: 18, color: DecantColors.danger),
+                icon: Icon(
+                  Icons.delete_outline_rounded,
+                  size: 18,
+                  color: DecantColors.danger,
+                ),
                 label: Text(
                   l.deleteCloudSave,
                   style: TextStyle(color: DecantColors.danger),

@@ -35,8 +35,10 @@ class SettingsScreen extends ConsumerWidget {
                   child: Row(
                     children: [
                       IconButton(
-                        icon: Icon(Icons.arrow_back_rounded,
-                            color: DecantColors.onSurface),
+                        icon: Icon(
+                          Icons.arrow_back_rounded,
+                          color: DecantColors.onSurface,
+                        ),
                         onPressed: () => Navigator.of(context).pop(),
                       ),
                       Expanded(
@@ -102,13 +104,17 @@ class SettingsScreen extends ConsumerWidget {
                           title: context.l10n.ambienceSound,
                           value: audio.ambientTrack.label,
                           detail: context.l10n.soundCount(
-                              audio.ambientTrack.categoryInfo.label,
-                              kAmbientCatalog.length),
+                            audio.ambientTrack.categoryInfo.label,
+                            kAmbientCatalog.length,
+                          ),
                           icon: audio.ambientTrack.icon,
                           onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => const SoundBrowserScreen(
-                                      kind: SoundKind.ambient))),
+                            MaterialPageRoute(
+                              builder: (_) => const SoundBrowserScreen(
+                                kind: SoundKind.ambient,
+                              ),
+                            ),
+                          ),
                         ),
                       _SwitchTile(
                         label: context.l10n.backgroundMusic,
@@ -122,13 +128,17 @@ class SettingsScreen extends ConsumerWidget {
                           title: context.l10n.musicTrack,
                           value: audio.musicTrack.label,
                           detail: context.l10n.trackCount(
-                              audio.musicTrack.categoryInfo.label,
-                              kMusicCatalog.length),
+                            audio.musicTrack.categoryInfo.label,
+                            kMusicCatalog.length,
+                          ),
                           icon: audio.musicTrack.icon,
                           onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => const SoundBrowserScreen(
-                                      kind: SoundKind.music))),
+                            MaterialPageRoute(
+                              builder: (_) => const SoundBrowserScreen(
+                                kind: SoundKind.music,
+                              ),
+                            ),
+                          ),
                         ),
                       const SizedBox(height: 18),
                       _SectionLabel(context.l10n.feel),
@@ -160,20 +170,23 @@ class SettingsScreen extends ConsumerWidget {
                         value: settings.zenMode,
                         onChanged: (_) => ctrl.toggleZenMode(),
                       ),
-                      _SwitchTile(
-                        label: context.l10n.streakReminders,
-                        subtitle: context.l10n.streakRemindersSubtitle,
-                        icon: Icons.notifications_active_rounded,
-                        value: settings.streakReminders,
-                        onChanged: (on) => _setReminders(context, ref, on),
-                      ),
-                      if (settings.streakReminders)
+                      if (ref.read(reminderServiceProvider).supported)
+                        _SwitchTile(
+                          label: context.l10n.streakReminders,
+                          subtitle: context.l10n.streakRemindersSubtitle,
+                          icon: Icons.notifications_active_rounded,
+                          value: settings.streakReminders,
+                          onChanged: (on) => _setReminders(context, ref, on),
+                        ),
+                      if (settings.streakReminders &&
+                          ref.read(reminderServiceProvider).supported)
                         _ChoiceTile<int>(
                           title: context.l10n.reminderTime,
                           icon: Icons.schedule_rounded,
                           options: kReminderHours,
-                          labelOf: (h) => MaterialLocalizations.of(context)
-                              .formatTimeOfDay(TimeOfDay(hour: h, minute: 0)),
+                          labelOf: (h) => MaterialLocalizations.of(
+                            context,
+                          ).formatTimeOfDay(TimeOfDay(hour: h, minute: 0)),
                           value: settings.reminderHour,
                           onChanged: ctrl.setReminderHour,
                         ),
@@ -247,11 +260,7 @@ class SettingsScreen extends ConsumerWidget {
 }
 
 /// Streak reminders switch: on goes through the permission prompt.
-Future<void> _setReminders(
-  BuildContext context,
-  WidgetRef ref,
-  bool on,
-) async {
+Future<void> _setReminders(BuildContext context, WidgetRef ref, bool on) async {
   if (on) {
     await turnOnReminders(context, ref);
   } else {
@@ -415,16 +424,22 @@ class _SwitchTile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(label,
-                    style: TextStyle(
-                        color: DecantColors.onSurface,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600)),
+                Text(
+                  label,
+                  style: TextStyle(
+                    color: DecantColors.onSurface,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
                 if (subtitle != null)
-                  Text(subtitle!,
-                      style: TextStyle(
-                          color: DecantColors.subtle.withValues(alpha: 0.8),
-                          fontSize: 12)),
+                  Text(
+                    subtitle!,
+                    style: TextStyle(
+                      color: DecantColors.subtle.withValues(alpha: 0.8),
+                      fontSize: 12,
+                    ),
+                  ),
               ],
             ),
           ),
@@ -471,11 +486,14 @@ class _SliderTile extends StatelessWidget {
             const SizedBox(width: 10),
             SizedBox(
               width: 96,
-              child: Text(label,
-                  style: TextStyle(
-                      color: DecantColors.onSurface,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600)),
+              child: Text(
+                label,
+                style: TextStyle(
+                  color: DecantColors.onSurface,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ),
             Expanded(
               child: Slider(
@@ -485,11 +503,14 @@ class _SliderTile extends StatelessWidget {
             ),
             SizedBox(
               width: 36,
-              child: Text('${(value * 100).round()}',
-                  textAlign: TextAlign.right,
-                  style: TextStyle(
-                      color: DecantColors.subtle.withValues(alpha: 0.9),
-                      fontSize: 13)),
+              child: Text(
+                '${(value * 100).round()}',
+                textAlign: TextAlign.right,
+                style: TextStyle(
+                  color: DecantColors.subtle.withValues(alpha: 0.9),
+                  fontSize: 13,
+                ),
+              ),
             ),
           ],
         ),
@@ -544,21 +565,30 @@ class _NavTile extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(title,
-                        style: TextStyle(
-                            color: DecantColors.subtle.withValues(alpha: 0.9),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600)),
+                    Text(
+                      title,
+                      style: TextStyle(
+                        color: DecantColors.subtle.withValues(alpha: 0.9),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                     const SizedBox(height: 2),
-                    Text(value,
-                        style: TextStyle(
-                            color: DecantColors.onSurface,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700)),
-                    Text(detail,
-                        style: TextStyle(
-                            color: DecantColors.subtle.withValues(alpha: 0.7),
-                            fontSize: 11.5)),
+                    Text(
+                      value,
+                      style: TextStyle(
+                        color: DecantColors.onSurface,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Text(
+                      detail,
+                      style: TextStyle(
+                        color: DecantColors.subtle.withValues(alpha: 0.7),
+                        fontSize: 11.5,
+                      ),
+                    ),
                   ],
                 ),
               ),

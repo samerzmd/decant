@@ -55,7 +55,9 @@ extension L10nLabels on AppLocalizations {
 
   /// E.g. "Move limit · Stage 3".
   String challengeTitle(int levelId) => stageTitle(
-      challengeMode(Challenge.modeOf(levelId)), Challenge.stageOf(levelId));
+        challengeMode(Challenge.modeOf(levelId)),
+        Challenge.stageOf(levelId),
+      );
 
   /// E.g. "Daily · Nov 10", with the month in the current language.
   String dailyChallengeTitle(int levelId) {

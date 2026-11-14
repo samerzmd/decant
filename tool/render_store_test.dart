@@ -33,7 +33,10 @@ Future<void> _loadRoboto() async {
 
 void _text(Canvas canvas, String text, Offset at, TextStyle style) {
   final tp = TextPainter(
-    text: TextSpan(text: text, style: style.copyWith(fontFamily: 'Roboto')),
+    text: TextSpan(
+      text: text,
+      style: style.copyWith(fontFamily: 'Roboto'),
+    ),
     textDirection: TextDirection.ltr,
   )..layout();
   tp.paint(canvas, at);
@@ -108,12 +111,15 @@ void main() {
         TextStyle(fontSize: 26, color: DecantColors.subtle),
       );
 
-      final image =
-          await recorder.endRecording().toImage(_w.toInt(), _h.toInt());
+      final image = await recorder.endRecording().toImage(
+            _w.toInt(),
+            _h.toInt(),
+          );
       final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
       Directory('store').createSync(recursive: true);
-      File('store/feature_graphic.png')
-          .writeAsBytesSync(bytes!.buffer.asUint8List());
+      File(
+        'store/feature_graphic.png',
+      ).writeAsBytesSync(bytes!.buffer.asUint8List());
     });
   });
 }

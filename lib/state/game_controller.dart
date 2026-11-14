@@ -46,7 +46,9 @@ class GameController extends StateNotifier<GameSession> {
     // we were mid-pour when the screen was popped.
     try {
       _ref.read(audioServiceProvider).stopPour();
-    } catch (_) {/* container already tearing down */}
+    } catch (_) {
+      /* container already tearing down */
+    }
     super.dispose();
   }
 

@@ -52,8 +52,9 @@ class DailyStats {
     final older = lastDay != null && lastDay!.compareTo(key) > 0;
     if (older) return _copy(stars: next, completed: completed + 1);
 
-    final yesterday =
-        PlayStats.dayKey(DateTime(day.year, day.month, day.day - 1));
+    final yesterday = PlayStats.dayKey(
+      DateTime(day.year, day.month, day.day - 1),
+    );
     final s = lastDay == yesterday ? streak + 1 : 1;
     return DailyStats(
       streak: s,
@@ -67,8 +68,9 @@ class DailyStats {
   /// The streak as it stands at [now]: alive if today's or yesterday's daily
   /// was solved, otherwise broken (0).
   int currentStreak(DateTime now) {
-    final yesterday =
-        PlayStats.dayKey(DateTime(now.year, now.month, now.day - 1));
+    final yesterday = PlayStats.dayKey(
+      DateTime(now.year, now.month, now.day - 1),
+    );
     if (lastDay == PlayStats.dayKey(now) || lastDay == yesterday) return streak;
     return 0;
   }

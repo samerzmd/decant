@@ -67,30 +67,32 @@ void main() {
   });
 
   group('progress', () {
-    test('backfills wins for existing players without double counting',
-        () async {
-      SharedPreferences.setMockInitialValues({
-        'decant.unlocked': 3,
-        'decant.result.1': '{"stars":3,"moves":5}',
-        'decant.result.2': '{"stars":2,"moves":9}',
-      });
-      final persistence = await PersistenceService.create();
-      final ctrl = ProgressController(
-        persistence,
-        now: () => DateTime(2026, 11, 9, 12),
-      );
-      expect(ctrl.state.stats.wins, 2);
+    test(
+      'backfills wins for existing players without double counting',
+      () async {
+        SharedPreferences.setMockInitialValues({
+          'decant.unlocked': 3,
+          'decant.result.1': '{"stars":3,"moves":5}',
+          'decant.result.2': '{"stars":2,"moves":9}',
+        });
+        final persistence = await PersistenceService.create();
+        final ctrl = ProgressController(
+          persistence,
+          now: () => DateTime(2026, 11, 9, 12),
+        );
+        expect(ctrl.state.stats.wins, 2);
 
-      await ctrl.recordWin(3, 1, 20);
-      expect(ctrl.state.stats.wins, 3);
-      expect(ctrl.state.stats.streak, 1);
-      expect(persistence.loadStats().wins, 3);
+        await ctrl.recordWin(3, 1, 20);
+        expect(ctrl.state.stats.wins, 3);
+        expect(ctrl.state.stats.streak, 1);
+        expect(persistence.loadStats().wins, 3);
 
-      // Replaying a solved level counts as a win too.
-      await ctrl.recordWin(1, 3, 5);
-      expect(ctrl.state.stats.wins, 4);
-      expect(ctrl.state.levelsCompleted, 3);
-    });
+        // Replaying a solved level counts as a win too.
+        await ctrl.recordWin(1, 3, 5);
+        expect(ctrl.state.stats.wins, 4);
+        expect(ctrl.state.levelsCompleted, 3);
+      },
+    );
 
     test('counts perfect levels and stars per level', () async {
       SharedPreferences.setMockInitialValues({

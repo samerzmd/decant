@@ -70,8 +70,11 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     showDecantNotice(context, message, icon: icon, tone: tone, bottom: 84);
   }
 
-  void _noMovesNotice() => _notice(context.l10n.noMovesHint,
-      Icons.do_not_disturb_alt_rounded, NoticeTone.blocked);
+  void _noMovesNotice() => _notice(
+        context.l10n.noMovesHint,
+        Icons.do_not_disturb_alt_rounded,
+        NoticeTone.blocked,
+      );
 
   /// Out of hints: offers a short rewarded video for one, then shows it.
   Future<void> _offerVideoHint() async {
@@ -96,8 +99,11 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     ref.read(analyticsServiceProvider).logRewardedHint(earned: earned);
     if (!mounted) return;
     if (!earned) {
-      _notice(l10n.videoNotFinished, Icons.videocam_off_rounded,
-          NoticeTone.warning);
+      _notice(
+        l10n.videoNotFinished,
+        Icons.videocam_off_rounded,
+        NoticeTone.warning,
+      );
       return;
     }
     await ref.read(progressProvider.notifier).grantHint();
@@ -145,17 +151,21 @@ class _GameScreenState extends ConsumerState<GameScreen> {
         );
   }
 
-  void _openLeaderboard() => Navigator.of(context).push(MaterialPageRoute<void>(
-        settings: const RouteSettings(name: '/leaderboard'),
-        builder: (_) => LeaderboardScreen(dailyId: levelId),
-      ));
+  void _openLeaderboard() => Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          settings: const RouteSettings(name: '/leaderboard'),
+          builder: (_) => LeaderboardScreen(dailyId: levelId),
+        ),
+      );
 
   /// Shares the code of the custom level being played.
   Future<void> _shareCustom() async {
     final level = ref.read(levelProvider(levelId));
     final code = CustomLevel.encode(level.filledTubes);
     await ref.read(shareProvider)(
-        '${context.l10n.editorShareInvite}\n$code', null);
+      '${context.l10n.editorShareInvite}\n$code',
+      null,
+    );
   }
 
   /// Opens the system share sheet with today's daily result.
@@ -348,18 +358,20 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                             _noMovesNotice();
                           case HintOutcome.noHintsLeft:
                             _notice(
-                                context.l10n.noHintsLeft,
-                                Icons.lightbulb_outline_rounded,
-                                NoticeTone.warning);
+                              context.l10n.noHintsLeft,
+                              Icons.lightbulb_outline_rounded,
+                              NoticeTone.warning,
+                            );
                         }
                       },
                       onAddTube: () {
                         final ok = controller.addEmptyTube();
                         if (!ok) {
                           _notice(
-                              context.l10n.noExtraTubes,
-                              Icons.add_circle_outline_rounded,
-                              NoticeTone.warning);
+                            context.l10n.noExtraTubes,
+                            Icons.add_circle_outline_rounded,
+                            NoticeTone.warning,
+                          );
                         }
                       },
                       onHelp: _step == null
@@ -502,7 +514,8 @@ class _Header extends StatelessWidget {
                     if (_isCampaign(levelId))
                       context.l10n.chapterName(Chapter.forLevel(levelId)),
                     context.l10n.difficulty(
-                        '${'●' * difficulty}${'○' * (5 - difficulty)}'),
+                      '${'●' * difficulty}${'○' * (5 - difficulty)}',
+                    ),
                     if (threeStarMoves != null)
                       context.l10n.threeStarsIn(threeStarMoves!),
                   ].join(' · '),
@@ -522,8 +535,10 @@ class _Header extends StatelessWidget {
             ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 120),
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 7,
+                ),
                 decoration: BoxDecoration(
                   color: DecantColors.ink.withValues(alpha: 0.06),
                   borderRadius: BorderRadius.circular(16),
@@ -542,8 +557,9 @@ class _Header extends StatelessWidget {
             ),
           IconButton(
             icon: Icon(
-                muted ? Icons.volume_off_rounded : Icons.volume_up_rounded,
-                color: DecantColors.onSurface),
+              muted ? Icons.volume_off_rounded : Icons.volume_up_rounded,
+              color: DecantColors.onSurface,
+            ),
             onPressed: onToggleMute,
           ),
           IconButton(
@@ -624,13 +640,17 @@ class _StuckBanner extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xFFE2425B).withValues(alpha: 0.18),
         borderRadius: BorderRadius.circular(14),
-        border:
-            Border.all(color: const Color(0xFFE2425B).withValues(alpha: 0.5)),
+        border: Border.all(
+          color: const Color(0xFFE2425B).withValues(alpha: 0.5),
+        ),
       ),
       child: Row(
         children: [
-          Icon(Icons.info_outline_rounded,
-              color: DecantColors.danger, size: 18),
+          Icon(
+            Icons.info_outline_rounded,
+            color: DecantColors.danger,
+            size: 18,
+          ),
           const SizedBox(width: 10),
           Expanded(
             child: Text(

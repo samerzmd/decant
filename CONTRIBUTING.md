@@ -6,7 +6,8 @@ translations, docs, and code.
 
 ## Getting set up
 
-You'll need the Flutter SDK (3.22+) and Dart 3.3+.
+You'll need the Flutter SDK (3.47+) and Dart 3.13+; `.fvmrc` pins the exact
+version.
 
 ```bash
 git clone https://github.com/<your-username>/decant.git

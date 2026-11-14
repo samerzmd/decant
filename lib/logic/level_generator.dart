@@ -39,9 +39,7 @@ class LevelGenerator {
   /// grows; daily challenges (negative ids) follow the day of the week.
   static LevelConfig configFor(int levelId) {
     if (Challenge.isChallenge(levelId)) {
-      return _configForColors(
-        Challenge.colorsFor(Challenge.stageOf(levelId)),
-      );
+      return _configForColors(Challenge.colorsFor(Challenge.stageOf(levelId)));
     }
     if (DailyChallenge.isDaily(levelId)) {
       return _configForColors(
@@ -124,7 +122,7 @@ class LevelGenerator {
     // Candidate source tubes P: non-empty.
     final sources = <int>[
       for (var i = 0; i < n; i++)
-        if (segs[i].isNotEmpty) i
+        if (segs[i].isNotEmpty) i,
     ];
     if (sources.isEmpty) return;
     sources.shuffle(rng);
@@ -151,7 +149,7 @@ class LevelGenerator {
       // Candidate destinations Q: any other tube with free space.
       final dests = <int>[
         for (var j = 0; j < n; j++)
-          if (j != p && segs[j].length < capacity) j
+          if (j != p && segs[j].length < capacity) j,
       ];
       if (dests.isEmpty) continue;
       final q = dests[rng.nextInt(dests.length)];

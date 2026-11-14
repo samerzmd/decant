@@ -1307,6 +1307,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You'**
   String get you;
+
+  /// No description provided for @editorQrHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'A friend can scan this in Decant: Create → Enter a code → Scan a QR code.'**
+  String get editorQrHelp;
+
+  /// No description provided for @editorSendText.
+  ///
+  /// In en, this message translates to:
+  /// **'Send as text'**
+  String get editorSendText;
+
+  /// No description provided for @editorScanQr.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan a QR code'**
+  String get editorScanQr;
+
+  /// No description provided for @scanHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Point the camera at a Decant level QR code.'**
+  String get scanHelp;
+
+  /// No description provided for @scanWrongCode.
+  ///
+  /// In en, this message translates to:
+  /// **'That QR code isn\'t a Decant level.'**
+  String get scanWrongCode;
+
+  /// No description provided for @scanNoPermission.
+  ///
+  /// In en, this message translates to:
+  /// **'Decant can\'t use the camera. Allow it in your phone\'s settings, or paste the code instead.'**
+  String get scanNoPermission;
+
+  /// No description provided for @scanUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'The camera isn\'t available. Paste the code instead.'**
+  String get scanUnavailable;
 }
 
 class _AppLocalizationsDelegate

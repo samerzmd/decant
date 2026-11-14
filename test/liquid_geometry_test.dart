@@ -44,9 +44,6 @@ void main() {
     const f = 0.4;
     final tilt = LiquidGeometry.pourTilt(rect, f, 1);
     final level = LiquidGeometry.levelFor(rect, tilt, f);
-    expect(
-      LiquidGeometry.depth(rect.topRight, tilt),
-      closeTo(level, 0.05),
-    );
+    expect(LiquidGeometry.depth(rect.topRight, tilt), closeTo(level, 0.05));
   });
 }

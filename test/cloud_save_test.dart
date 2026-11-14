@@ -104,12 +104,21 @@ void main() {
 
     test('the current streak comes from the most recent win', () {
       const older = PlayStats(
-          wins: 30, streak: 9, bestStreak: 9, lastWinDay: '2026-11-01');
+        wins: 30,
+        streak: 9,
+        bestStreak: 9,
+        lastWinDay: '2026-11-01',
+      );
       const newer = PlayStats(
-          wins: 12, streak: 2, bestStreak: 4, lastWinDay: '2026-11-13');
-      final m = const ProgressSnapshot(hints: 0, stats: older)
-          .merge(const ProgressSnapshot(hints: 0, stats: newer))
-          .stats;
+        wins: 12,
+        streak: 2,
+        bestStreak: 4,
+        lastWinDay: '2026-11-13',
+      );
+      final m = const ProgressSnapshot(
+        hints: 0,
+        stats: older,
+      ).merge(const ProgressSnapshot(hints: 0, stats: newer)).stats;
       expect(m.wins, 30);
       expect(m.streak, 2);
       expect(m.bestStreak, 9);
@@ -131,9 +140,10 @@ void main() {
         lastDay: '2026-11-13',
         stars: {'2026-11-12': 2, '2026-11-13': 3},
       );
-      final m = const ProgressSnapshot(hints: 0, daily: phone)
-          .merge(const ProgressSnapshot(hints: 0, daily: tablet))
-          .daily;
+      final m = const ProgressSnapshot(
+        hints: 0,
+        daily: phone,
+      ).merge(const ProgressSnapshot(hints: 0, daily: tablet)).daily;
       expect(m.stars.length, 3);
       expect(m.streak, 3);
       expect(m.bestStreak, 3);
@@ -145,12 +155,33 @@ void main() {
       final first = ChallengeMode.values.first;
       final last = ChallengeMode.values.last;
       final a = ProgressSnapshot(
-          hints: 0, challenges: ChallengeStats(best: {first: 4}));
+        hints: 0,
+        challenges: ChallengeStats(best: {first: 4}),
+      );
       final b = ProgressSnapshot(
-          hints: 0, challenges: ChallengeStats(best: {first: 2, last: 7}));
+        hints: 0,
+        challenges: ChallengeStats(best: {first: 2, last: 7}),
+      );
       final m = a.merge(b).challenges;
       expect(m.bestStage(first), 4);
       expect(m.bestStage(last), 7);
+    });
+
+    test('the most recent hint count wins, even when it is smaller', () {
+      const spent = ProgressSnapshot(hints: 2, hintsChangedAt: 200);
+      const stale = ProgressSnapshot(hints: 5, hintsChangedAt: 100);
+      expect(spent.merge(stale).hints, 2);
+      expect(stale.merge(spent).hints, 2);
+      expect(spent.merge(stale).hintsChangedAt, 200);
+      // Saves from before timestamps keep the larger pool.
+      expect(
+        const ProgressSnapshot(hints: 1)
+            .merge(
+              const ProgressSnapshot(hints: 4),
+            )
+            .hints,
+        4,
+      );
     });
 
     test('survives a round trip through JSON', () {
@@ -159,9 +190,17 @@ void main() {
         hints: 2,
         results: const {3: LevelResult(stars: 2, bestMoves: 9)},
         stats: const PlayStats(
-            wins: 11, streak: 3, bestStreak: 5, lastWinDay: '2026-11-13'),
+          wins: 11,
+          streak: 3,
+          bestStreak: 5,
+          lastWinDay: '2026-11-13',
+        ),
         daily: const DailyStats(
-            streak: 1, completed: 4, lastDay: '2026-11-13', stars: {}),
+          streak: 1,
+          completed: 4,
+          lastDay: '2026-11-13',
+          stars: {},
+        ),
         challenges: ChallengeStats(best: {ChallengeMode.values.first: 3}),
       );
       expect(ProgressSnapshot.fromJson(s.toJson()), s);
@@ -179,9 +218,11 @@ void main() {
       persistence = await PersistenceService.create();
       backend = FakeBackend();
       reloads = 0;
-      cloud = CloudSyncService(persistence, backend,
-          debounce: const Duration(milliseconds: 10))
-        ..onLocalChanged = (() => reloads++);
+      cloud = CloudSyncService(
+        persistence,
+        backend,
+        debounce: const Duration(milliseconds: 10),
+      )..onLocalChanged = (() => reloads++);
       cloud.init();
     });
     tearDown(() => cloud.dispose());
@@ -215,7 +256,24 @@ void main() {
       expect(reloads, greaterThan(0));
       // The cloud now has the device's level 1 as well.
       expect(
-          ProgressSnapshot.fromJson(backend.docs['u1']!).results[1]!.stars, 2);
+        ProgressSnapshot.fromJson(backend.docs['u1']!).results[1]!.stars,
+        2,
+      );
+    });
+
+    test('a spent hint stays spent after the next sync', () async {
+      await persistence.saveHints(5);
+      await cloud.signIn();
+      await cloud.sync();
+      expect(ProgressSnapshot.fromJson(backend.docs['u1']!).hints, 5);
+
+      // Make sure the spend gets a later timestamp than the first save.
+      await Future<void>.delayed(const Duration(milliseconds: 5));
+      await persistence.saveHints(4);
+      await cloud.sync();
+
+      expect(persistence.hints(), 4);
+      expect(ProgressSnapshot.fromJson(backend.docs['u1']!).hints, 4);
     });
 
     test('nothing is written when both sides already match', () async {
@@ -234,7 +292,9 @@ void main() {
       await Future<void>.delayed(const Duration(milliseconds: 60));
       await cloud.sync();
       expect(
-          ProgressSnapshot.fromJson(backend.docs['u1']!).results[1], isNotNull);
+        ProgressSnapshot.fromJson(backend.docs['u1']!).results[1],
+        isNotNull,
+      );
     });
 
     test('offline: marks the failure and keeps local progress', () async {
@@ -270,23 +330,28 @@ void main() {
 
   group('settings card', () {
     Future<void> pump(WidgetTester tester, CloudSyncService cloud) async {
-      await tester.pumpWidget(ProviderScope(
-        overrides: [cloudSyncProvider.overrideWithValue(cloud)],
-        child: const MaterialApp(
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          home: Scaffold(body: CloudSaveSection()),
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [cloudSyncProvider.overrideWithValue(cloud)],
+          child: const MaterialApp(
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: Scaffold(body: CloudSaveSection()),
+          ),
         ),
-      ));
+      );
     }
 
-    testWidgets('signed out offers Google sign-in; signed in shows controls',
-        (tester) async {
+    testWidgets('signed out offers Google sign-in; signed in shows controls', (
+      tester,
+    ) async {
       SharedPreferences.setMockInitialValues({});
       final persistence = await PersistenceService.create();
-      final cloud =
-          CloudSyncService(persistence, FakeBackend(), debounce: Duration.zero)
-            ..init();
+      final cloud = CloudSyncService(
+        persistence,
+        FakeBackend(),
+        debounce: Duration.zero,
+      )..init();
       addTearDown(cloud.dispose);
       await pump(tester, cloud);
 

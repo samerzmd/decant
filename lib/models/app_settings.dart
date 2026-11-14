@@ -34,8 +34,10 @@ enum AppLanguage {
   final String nativeName;
   const AppLanguage(this.code, this.nativeName);
 
-  static AppLanguage fromName(String? name) => AppLanguage.values
-      .firstWhere((l) => l.name == name, orElse: () => AppLanguage.system);
+  static AppLanguage fromName(String? name) => AppLanguage.values.firstWhere(
+        (l) => l.name == name,
+        orElse: () => AppLanguage.system,
+      );
 }
 
 /// All user-tunable settings: the three audio buses, haptics, accessibility

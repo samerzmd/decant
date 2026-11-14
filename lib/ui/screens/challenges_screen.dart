@@ -27,8 +27,10 @@ class ChallengesScreen extends ConsumerWidget {
                 Row(
                   children: [
                     IconButton(
-                      icon: Icon(Icons.arrow_back_rounded,
-                          color: DecantColors.onSurface),
+                      icon: Icon(
+                        Icons.arrow_back_rounded,
+                        color: DecantColors.onSurface,
+                      ),
                       onPressed: () => Navigator.of(context).pop(),
                     ),
                     Expanded(

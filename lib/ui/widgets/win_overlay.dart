@@ -68,10 +68,7 @@ class WinOverlay extends StatelessWidget {
       tween: Tween(begin: 0, end: 1),
       duration: const Duration(milliseconds: 320),
       curve: Curves.easeOut,
-      builder: (context, t, child) => Opacity(
-        opacity: t,
-        child: child,
-      ),
+      builder: (context, t, child) => Opacity(opacity: t, child: child),
       child: Container(
         color: DecantColors.scrim,
         alignment: Alignment.center,
@@ -91,8 +88,9 @@ class WinOverlay extends StatelessWidget {
                 colors: DecantColors.panel,
               ),
               borderRadius: BorderRadius.circular(28),
-              border:
-                  Border.all(color: DecantColors.ink.withValues(alpha: 0.12)),
+              border: Border.all(
+                color: DecantColors.ink.withValues(alpha: 0.12),
+              ),
               boxShadow: [
                 BoxShadow(
                   color: DecantColors.accent.withValues(alpha: 0.25),
@@ -204,8 +202,11 @@ class WinOverlay extends StatelessWidget {
                   const SizedBox(height: 6),
                   TextButton.icon(
                     onPressed: onLeaderboard,
-                    icon: Icon(Icons.leaderboard_rounded,
-                        size: 18, color: DecantColors.accent),
+                    icon: Icon(
+                      Icons.leaderboard_rounded,
+                      size: 18,
+                      color: DecantColors.accent,
+                    ),
                     label: Text(
                       context.l10n.leaderboard,
                       style: TextStyle(

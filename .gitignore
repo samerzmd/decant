@@ -70,3 +70,4 @@ firebase.json
 
 # fvm: local symlink to the pinned Flutter SDK (version lives in .fvmrc)
 .fvm/
+/dist/

@@ -150,9 +150,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                   onStats: () => _push(const StatsScreen(), '/stats'),
                   onLeaderboard: ref.read(leaderboardProvider).enabled
                       ? () => _push(
-                          LeaderboardScreen(
-                              dailyId: DailyChallenge.idFor(today)),
-                          '/leaderboard')
+                            LeaderboardScreen(
+                              dailyId: DailyChallenge.idFor(today),
+                            ),
+                            '/leaderboard',
+                          )
                       : null,
                   onSettings: () => _push(const SettingsScreen(), '/settings'),
                 ),
@@ -245,7 +247,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           icon: Icons.emoji_events_rounded,
                           colors: const [Color(0xFFE0A93B), Color(0xFFC9673A)],
                           onTap: () => _push(
-                              const AchievementsScreen(), '/achievements'),
+                            const AchievementsScreen(),
+                            '/achievements',
+                          ),
                         ),
                       ),
                     ],
@@ -488,7 +492,7 @@ class _Title extends StatelessWidget {
         end: Alignment.bottomCenter,
         colors: [
           DecantColors.isLight ? DecantColors.onSurface : Colors.white,
-          DecantColors.accent
+          DecantColors.accent,
         ],
       ).createShader(rect),
       child: const Text(
@@ -561,8 +565,11 @@ class _ChapterCard extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  Icon(Icons.chevron_right_rounded,
-                      color: DecantColors.subtle, size: 20),
+                  Icon(
+                    Icons.chevron_right_rounded,
+                    color: DecantColors.subtle,
+                    size: 20,
+                  ),
                 ],
               ),
               const SizedBox(height: 10),
@@ -584,10 +591,12 @@ class _ChapterCard extends StatelessWidget {
                               widthFactor: solved / Chapter.size,
                               child: DecoratedBox(
                                 decoration: BoxDecoration(
-                                  gradient: LinearGradient(colors: [
-                                    DecantColors.accentDeep,
-                                    DecantColors.accent,
-                                  ]),
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      DecantColors.accentDeep,
+                                      DecantColors.accent,
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -673,8 +682,11 @@ class _PlayButton extends StatelessWidget {
                   color: _ink,
                   shape: BoxShape.circle,
                 ),
-                child: Icon(Icons.play_arrow_rounded,
-                    color: DecantColors.accent, size: 38),
+                child: Icon(
+                  Icons.play_arrow_rounded,
+                  color: DecantColors.accent,
+                  size: 38,
+                ),
               ),
               const SizedBox(width: 14),
               Expanded(

@@ -16,8 +16,11 @@ void main() {
       expect(cats, contains(t.category), reason: t.name);
     }
     for (final c in kAmbientCategories) {
-      expect(kAmbientCatalog.where((t) => t.category == c.id), isNotEmpty,
-          reason: c.id);
+      expect(
+        kAmbientCatalog.where((t) => t.category == c.id),
+        isNotEmpty,
+        reason: c.id,
+      );
     }
   });
 

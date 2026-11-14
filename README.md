@@ -3,7 +3,7 @@
 **Pour. Sort. Unwind.**
 
 ![platform](https://img.shields.io/badge/platform-Android%20%7C%20iOS-49D6C3)
-![Flutter](https://img.shields.io/badge/Flutter-3.22%2B-02569B?logo=flutter)
+![Flutter](https://img.shields.io/badge/Flutter-3.47%2B-02569B?logo=flutter)
 ![license](https://img.shields.io/badge/license-Beerware%20%F0%9F%8D%BA-F2913D)
 ![status](https://img.shields.io/badge/status-v1.0-54B86B)
 
@@ -79,7 +79,8 @@ decant/
 
 ## Setup & run
 
-> Requires the Flutter SDK (3.22+) and Dart 3.3+.
+> Requires the Flutter SDK (3.47+) and Dart 3.13+. The exact version is
+> pinned in `.fvmrc`.
 
 This repository ships the Dart source, assets, shader, and tests. Generate the
 platform folders (`android/`, `ios/`, etc.) once with `flutter create`, then run:
@@ -107,6 +108,21 @@ flutter test
 `flutter create .` is non-destructive to existing files — it only adds the
 missing native scaffolding. `flutter_soloud` builds its native audio engine
 automatically through the normal plugin build.
+
+### Desktop and web
+
+Decant also runs on macOS, Windows, Linux and the web:
+
+```bash
+flutter run -d macos      # or windows, linux, chrome
+```
+
+These builds are the plain offline game: progress stays on the computer,
+and there's no sign-in, cloud save, leaderboard, ads, streak reminders, QR
+scanning or extra sound packs (those are phone features). CI builds all
+three desktop apps on every push, and each release adds them to its GitHub
+release (the macOS app isn't notarized, so open it with right-click → Open
+the first time).
 
 ### Firebase (analytics)
 

@@ -200,5 +200,12 @@
   "leaderboardEmpty": "Pas encore de score aujourd’hui. Soyez le premier !",
   "leaderboardFailed": "Impossible de charger le classement. Vérifiez votre connexion.",
   "leaderboardYouAs": "Vous apparaissez sous le nom {name}",
-  "you": "Vous"
+  "you": "Vous",
+  "editorQrHelp": "Un ami peut le scanner dans Decant : Créer → Saisir un code → Scanner un code QR.",
+  "editorSendText": "Envoyer en texte",
+  "editorScanQr": "Scanner un code QR",
+  "scanHelp": "Visez le code QR d'un niveau Decant avec l'appareil photo.",
+  "scanWrongCode": "Ce code QR n'est pas un niveau Decant.",
+  "scanNoPermission": "Decant ne peut pas utiliser l'appareil photo. Autorisez-le dans les réglages du téléphone, ou collez le code.",
+  "scanUnavailable": "L'appareil photo n'est pas disponible. Collez le code."
 }

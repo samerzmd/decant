@@ -50,7 +50,8 @@ class SettingsController extends StateNotifier<AppSettings> {
 
   void toggleMute() {
     _commit(
-        state.copyWith(audio: state.audio.copyWith(muted: !state.audio.muted)));
+      state.copyWith(audio: state.audio.copyWith(muted: !state.audio.muted)),
+    );
     // Muting stops the loops (in applySettings); unmuting brings them back.
     if (!state.audio.muted) {
       if (state.audio.ambientEnabled) _audio.startAmbient();
@@ -60,7 +61,8 @@ class SettingsController extends StateNotifier<AppSettings> {
 
   void toggleMusic() {
     final next = state.copyWith(
-        audio: state.audio.copyWith(musicEnabled: !state.audio.musicEnabled));
+      audio: state.audio.copyWith(musicEnabled: !state.audio.musicEnabled),
+    );
     _commit(next);
     if (next.audio.musicEnabled && !next.audio.muted) {
       _audio.startMusic();
@@ -78,8 +80,8 @@ class SettingsController extends StateNotifier<AppSettings> {
 
   void toggleAmbient() {
     final next = state.copyWith(
-        audio:
-            state.audio.copyWith(ambientEnabled: !state.audio.ambientEnabled));
+      audio: state.audio.copyWith(ambientEnabled: !state.audio.ambientEnabled),
+    );
     _commit(next);
     if (next.audio.ambientEnabled && !next.audio.muted) {
       _audio.startAmbient();

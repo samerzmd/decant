@@ -9,8 +9,9 @@ import 'package:decant/state/providers.dart';
 import 'package:decant/ui/screens/home_screen.dart';
 
 void main() {
-  testWidgets('Home screen renders brand, tagline and play button',
-      (tester) async {
+  testWidgets('Home screen renders brand, tagline and play button', (
+    tester,
+  ) async {
     SharedPreferences.setMockInitialValues({});
     final persistence = await PersistenceService.create();
     // AudioService is left uninitialized; all its calls become safe no-ops.

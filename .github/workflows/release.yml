@@ -2,7 +2,8 @@ name: Release
 
 # Pushing a version tag (v1.4.0) builds the signed Play Store bundle and
 # publishes a GitHub release with the bundle, its debug symbols and the
-# matching CHANGELOG.md notes.
+# matching CHANGELOG.md notes. The macOS, Windows and Linux apps are then
+# built and added to the same release.
 #
 # The tag must match the version in pubspec.yaml, and CHANGELOG.md must have
 # a section for it. Signing and Firebase config come from repository secrets
@@ -154,3 +155,54 @@ jobs:
       - name: Remove signing files
         if: always()
         run: rm -f android/key.properties "$RUNNER_TEMP/upload.jks"
+
+  # Runs after the release exists, so these files are added to it.
+  desktop:
+    name: Add the ${{ matrix.platform }} app to the release
+    needs: android
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: macos
+            os: macos-latest
+          - platform: linux
+            os: ubuntu-latest
+          - platform: windows
+            os: windows-latest
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read Flutter version
+        id: fvm
+        run: echo "flutter=$(jq -r .flutter .fvmrc)" >> "$GITHUB_OUTPUT"
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: ${{ steps.fvm.outputs.flutter }}
+          cache: true
+
+      - name: Install Linux build tools
+        if: matrix.platform == 'linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev
+
+      # The desktop app never starts Firebase, so the stub config is enough.
+      - name: Add placeholder Firebase config
+        run: cp tool/ci/firebase_options_stub.dart lib/firebase_options.dart
+
+      - name: Build and package
+        run: tool/release/build_desktop.sh ${{ matrix.platform }}
+
+      - name: Add to the GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          fail_on_unmatched_files: true
+

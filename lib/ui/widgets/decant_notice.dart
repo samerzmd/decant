@@ -94,8 +94,9 @@ class DecantNotice extends StatelessWidget {
               border: Border.all(color: tint.withValues(alpha: 0.35)),
               boxShadow: [
                 BoxShadow(
-                  color: DecantColors.shadow
-                      .withValues(alpha: DecantColors.shadow.a * 0.6),
+                  color: DecantColors.shadow.withValues(
+                    alpha: DecantColors.shadow.a * 0.6,
+                  ),
                   blurRadius: 16,
                   spreadRadius: -4,
                   offset: const Offset(0, 6),

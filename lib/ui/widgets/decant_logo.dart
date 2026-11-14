@@ -66,10 +66,12 @@ class DecantMarkPainter extends CustomPainter {
         c,
         r,
         Paint()
-          ..shader = RadialGradient(colors: [
-            _teal.withValues(alpha: 0.30),
-            _teal.withValues(alpha: 0.0),
-          ]).createShader(Rect.fromCircle(center: c, radius: r)),
+          ..shader = RadialGradient(
+            colors: [
+              _teal.withValues(alpha: 0.30),
+              _teal.withValues(alpha: 0.0),
+            ],
+          ).createShader(Rect.fromCircle(center: c, radius: r)),
       );
     }
 
@@ -78,7 +80,9 @@ class DecantMarkPainter extends CustomPainter {
     canvas.clipRRect(tube);
     if (!monochrome) {
       canvas.drawRRect(
-          tube, Paint()..color = Colors.white.withValues(alpha: 0.10));
+        tube,
+        Paint()..color = Colors.white.withValues(alpha: 0.10),
+      );
     }
 
     final innerTop = tubeTop + stroke / 2;
@@ -94,12 +98,11 @@ class DecantMarkPainter extends CustomPainter {
       // Each band overlaps the next a hair so no seam shows when scaled.
       // In the flat silhouette, small gaps keep the layers readable instead.
       final rect = Rect.fromLTRB(
-          left,
-          top,
-          right,
-          i == 2
-              ? bottom
-              : (monochrome ? bottom - stroke * 0.45 : bottom + 0.5));
+        left,
+        top,
+        right,
+        i == 2 ? bottom : (monochrome ? bottom - stroke * 0.45 : bottom + 0.5),
+      );
       final paint = Paint();
       if (monochrome) {
         paint.color = Colors.white;
@@ -120,14 +123,21 @@ class DecantMarkPainter extends CustomPainter {
       // Meniscus on the top (teal) layer.
       canvas.drawOval(
         Rect.fromCenter(
-            center: Offset(cx, liquidTop), width: tubeW, height: tubeW * 0.26),
+          center: Offset(cx, liquidTop),
+          width: tubeW,
+          height: tubeW * 0.26,
+        ),
         Paint()..color = Color.lerp(_teal, Colors.white, 0.45)!,
       );
       // Glass reflection down the left side.
       canvas.drawRRect(
         RRect.fromRectAndRadius(
-          Rect.fromLTWH(left + tubeW * 0.17, innerTop + tubeW * 0.30,
-              tubeW * 0.11, (tubeBottom - innerTop) * 0.58),
+          Rect.fromLTWH(
+            left + tubeW * 0.17,
+            innerTop + tubeW * 0.30,
+            tubeW * 0.11,
+            (tubeBottom - innerTop) * 0.58,
+          ),
           Radius.circular(tubeW * 0.06),
         ),
         Paint()..color = Colors.white.withValues(alpha: 0.30),
@@ -148,7 +158,10 @@ class DecantMarkPainter extends CustomPainter {
     canvas.drawRRect(
       RRect.fromRectAndRadius(
         Rect.fromCenter(
-            center: Offset(cx, tubeTop), width: lipW, height: stroke * 1.5),
+          center: Offset(cx, tubeTop),
+          width: lipW,
+          height: stroke * 1.5,
+        ),
         Radius.circular(stroke * 0.75),
       ),
       Paint()..color = Colors.white,
@@ -161,11 +174,23 @@ class DecantMarkPainter extends CustomPainter {
     final reach = cyD - tipY;
     final drop = Path()
       ..moveTo(cx, tipY)
-      ..cubicTo(cx + r * 0.25, tipY + reach * 0.35, cx + r, cyD - r * 0.75,
-          cx + r, cyD)
+      ..cubicTo(
+        cx + r * 0.25,
+        tipY + reach * 0.35,
+        cx + r,
+        cyD - r * 0.75,
+        cx + r,
+        cyD,
+      )
       ..arcToPoint(Offset(cx - r, cyD), radius: Radius.circular(r))
       ..cubicTo(
-          cx - r, cyD - r * 0.75, cx - r * 0.25, tipY + reach * 0.35, cx, tipY)
+        cx - r,
+        cyD - r * 0.75,
+        cx - r * 0.25,
+        tipY + reach * 0.35,
+        cx,
+        tipY,
+      )
       ..close();
     final dropBounds = Rect.fromLTRB(cx - r, tipY, cx + r, cyD + r);
     final dropPaint = Paint();
@@ -185,9 +210,10 @@ class DecantMarkPainter extends CustomPainter {
     if (!monochrome) {
       canvas.drawOval(
         Rect.fromCenter(
-            center: Offset(cx - r * 0.38, cyD - r * 0.18),
-            width: r * 0.34,
-            height: r * 0.52),
+          center: Offset(cx - r * 0.38, cyD - r * 0.18),
+          width: r * 0.34,
+          height: r * 0.52,
+        ),
         Paint()..color = Colors.white.withValues(alpha: 0.75),
       );
     }

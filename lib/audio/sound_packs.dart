@@ -1,9 +1,9 @@
 import 'dart:async';
-import 'dart:io' show Platform;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import '../services/log.dart';
+import '../services/platform_support.dart';
 
 /// Where a store-delivered sound pack stands on this device.
 enum PackStatus {
@@ -60,7 +60,7 @@ class SoundPacks {
   StreamSubscription<dynamic>? _sub;
   bool _started = false;
 
-  bool get _supported => !kIsWeb && (Platform.isAndroid || Platform.isIOS);
+  bool get _supported => isPhone;
 
   ValueListenable<PackState> stateOf(String pack) => _states[pack]!;
 
@@ -87,8 +87,9 @@ class SoundPacks {
 
   Future<void> refresh(String pack) async {
     try {
-      final m = await _channel
-          .invokeMapMethod<String, dynamic>('state', {'pack': pack});
+      final m = await _channel.invokeMapMethod<String, dynamic>('state', {
+        'pack': pack,
+      });
       if (m != null) _apply(m);
     } catch (_) {
       _states[pack]?.value = const PackState(PackStatus.unavailable);
@@ -112,8 +113,10 @@ class SoundPacks {
     if (cached != null) return cached;
     if (!_supported) return null;
     try {
-      final path = await _channel
-          .invokeMethod<String>('resolve', {'pack': pack, 'file': file});
+      final path = await _channel.invokeMethod<String>('resolve', {
+        'pack': pack,
+        'file': file,
+      });
       if (path != null) {
         _paths[key] = path;
         if (!_states[pack]!.value.ready) {

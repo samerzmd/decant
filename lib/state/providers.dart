@@ -30,8 +30,9 @@ final persistenceProvider = Provider<PersistenceService>(
 /// Overridden in `main()` with an already-initialized engine.
 /// Streak reminder notifications. Overridden in main with an initialized
 /// service; this default stays inert (every call is a no-op), as in tests.
-final reminderServiceProvider =
-    Provider<ReminderService>((_) => ReminderService());
+final reminderServiceProvider = Provider<ReminderService>(
+  (_) => ReminderService(),
+);
 
 /// Rewarded video ads. Overridden in main; this default shows no ads, as in
 /// tests.
@@ -41,17 +42,20 @@ final adServiceProvider = Provider<AdService>((_) => AdService.off());
 typedef ShareText = Future<void> Function(String text, ui.Rect? origin);
 
 final shareProvider = Provider<ShareText>(
-  (_) => (text, origin) => SharePlus.instance
-      .share(ShareParams(text: text, sharePositionOrigin: origin)),
+  (_) => (text, origin) => SharePlus.instance.share(
+        ShareParams(text: text, sharePositionOrigin: origin),
+      ),
 );
 
 /// The daily leaderboard. Off unless the app overrides it.
-final leaderboardProvider =
-    Provider<LeaderboardService>((_) => LeaderboardService.off());
+final leaderboardProvider = Provider<LeaderboardService>(
+  (_) => LeaderboardService.off(),
+);
 
 /// Optional cloud save. Off (hidden in Settings) unless the app overrides it.
-final cloudSyncProvider =
-    Provider<CloudSyncService>((_) => CloudSyncService.off());
+final cloudSyncProvider = Provider<CloudSyncService>(
+  (_) => CloudSyncService.off(),
+);
 
 final audioServiceProvider = Provider<AudioService>(
   (_) => throw UnimplementedError('audioServiceProvider must be overridden'),
@@ -65,14 +69,15 @@ final analyticsServiceProvider = Provider<AnalyticsService>(
       throw UnimplementedError('analyticsServiceProvider must be overridden'),
 );
 
-final settingsProvider =
-    StateNotifierProvider<SettingsController, AppSettings>((ref) {
-  return SettingsController(
-    ref.watch(persistenceProvider),
-    ref.watch(audioServiceProvider),
-    ref.watch(hapticServiceProvider),
-  );
-});
+final settingsProvider = StateNotifierProvider<SettingsController, AppSettings>(
+  (ref) {
+    return SettingsController(
+      ref.watch(persistenceProvider),
+      ref.watch(audioServiceProvider),
+      ref.watch(hapticServiceProvider),
+    );
+  },
+);
 
 final progressProvider =
     StateNotifierProvider<ProgressController, ProgressData>((ref) {
@@ -87,8 +92,9 @@ final levelProvider = Provider.family<Level, int>(
 );
 
 /// Player-made levels opened this session (from the editor or a code), by id.
-final customLevelsProvider =
-    StateProvider<Map<int, Level>>((_) => const <int, Level>{});
+final customLevelsProvider = StateProvider<Map<int, Level>>(
+  (_) => const <int, Level>{},
+);
 
 /// The active game session for a level id. Auto-disposes when the screen leaves.
 final gameControllerProvider = StateNotifierProvider.autoDispose

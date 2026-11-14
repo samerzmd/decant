@@ -7,7 +7,9 @@ import 'package:decant/models/game_state.dart';
 
 void main() {
   GameState toState(level) => GameState(
-      tubes: level.buildTubes(), extraTubesRemaining: level.extraTubeAllowance);
+        tubes: level.buildTubes(),
+        extraTubesRemaining: level.extraTubeAllowance,
+      );
 
   test('every generated level is solvable and not already solved', () {
     for (var id = 1; id <= 25; id++) {
@@ -36,8 +38,11 @@ void main() {
       }
       expect(counts.length, level.colorCount);
       for (final entry in counts.entries) {
-        expect(entry.value, level.capacity,
-            reason: 'color ${entry.key} should have ${level.capacity} units');
+        expect(
+          entry.value,
+          level.capacity,
+          reason: 'color ${entry.key} should have ${level.capacity} units',
+        );
       }
     }
   });
@@ -57,14 +62,16 @@ void main() {
     expect(level.difficulty, inInclusiveRange(1, 5));
   });
 
-  test('a fully solved generated board is reachable by replaying a solution',
-      () {
-    final level = LevelGenerator.generate(12);
-    var s = toState(level);
-    final solution = Solver.solve(s)!;
-    for (final m in solution) {
-      s = PourEngine.applyPour(s, m.from, m.to)!.state;
-    }
-    expect(s.isSolved, true);
-  });
+  test(
+    'a fully solved generated board is reachable by replaying a solution',
+    () {
+      final level = LevelGenerator.generate(12);
+      var s = toState(level);
+      final solution = Solver.solve(s)!;
+      for (final m in solution) {
+        s = PourEngine.applyPour(s, m.from, m.to)!.state;
+      }
+      expect(s.isSolved, true);
+    },
+  );
 }

@@ -58,8 +58,10 @@ class AchievementsScreen extends ConsumerWidget {
                   child: Row(
                     children: [
                       IconButton(
-                        icon: Icon(Icons.arrow_back_rounded,
-                            color: DecantColors.onSurface),
+                        icon: Icon(
+                          Icons.arrow_back_rounded,
+                          color: DecantColors.onSurface,
+                        ),
                         onPressed: () => Navigator.of(context).pop(),
                       ),
                       Expanded(
@@ -81,7 +83,9 @@ class AchievementsScreen extends ConsumerWidget {
                   padding: const EdgeInsets.fromLTRB(24, 0, 24, 10),
                   child: Text(
                     l.achievementsProgress(
-                        earned.length, Achievements.all.length),
+                      earned.length,
+                      Achievements.all.length,
+                    ),
                     style: TextStyle(
                       color: DecantColors.accent,
                       fontWeight: FontWeight.w600,

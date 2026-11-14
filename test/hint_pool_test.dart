@@ -164,8 +164,10 @@ void main() {
       await offerAndWatch(tester);
       expect(c.read(gameControllerProvider(2)).hint, isNull);
       expect(c.read(progressProvider).hints, 0);
-      expect(find.text('The video ended early, so no hint this time.'),
-          findsOneWidget);
+      expect(
+        find.text('The video ended early, so no hint this time.'),
+        findsOneWidget,
+      );
       await tester.pump(const Duration(seconds: 3));
     });
 
@@ -175,8 +177,10 @@ void main() {
       await offerAndWatch(tester);
       expect(ads.shown, 0);
       expect(c.read(gameControllerProvider(2)).hint, isNull);
-      expect(find.text('No video is ready right now. Try again in a moment.'),
-          findsOneWidget);
+      expect(
+        find.text('No video is ready right now. Try again in a moment.'),
+        findsOneWidget,
+      );
       await tester.pump(const Duration(seconds: 3));
     });
 

@@ -83,3 +83,53 @@ jobs:
           python-version: "3.x"
       - name: Run algorithm verifier
         run: python3 tool/verify_algorithm.py
+
+  # The desktop apps build on every push, so a plugin that breaks one shows
+  # up here rather than at release time. Each build is kept for a week.
+  desktop:
+    name: Build the ${{ matrix.platform }} app
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: macos
+            os: macos-latest
+          - platform: linux
+            os: ubuntu-latest
+          - platform: windows
+            os: windows-latest
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read Flutter version
+        id: fvm
+        run: echo "flutter=$(jq -r .flutter .fvmrc)" >> "$GITHUB_OUTPUT"
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: ${{ steps.fvm.outputs.flutter }}
+          cache: true
+
+      - name: Install Linux build tools
+        if: matrix.platform == 'linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev
+
+      - name: Add placeholder Firebase config
+        run: cp tool/ci/firebase_options_stub.dart lib/firebase_options.dart
+
+      - name: Build and package
+        run: tool/release/build_desktop.sh ${{ matrix.platform }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: decant-${{ matrix.platform }}
+          path: dist/*
+          retention-days: 7
+

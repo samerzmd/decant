@@ -13,6 +13,10 @@ Your progress (levels, stars, best moves), stats (wins and streak) and
 settings are saved on your device. Unless you turn on cloud save, they are
 never uploaded, and uninstalling Decant deletes them.
 
+The camera is used only when you choose to scan a level's QR code in the
+level editor. Decant asks for permission first, reads the code on your
+device, and never saves or uploads any image.
+
 ## Cloud save (optional)
 
 If you choose **Sign in with Google** in **Settings → Cloud save**, Decant

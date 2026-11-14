@@ -85,10 +85,8 @@ class TutorialCard extends StatelessWidget {
 }
 
 class _Instruction extends StatelessWidget {
-  static TextStyle get _bodyStyle => TextStyle(
-        fontSize: 13.5,
-        color: DecantColors.subtle,
-      );
+  static TextStyle get _bodyStyle =>
+      TextStyle(fontSize: 13.5, color: DecantColors.subtle);
 
   final IconData icon;
   final String title;
@@ -199,8 +197,9 @@ class _Goal extends StatelessWidget {
           tint: DecantColors.star,
         ),
         _Tool(
-            icon: Icons.add_circle_outline_rounded,
-            label: context.l10n.tutorialAddTube),
+          icon: Icons.add_circle_outline_rounded,
+          label: context.l10n.tutorialAddTube,
+        ),
         const SizedBox(height: 8),
         Row(
           children: [
@@ -209,7 +208,10 @@ class _Goal extends StatelessWidget {
             SizedBox(
               width: 132,
               child: DecantButton(
-                  label: context.l10n.gotIt, primary: true, onPressed: onDone),
+                label: context.l10n.gotIt,
+                primary: true,
+                onPressed: onDone,
+              ),
             ),
           ],
         ),
@@ -233,8 +235,10 @@ class _Tool extends StatelessWidget {
           Icon(icon, size: 20, color: tint ?? DecantColors.onSurface),
           const SizedBox(width: 12),
           Flexible(
-            child: Text(label,
-                style: TextStyle(fontSize: 14, color: DecantColors.onSurface)),
+            child: Text(
+              label,
+              style: TextStyle(fontSize: 14, color: DecantColors.onSurface),
+            ),
           ),
         ],
       ),

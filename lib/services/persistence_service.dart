@@ -19,6 +19,8 @@ import '../models/progress_snapshot.dart';
 ///  * `decant.daily`           — JSON of [DailyStats] (daily challenge)
 ///  * `decant.challenges`      — JSON of [ChallengeStats] (best stages)
 ///  * `decant.hints`           — int, hints in the pool
+///  * `decant.hintsAt`         — int, when the pool last changed (ms since
+///                               epoch), so cloud save keeps the newest count
 class PersistenceService {
   static const _kSettings = 'decant.settings';
   static const _kUnlocked = 'decant.unlocked';
@@ -27,6 +29,7 @@ class PersistenceService {
   static const _kDaily = 'decant.daily';
   static const _kChallenges = 'decant.challenges';
   static const _kHints = 'decant.hints';
+  static const _kHintsAt = 'decant.hintsAt';
 
   /// Hints a new player starts with, and the most the pool holds.
   static const startHints = 3;
@@ -87,7 +90,9 @@ class PersistenceService {
         resultFor(levelId) ?? const LevelResult(stars: 0, bestMoves: 0);
     final merged = prev.mergedWith(stars, moves, perfect: perfect);
     await _prefs.setString(
-        '$_kResultPrefix$levelId', jsonEncode(merged.toJson()));
+      '$_kResultPrefix$levelId',
+      jsonEncode(merged.toJson()),
+    );
     await unlockUpTo(levelId + 1);
     return merged;
   }
@@ -161,8 +166,21 @@ class PersistenceService {
 
   int hints() => (_prefs.getInt(_kHints) ?? startHints).clamp(0, maxHints);
 
-  Future<void> saveHints(int hints) =>
-      _prefs.setInt(_kHints, hints.clamp(0, maxHints));
+  /// When the pool last changed (ms since epoch), or 0 if never recorded.
+  int hintsChangedAt() => _prefs.getInt(_kHintsAt) ?? 0;
+
+  /// Saves the pool. A real change is stamped with [changedAt] (now by
+  /// default), so a cloud merge keeps the newest count instead of the
+  /// largest. Saving the same count leaves the stamp alone.
+  Future<void> saveHints(int hints, {int? changedAt}) async {
+    final value = hints.clamp(0, maxHints);
+    if (changedAt == null && value == this.hints()) return;
+    await _prefs.setInt(_kHints, value);
+    await _prefs.setInt(
+      _kHintsAt,
+      changedAt ?? DateTime.now().millisecondsSinceEpoch,
+    );
+  }
 
   // ---- Custom levels ----------------------------------------------------- //
 
@@ -196,6 +214,7 @@ class PersistenceService {
       daily: loadDaily(),
       challenges: loadChallenges(),
       hints: hints(),
+      hintsChangedAt: hintsChangedAt(),
     );
   }
 
@@ -205,11 +224,13 @@ class PersistenceService {
     await _prefs.setInt(_kUnlocked, s.unlockedLevel < 1 ? 1 : s.unlockedLevel);
     for (final e in s.results.entries) {
       await _prefs.setString(
-          '$_kResultPrefix${e.key}', jsonEncode(e.value.toJson()));
+        '$_kResultPrefix${e.key}',
+        jsonEncode(e.value.toJson()),
+      );
     }
     await saveStats(s.stats);
     await saveDaily(s.daily);
     await saveChallenges(s.challenges);
-    await saveHints(s.hints);
+    await saveHints(s.hints, changedAt: s.hintsChangedAt);
   }
 }

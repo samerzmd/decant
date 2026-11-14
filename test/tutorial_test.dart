@@ -71,10 +71,12 @@ void main() {
     expect(find.text('Tap the glowing tube'), findsOneWidget);
 
     final level = LevelGenerator.generate(1);
-    final move = Solver.nextMove(GameState(
-      tubes: level.buildTubes(),
-      extraTubesRemaining: level.extraTubeAllowance,
-    ))!;
+    final move = Solver.nextMove(
+      GameState(
+        tubes: level.buildTubes(),
+        extraTubesRemaining: level.extraTubeAllowance,
+      ),
+    )!;
 
     // One tube glows at a time: only the source until it's picked up.
     TubeWidget tube(int i) =>
@@ -110,27 +112,29 @@ void main() {
   });
 
   testWidgets(
-      'returning players skip it but can replay it from the help button',
-      (tester) async {
-    SharedPreferences.setMockInitialValues({
-      'decant.unlocked': 3,
-      'decant.result.1': '{"stars":3,"moves":5}',
-      'decant.result.2': '{"stars":2,"moves":9}',
-    });
-    persistence = await PersistenceService.create();
-    await pumpLevel(tester, 3);
-    expect(find.text('Tap the glowing tube'), findsNothing);
+    'returning players skip it but can replay it from the help button',
+    (tester) async {
+      SharedPreferences.setMockInitialValues({
+        'decant.unlocked': 3,
+        'decant.result.1': '{"stars":3,"moves":5}',
+        'decant.result.2': '{"stars":2,"moves":9}',
+      });
+      persistence = await PersistenceService.create();
+      await pumpLevel(tester, 3);
+      expect(find.text('Tap the glowing tube'), findsNothing);
 
-    await tester.tap(find.byTooltip('How to play'));
-    await tester.pump(const Duration(milliseconds: 300));
-    expect(find.text('Tap the glowing tube'), findsOneWidget);
-    expect(analytics.events, ['begin:replay']);
-  });
+      await tester.tap(find.byTooltip('How to play'));
+      await tester.pump(const Duration(milliseconds: 300));
+      expect(find.text('Tap the glowing tube'), findsOneWidget);
+      expect(analytics.events, ['begin:replay']);
+    },
+  );
 
   test('tutorialSeen persists and defaults to false for older settings', () {
     expect(AppSettings.fromJson({'haptics': true}).tutorialSeen, isFalse);
-    final round =
-        AppSettings.fromJson(const AppSettings(tutorialSeen: true).toJson());
+    final round = AppSettings.fromJson(
+      const AppSettings(tutorialSeen: true).toJson(),
+    );
     expect(round.tutorialSeen, isTrue);
   });
 }

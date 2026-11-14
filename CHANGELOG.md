@@ -6,6 +6,24 @@ All notable changes to Decant are documented here. The format loosely follows
 
 ## [Unreleased]
 
+### Added
+- QR codes for player-made levels: Share code now shows the level as a QR
+  code, with Send as text alongside, and Create → Enter a code can scan one
+  with the camera. The camera is only used while scanning, after you allow
+  it, and nothing it sees leaves the phone.
+- Desktop apps for macOS, Windows and Linux: the offline game in a tall,
+  resizable window, attached to each GitHub release.
+
+### Changed
+- Built with Flutter 3.47 (was 3.44), which lets the macOS and iOS apps
+  build with Google Sign-In and Firebase together.
+- On the web, Settings no longer shows streak reminders, which can't work
+  there.
+
+### Fixed
+- With cloud save on, hints you spent came back (up to 5) at the next
+  sync. The most recent hint count now wins.
+
 ## [1.6.0] — 2026-11-13
 
 ### Added

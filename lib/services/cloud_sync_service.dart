@@ -223,8 +223,11 @@ class CloudSyncService {
         }
       }
       if (merged != remote) await backend.save(user.uid, merged.toJson());
-      state.value = state.value
-          .copyWith(syncing: false, failed: false, lastSynced: DateTime.now());
+      state.value = state.value.copyWith(
+        syncing: false,
+        failed: false,
+        lastSynced: DateTime.now(),
+      );
     } catch (e) {
       Log.w('Cloud', 'sync failed', e);
       state.value = state.value.copyWith(syncing: false, failed: true);

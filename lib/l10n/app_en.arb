@@ -476,5 +476,12 @@
         "type": "String"
       }
     }
-  }
+  },
+  "editorQrHelp": "A friend can scan this in Decant: Create → Enter a code → Scan a QR code.",
+  "editorSendText": "Send as text",
+  "editorScanQr": "Scan a QR code",
+  "scanHelp": "Point the camera at a Decant level QR code.",
+  "scanWrongCode": "That QR code isn't a Decant level.",
+  "scanNoPermission": "Decant can't use the camera. Allow it in your phone's settings, or paste the code instead.",
+  "scanUnavailable": "The camera isn't available. Paste the code instead."
 }

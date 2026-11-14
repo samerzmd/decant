@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest_all.dart' as tzdata;
@@ -7,6 +6,7 @@ import 'package:timezone/timezone.dart' as tz;
 import '../l10n/app_localizations.dart';
 import '../logic/streak_reminder.dart';
 import 'log.dart';
+import 'platform_support.dart';
 
 /// Local notifications for streak reminders.
 ///
@@ -16,8 +16,12 @@ class ReminderService {
   final FlutterLocalNotificationsPlugin _plugin;
   bool _ready = false;
 
-  ReminderService([FlutterLocalNotificationsPlugin? plugin])
-      : _plugin = plugin ?? FlutterLocalNotificationsPlugin();
+  /// False on web and desktop, where Settings hides reminders.
+  final bool supported;
+
+  ReminderService({FlutterLocalNotificationsPlugin? plugin, bool? supported})
+      : _plugin = plugin ?? FlutterLocalNotificationsPlugin(),
+        supported = supported ?? isPhone;
 
   /// The one reminder that can be pending.
   static const int _id = 7001;
@@ -25,7 +29,7 @@ class ReminderService {
   bool get ready => _ready;
 
   Future<void> init() async {
-    if (kIsWeb) return;
+    if (!supported) return;
     try {
       tzdata.initializeTimeZones();
       final local = await FlutterTimezone.getLocalTimezone();

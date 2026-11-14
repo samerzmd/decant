@@ -77,12 +77,14 @@ class Achievements {
 
   static Set<String> unlockedIds(ProgressData p) => {
         for (final a in all)
-          if (a.unlockedIn(p)) a.id
+          if (a.unlockedIn(p)) a.id,
       };
 
   /// Badges unlocked going from [before] to [after], in list order.
   static List<Achievement> newlyUnlocked(
-      ProgressData before, ProgressData after) {
+    ProgressData before,
+    ProgressData after,
+  ) {
     final had = unlockedIds(before);
     return [
       for (final a in all)

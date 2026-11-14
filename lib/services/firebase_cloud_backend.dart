@@ -78,11 +78,9 @@ class FirebaseCloudBackend implements CloudBackend {
   }
 
   @override
-  Future<void> save(String uid, Map<String, dynamic> progress) =>
-      _doc(uid).set({
-        'progress': progress,
-        'updatedAt': FieldValue.serverTimestamp(),
-      });
+  Future<void> save(String uid, Map<String, dynamic> progress) => _doc(
+        uid,
+      ).set({'progress': progress, 'updatedAt': FieldValue.serverTimestamp()});
 
   @override
   Future<void> deleteAccount(String uid) async {

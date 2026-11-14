@@ -247,9 +247,10 @@ class _Launcher extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         body: Center(
           child: TextButton(
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => const GameScreen(levelId: 1)),
-            ),
+            onPressed: () => Navigator.of(
+              context,
+            ).push(MaterialPageRoute(
+                builder: (_) => const GameScreen(levelId: 1))),
             child: const Text('open'),
           ),
         ),

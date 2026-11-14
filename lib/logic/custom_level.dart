@@ -65,7 +65,8 @@ class CustomLevel {
       return CustomLevelProblem.incomplete;
     }
     final sorted = tubes.every(
-        (t) => t.isEmpty || (t.length == capacity && t.toSet().length == 1));
+      (t) => t.isEmpty || (t.length == capacity && t.toSet().length == 1),
+    );
     return sorted ? CustomLevelProblem.alreadySolved : null;
   }
 

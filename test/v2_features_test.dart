@@ -68,8 +68,10 @@ void main() {
         }
       }
       final en = lookupAppLocalizations(const Locale('en'));
-      expect(achievementName(en, Achievements.all.first),
-          'Solve your first level');
+      expect(
+        achievementName(en, Achievements.all.first),
+        'Solve your first level',
+      );
     });
   });
 
@@ -96,30 +98,35 @@ void main() {
       expect(CustomLevel.decode('DCT1-!!!'), isNull);
       expect(CustomLevel.decode('hello'), isNull);
       expect(
-          CustomLevel.decode(CustomLevel.encode([
+        CustomLevel.decode(
+          CustomLevel.encode([
             [0, 0, 0],
             [1, 1, 1, 1],
             [2, 2, 2, 2],
-          ])),
-          isNull);
+          ]),
+        ),
+        isNull,
+      );
     });
 
     test('checks counts, an already-sorted board and solvability', () {
       expect(CustomLevel.problem(tubes), isNull);
       expect(
-          CustomLevel.problem([
-            [0, 1],
-            [1, 2],
-            [2, 0],
-          ]),
-          CustomLevelProblem.incomplete);
+        CustomLevel.problem([
+          [0, 1],
+          [1, 2],
+          [2, 0],
+        ]),
+        CustomLevelProblem.incomplete,
+      );
       expect(
-          CustomLevel.problem([
-            [0, 0, 0, 0],
-            [1, 1, 1, 1],
-            [2, 2, 2, 2],
-          ]),
-          CustomLevelProblem.alreadySolved);
+        CustomLevel.problem([
+          [0, 0, 0, 0],
+          [1, 1, 1, 1],
+          [2, 2, 2, 2],
+        ]),
+        CustomLevelProblem.alreadySolved,
+      );
     });
 
     test('custom ids never look like dailies or campaign levels', () {
@@ -174,17 +181,21 @@ void main() {
     SharedPreferences.setMockInitialValues({});
     final persistence = await PersistenceService.create();
     await persistence.recordResult(1, 3, 6);
-    await tester.pumpWidget(ProviderScope(
-      overrides: [persistenceProvider.overrideWithValue(persistence)],
-      child: const MaterialApp(
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        home: AchievementsScreen(),
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [persistenceProvider.overrideWithValue(persistence)],
+        child: const MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: AchievementsScreen(),
+        ),
       ),
-    ));
+    );
     expect(find.text('Achievements'), findsOneWidget);
     expect(
-        find.text('1 of ${Achievements.all.length} unlocked'), findsOneWidget);
+      find.text('1 of ${Achievements.all.length} unlocked'),
+      findsOneWidget,
+    );
     expect(find.text('Solve your first level'), findsOneWidget);
     expect(find.text('1 / 10'), findsOneWidget);
   });

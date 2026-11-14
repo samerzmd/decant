@@ -58,8 +58,9 @@ class DecantColors {
       : const [Color(0xFF2A3766), Color(0xFF31265C)];
 
   /// [panel], slightly see-through.
-  static List<Color> get panelTranslucent =>
-      [for (final c in panel) c.withValues(alpha: 0.95)];
+  static List<Color> get panelTranslucent => [
+        for (final c in panel) c.withValues(alpha: 0.95),
+      ];
 
   /// The dimming layer behind dialogs and overlays.
   static Color get scrim =>

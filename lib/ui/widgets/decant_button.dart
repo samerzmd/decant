@@ -46,64 +46,69 @@ class _DecantButtonState extends State<DecantButton> {
           scale: _down ? 0.95 : 1.0,
           duration: const Duration(milliseconds: 110),
           curve: Curves.easeOut,
-          child: LayoutBuilder(builder: (context, box) {
-            // Side-by-side buttons on a phone get ~110 dp: trim the padding
-            // so labels like "Replay" still fit.
-            final compact = box.maxWidth < 150;
-            return Container(
-              width: widget.expand ? double.infinity : null,
-              padding: EdgeInsets.symmetric(
-                  horizontal: compact ? 10 : 18, vertical: 15),
-              decoration: BoxDecoration(
-                color: bg,
-                borderRadius: BorderRadius.circular(18),
-                border: widget.primary
-                    ? null
-                    : Border.all(
-                        color: DecantColors.ink.withValues(alpha: 0.16)),
-                boxShadow: widget.primary
-                    ? [
-                        BoxShadow(
-                          color: DecantColors.accent.withValues(alpha: 0.35),
-                          blurRadius: 18,
-                          offset: const Offset(0, 6),
-                        )
-                      ]
-                    : null,
-              ),
-              child: Row(
-                mainAxisSize:
-                    widget.expand ? MainAxisSize.max : MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (widget.icon != null) ...[
-                    Icon(widget.icon, color: fg, size: 20),
-                    SizedBox(width: compact ? 6 : 8),
-                  ],
-                  // When the button is tight (side-by-side buttons, long
-                  // translations, large text) the label shrinks to fit rather
-                  // than being cut off.
-                  Flexible(
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text(
-                        widget.label,
-                        maxLines: 1,
-                        softWrap: false,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: fg,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 0.3,
+          child: LayoutBuilder(
+            builder: (context, box) {
+              // Side-by-side buttons on a phone get ~110 dp: trim the padding
+              // so labels like "Replay" still fit.
+              final compact = box.maxWidth < 150;
+              return Container(
+                width: widget.expand ? double.infinity : null,
+                padding: EdgeInsets.symmetric(
+                  horizontal: compact ? 10 : 18,
+                  vertical: 15,
+                ),
+                decoration: BoxDecoration(
+                  color: bg,
+                  borderRadius: BorderRadius.circular(18),
+                  border: widget.primary
+                      ? null
+                      : Border.all(
+                          color: DecantColors.ink.withValues(alpha: 0.16),
+                        ),
+                  boxShadow: widget.primary
+                      ? [
+                          BoxShadow(
+                            color: DecantColors.accent.withValues(alpha: 0.35),
+                            blurRadius: 18,
+                            offset: const Offset(0, 6),
+                          ),
+                        ]
+                      : null,
+                ),
+                child: Row(
+                  mainAxisSize:
+                      widget.expand ? MainAxisSize.max : MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (widget.icon != null) ...[
+                      Icon(widget.icon, color: fg, size: 20),
+                      SizedBox(width: compact ? 6 : 8),
+                    ],
+                    // When the button is tight (side-by-side buttons, long
+                    // translations, large text) the label shrinks to fit rather
+                    // than being cut off.
+                    Flexible(
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          widget.label,
+                          maxLines: 1,
+                          softWrap: false,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: fg,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 0.3,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            );
-          }),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
@@ -146,18 +151,24 @@ class DecantIconButton extends StatelessWidget {
                   color: DecantColors.ink.withValues(alpha: 0.07),
                   shape: BoxShape.circle,
                   border: Border.all(
-                      color: DecantColors.ink.withValues(alpha: 0.12)),
+                    color: DecantColors.ink.withValues(alpha: 0.12),
+                  ),
                 ),
-                child:
-                    Icon(icon, color: tint ?? DecantColors.onSurface, size: 24),
+                child: Icon(
+                  icon,
+                  color: tint ?? DecantColors.onSurface,
+                  size: 24,
+                ),
               ),
               if (badge != null)
                 Positioned(
                   right: -2,
                   top: -2,
                   child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 6,
+                      vertical: 2,
+                    ),
                     decoration: BoxDecoration(
                       color: DecantColors.accentDeep,
                       borderRadius: BorderRadius.circular(10),

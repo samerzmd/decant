@@ -4,9 +4,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../l10n/l10n.dart';
 import '../../logic/custom_level.dart';
+import '../../services/platform_support.dart';
 import '../../models/tube.dart';
 import '../../state/providers.dart';
 import '../theme/app_theme.dart';
@@ -15,6 +17,7 @@ import '../widgets/decant_button.dart';
 import '../widgets/decant_notice.dart';
 import '../widgets/tube_widget.dart';
 import 'game_screen.dart';
+import 'qr_scan_screen.dart';
 
 /// Runs the solvability check off the UI thread.
 CustomLevelProblem? _check(List<List<int>> tubes) => CustomLevel.problem(tubes);
@@ -132,15 +135,17 @@ class _LevelEditorScreenState extends ConsumerState<LevelEditorScreen> {
     if (!await _ready() || !mounted) return;
     final level = CustomLevel.toLevel(_tubes);
     final code = CustomLevel.encode(_tubes);
-    ref.read(customLevelsProvider.notifier).update(
-          (m) => {...m, level.id: level},
-        );
+    ref
+        .read(customLevelsProvider.notifier)
+        .update((m) => {...m, level.id: level});
     await ref.read(persistenceProvider).rememberCustomLevel(code);
     if (!mounted) return;
-    await Navigator.of(context).push(MaterialPageRoute<void>(
-      settings: const RouteSettings(name: '/game'),
-      builder: (_) => GameScreen(levelId: level.id),
-    ));
+    await Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        settings: const RouteSettings(name: '/game'),
+        builder: (_) => GameScreen(levelId: level.id),
+      ),
+    );
     if (mounted) setState(() {});
   }
 
@@ -150,6 +155,12 @@ class _LevelEditorScreenState extends ConsumerState<LevelEditorScreen> {
     await ref.read(persistenceProvider).rememberCustomLevel(code);
     if (!mounted) return;
     setState(() {});
+    final send = await showDialog<bool>(
+      context: context,
+      barrierColor: DecantColors.scrim,
+      builder: (_) => _QrDialog(code: code),
+    );
+    if (send != true || !mounted) return;
     final box = context.findRenderObject() as RenderBox?;
     await ref.read(shareProvider)(
       '${context.l10n.editorShareInvite}\n$code',
@@ -184,8 +195,10 @@ class _LevelEditorScreenState extends ConsumerState<LevelEditorScreen> {
                   child: Row(
                     children: [
                       IconButton(
-                        icon: Icon(Icons.arrow_back_rounded,
-                            color: DecantColors.onSurface),
+                        icon: Icon(
+                          Icons.arrow_back_rounded,
+                          color: DecantColors.onSurface,
+                        ),
                         onPressed: () => Navigator.of(context).pop(),
                       ),
                       Expanded(
@@ -202,10 +215,15 @@ class _LevelEditorScreenState extends ConsumerState<LevelEditorScreen> {
                       ),
                       TextButton.icon(
                         onPressed: _enterCode,
-                        icon: Icon(Icons.input_rounded,
-                            color: DecantColors.accent, size: 20),
-                        label: Text(l.editorEnterCode,
-                            style: TextStyle(color: DecantColors.accent)),
+                        icon: Icon(
+                          Icons.input_rounded,
+                          color: DecantColors.accent,
+                          size: 20,
+                        ),
+                        label: Text(
+                          l.editorEnterCode,
+                          style: TextStyle(color: DecantColors.accent),
+                        ),
                       ),
                     ],
                   ),
@@ -216,8 +234,10 @@ class _LevelEditorScreenState extends ConsumerState<LevelEditorScreen> {
                     children: [
                       Text(
                         l.editorHelp,
-                        style:
-                            TextStyle(color: DecantColors.subtle, fontSize: 13),
+                        style: TextStyle(
+                          color: DecantColors.subtle,
+                          fontSize: 13,
+                        ),
                       ),
                       const SizedBox(height: 14),
                       _ColorCount(value: _colors, onChanged: _setColors),
@@ -447,8 +467,10 @@ class _SavedChip extends StatelessWidget {
     final tag = code.substring(start, math.min(code.length, start + 6));
     return ActionChip(
       avatar: Icon(Icons.science_rounded, size: 18, color: DecantColors.accent),
-      label: Text('$colors · $tag',
-          style: TextStyle(color: DecantColors.onSurface)),
+      label: Text(
+        '$colors · $tag',
+        style: TextStyle(color: DecantColors.onSurface),
+      ),
       backgroundColor: DecantColors.ink.withValues(alpha: 0.06),
       side: BorderSide.none,
       onPressed: onTap,
@@ -483,13 +505,25 @@ class _CodeDialogState extends State<_CodeDialog> {
     Navigator.of(context).pop(tubes);
   }
 
+  Future<void> _scan() async {
+    final tubes = await Navigator.of(context).push<List<List<int>>>(
+      MaterialPageRoute(
+        settings: const RouteSettings(name: '/scan'),
+        builder: (_) => const QrScanScreen(),
+      ),
+    );
+    if (tubes != null && mounted) Navigator.of(context).pop(tubes);
+  }
+
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
     return AlertDialog(
       backgroundColor: DecantColors.panel.first,
-      title: Text(l.editorEnterCode,
-          style: TextStyle(color: DecantColors.onSurface)),
+      title: Text(
+        l.editorEnterCode,
+        style: TextStyle(color: DecantColors.onSurface),
+      ),
       content: TextField(
         controller: _text,
         autofocus: true,
@@ -503,11 +537,99 @@ class _CodeDialogState extends State<_CodeDialog> {
         onSubmitted: (_) => _open(),
       ),
       actions: [
+        // Phones only: the web and desktop builds have no scanner.
+        if (isPhone)
+          TextButton.icon(
+            key: const ValueKey('scan-qr'),
+            onPressed: _scan,
+            icon: const Icon(Icons.qr_code_scanner_rounded, size: 20),
+            label: Text(l.editorScanQr),
+          ),
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
           child: Text(l.notNow),
         ),
         TextButton(onPressed: _open, child: Text(l.editorOpen)),
+      ],
+    );
+  }
+}
+
+/// The level as a QR code a friend can scan, with an option to send the
+/// code as text instead. Closes with true when the player picks text.
+class _QrDialog extends StatelessWidget {
+  final String code;
+
+  const _QrDialog({required this.code});
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    return AlertDialog(
+      backgroundColor: DecantColors.panel.first,
+      title: Text(
+        l.editorShare,
+        style: TextStyle(color: DecantColors.onSurface),
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Dark modules on white scan reliably in every theme.
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            // A fixed size answers the dialog's intrinsic sizing, which
+            // QrImageView's LayoutBuilder can't.
+            child: SizedBox.square(
+              dimension: 200,
+              child: QrImageView(
+                key: const ValueKey('level-qr'),
+                data: code,
+                size: 200,
+                backgroundColor: Colors.white,
+                eyeStyle: const QrEyeStyle(
+                  eyeShape: QrEyeShape.circle,
+                  color: Color(0xFF1B2440),
+                ),
+                dataModuleStyle: const QrDataModuleStyle(
+                  dataModuleShape: QrDataModuleShape.square,
+                  color: Color(0xFF1B2440),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 14),
+          SelectableText(
+            code,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: DecantColors.subtle,
+              fontSize: 12,
+              fontFamily: 'monospace',
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            l.editorQrHelp,
+            textAlign: TextAlign.center,
+            style: TextStyle(color: DecantColors.onSurface, fontSize: 13),
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(false),
+          child: Text(MaterialLocalizations.of(context).closeButtonLabel),
+        ),
+        TextButton.icon(
+          key: const ValueKey('send-code-text'),
+          onPressed: () => Navigator.of(context).pop(true),
+          icon: const Icon(Icons.send_rounded, size: 18),
+          label: Text(l.editorSendText),
+        ),
       ],
     );
   }

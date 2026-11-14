@@ -82,8 +82,10 @@ class PourEngine {
     final newTubes = List<Tube>.from(state.tubes);
     // Reverse: take [count] of [color] off `to`, put them back on `from`.
     newTubes[move.to] = state.tubes[move.to].withRemovedTop(move.count);
-    newTubes[move.from] =
-        state.tubes[move.from].withAdded(move.color, move.count);
+    newTubes[move.from] = state.tubes[move.from].withAdded(
+      move.color,
+      move.count,
+    );
     return state.copyWith(
       tubes: newTubes,
       history: state.history.sublist(0, state.history.length - 1),

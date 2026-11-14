@@ -7,7 +7,9 @@ void main() {
   test('music catalog has 54 tracks with unique ids', () {
     expect(kMusicCatalog.length, 54);
     expect(
-        kMusicCatalog.map((t) => t.name).toSet().length, kMusicCatalog.length);
+      kMusicCatalog.map((t) => t.name).toSet().length,
+      kMusicCatalog.length,
+    );
   });
 
   test('every track has a known category and every category is used', () {
@@ -16,8 +18,11 @@ void main() {
       expect(cats, contains(t.category), reason: t.name);
     }
     for (final c in kMusicCategories) {
-      expect(kMusicCatalog.where((t) => t.category == c.id), isNotEmpty,
-          reason: c.id);
+      expect(
+        kMusicCatalog.where((t) => t.category == c.id),
+        isNotEmpty,
+        reason: c.id,
+      );
     }
   });
 

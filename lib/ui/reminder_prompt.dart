@@ -17,8 +17,12 @@ Future<bool> turnOnReminders(BuildContext context, WidgetRef ref) async {
   if (granted) {
     ref.read(settingsProvider.notifier).setStreakReminders(true);
   } else if (context.mounted) {
-    showDecantNotice(context, blocked,
-        icon: Icons.notifications_off_outlined, tone: NoticeTone.warning);
+    showDecantNotice(
+      context,
+      blocked,
+      icon: Icons.notifications_off_outlined,
+      tone: NoticeTone.warning,
+    );
   }
   return granted;
 }
@@ -34,12 +38,14 @@ bool shouldOfferReminders(AppSettings settings, ProgressData progress) =>
 /// The system permission prompt only follows a yes, so it's never shown
 /// cold, and the offer itself is never repeated.
 Future<void> maybeOfferReminders(BuildContext context, WidgetRef ref) async {
+  if (!ref.read(reminderServiceProvider).supported) return;
   final settings = ref.read(settingsProvider);
   if (!shouldOfferReminders(settings, ref.read(progressProvider))) return;
   ref.read(settingsProvider.notifier).markReminderOffered();
   final l = context.l10n;
-  final time = MaterialLocalizations.of(context)
-      .formatTimeOfDay(TimeOfDay(hour: settings.reminderHour, minute: 0));
+  final time = MaterialLocalizations.of(
+    context,
+  ).formatTimeOfDay(TimeOfDay(hour: settings.reminderHour, minute: 0));
   final yes = await showDecantConfirm(
     context,
     title: l.reminderOfferTitle,

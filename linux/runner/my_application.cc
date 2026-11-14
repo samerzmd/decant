@@ -46,14 +46,15 @@ static void my_application_activate(GApplication* application) {
   if (use_header_bar) {
     GtkHeaderBar* header_bar = GTK_HEADER_BAR(gtk_header_bar_new());
     gtk_widget_show(GTK_WIDGET(header_bar));
-    gtk_header_bar_set_title(header_bar, "decant");
+    gtk_header_bar_set_title(header_bar, "Decant");
     gtk_header_bar_set_show_close_button(header_bar, TRUE);
     gtk_window_set_titlebar(window, GTK_WIDGET(header_bar));
   } else {
-    gtk_window_set_title(window, "decant");
+    gtk_window_set_title(window, "Decant");
   }
 
-  gtk_window_set_default_size(window, 1280, 720);
+  // A tall, phone-like window; the game lays out for any size.
+  gtk_window_set_default_size(window, 480, 860);
 
   g_autoptr(FlDartProject) project = fl_dart_project_new();
   fl_dart_project_set_dart_entrypoint_arguments(project, self->dart_entrypoint_arguments);

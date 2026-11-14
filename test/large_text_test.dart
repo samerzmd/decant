@@ -47,29 +47,32 @@ void main() {
         SharedPreferences.setMockInitialValues({});
         final p = await PersistenceService.create();
         await p.saveSettings(const AppSettings(tutorialSeen: true));
-        await tester.pumpWidget(ProviderScope(
-          overrides: [
-            persistenceProvider.overrideWithValue(p),
-            audioServiceProvider.overrideWithValue(AudioService()),
-            analyticsServiceProvider.overrideWithValue(_Q()),
-          ],
-          child: MaterialApp(
-            locale: Locale(lang),
-            supportedLocales: AppLocalizations.supportedLocales,
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
+        await tester.pumpWidget(
+          ProviderScope(
+            overrides: [
+              persistenceProvider.overrideWithValue(p),
+              audioServiceProvider.overrideWithValue(AudioService()),
+              analyticsServiceProvider.overrideWithValue(_Q()),
             ],
-            builder: (c, child) => MediaQuery(
-              data: MediaQuery.of(c)
-                  .copyWith(textScaler: TextScaler.linear(scale)),
-              child: child!,
+            child: MaterialApp(
+              locale: Locale(lang),
+              supportedLocales: AppLocalizations.supportedLocales,
+              localizationsDelegates: const [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              builder: (c, child) => MediaQuery(
+                data: MediaQuery.of(
+                  c,
+                ).copyWith(textScaler: TextScaler.linear(scale)),
+                child: child!,
+              ),
+              home: e.value,
             ),
-            home: e.value,
           ),
-        ));
+        );
         await tester.pump();
         await tester.pump(const Duration(milliseconds: 300));
         // Overflows are reported by the framework with the widget path.
