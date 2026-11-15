@@ -68,6 +68,7 @@ Relaxing water sort, color sort and liquid sort puzzles for every day.
 | App icon | `../branding/decant_icon.png` (1024×1024, scale to 512×512) | 512×512 PNG |
 | Feature graphic | `feature_graphic.jpg` (1024×500, no alpha) | 1024×500 JPEG or 24-bit PNG |
 | Phone screenshots | `screenshots/phone/01–08` (1440×2880) | 2–8, 9:16 to 2:1 |
+| Promo video | `video/decant_promo.mp4` (1080×1920, 29 s), on YouTube as https://www.youtube.com/watch?v=WS6Q-8fMjqI | Public or unlisted YouTube URL, ads off |
 
 Screenshot order and suggested captions:
 
