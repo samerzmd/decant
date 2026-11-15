@@ -9,39 +9,51 @@ Decant: Water Sort Puzzle
 
 ## Short description (80 max)
 
-Pour, sort and unwind. A calm water-sort puzzle with soothing sound.
+Relaxing water sort puzzle: pour colors into glass tubes. A new level every day.
 
 ## Full description (4000 max)
 
-Decant is a calm puzzle about pouring colored liquid between glass tubes until
-every tube holds a single color. No timers, no ads, no pressure. Just you, a
-few glass tubes and a quiet soundtrack.
+Decant is a calm water sort puzzle. Pour colored liquid between glass tubes until every tube holds a single color. No timers unless you want them, no pop-up ads, no pressure. Just you, a few glass tubes and a quiet soundtrack.
 
 HOW TO PLAY
 • Tap a tube to pick up the color on top.
 • Tap another tube to pour. Liquid lands on the same color or in an empty tube.
-• Sort every tube into one color to finish the level. Fewer moves earn more
-  stars.
+• Sort every tube into one color to finish the level. Fewer moves earn more stars.
+
+A NEW PUZZLE EVERY DAY
+• Daily challenge: one level a day, the same for everyone, easy on Monday and hardest on Sunday.
+• Keep your daily streak going, with an optional reminder at the hour you choose.
+• Share your result with friends, and see how you rank on the daily leaderboard.
+
+ENDLESS LEVELS, ALWAYS SOLVABLE
+• Infinite levels in chapters of 20, each with its own background, every one guaranteed solvable.
+• Star targets and a perfect badge for solving in par.
+• Undo as many pours as you like, restart, use a hint or add an empty tube.
+• 22 achievements in bronze, silver and gold.
+
+MORE WAYS TO PLAY
+• Zen mode hides moves and stars. Just pour.
+• Challenges: Move limit (no undo) and Against the clock.
+• Level editor: build your own puzzle, check it's solvable and share it as a code.
 
 MADE TO UNWIND
-• Glass tubes with rising liquid, a pouring stream and a gentle wobble.
+• Glass tubes that tip and pour, with a falling stream, a gentle splash and light that plays through the glass.
 • Pour sounds that rise in pitch as the tube fills.
 • 54 ambient soundscapes and 54 music tracks, each with its own volume.
-• A first-run guide that teaches the game on a real level.
 
-ALWAYS A WAY FORWARD
-• Endless levels that ramp up gently, every one guaranteed solvable.
-• Undo as many pours as you like, or restart.
-• Hints when you're stuck, and an extra empty tube when you need room.
+PLAY YOUR WAY
+• Themes: Twilight, Midnight, Daylight and High contrast.
+• Colorblind-friendly palettes and symbols, so colors never rely on color alone.
+• Works offline. Optional cloud save with Google sign-in to continue on another device.
+• Phone, tablet and landscape layouts. English, Spanish, French and German.
+• Pour speed, reduce motion, haptics and keep screen awake settings.
 
-YOUR PACE
-• Stats: levels solved, stars, perfect levels and a daily streak.
-• Pour speed: Relaxed, Normal or Quick.
-• Reduce motion for calmer visuals (also follows your system setting).
-• Colorblind symbols, so colors never rely on color alone.
-• Haptics, and an option to keep the screen awake while you play.
+FAIR AND FREE
+• No in-app purchases, no banners and no ads between levels.
+• Out of hints? You can choose to watch a short video for one. Nothing plays unless you tap it.
+• Decant is open source on GitHub.
 
-No ads. No in-app purchases. Your progress stays on your device.
+Relaxing water sort, color sort and liquid sort puzzles for every day.
 
 ## Categorization
 
@@ -55,16 +67,18 @@ No ads. No in-app purchases. Your progress stays on your device.
 |---|---|---|
 | App icon | `../branding/decant_icon.png` (1024×1024, scale to 512×512) | 512×512 PNG |
 | Feature graphic | `feature_graphic.jpg` (1024×500, no alpha) | 1024×500 JPEG or 24-bit PNG |
-| Phone screenshots | `screenshots/phone/01–06` (1440×2880) | 2–8, 9:16 to 2:1 |
+| Phone screenshots | `screenshots/phone/01–08` (1440×2880) | 2–8, 9:16 to 2:1 |
 
 Screenshot order and suggested captions:
 
 1. `01_home.png`: Pour. Sort. Unwind.
 2. `02_gameplay.png`: Sort every tube into one color
-3. `03_pour.png`: Smooth pours and soothing sound
-4. `04_how_to_play.png`: Learn as you play
-5. `05_stats.png`: Track your stars and streak
-6. `06_sounds.png`: 54 music tracks, 54 soundscapes
+3. `03_levels.png`: Endless levels, always solvable
+4. `04_achievements.png`: 22 achievements to earn
+5. `05_level_editor.png`: Build and share your own puzzles
+6. `06_stats.png`: Track your stars and streak
+7. `07_settings.png`: Zen mode, pour speed and four themes
+8. `08_sounds.png`: 54 music tracks, 54 soundscapes
 
 The feature graphic is rendered from the in-app logo painter with
 `fvm flutter test tool/render_store_test.dart`, then converted to JPEG with
@@ -77,7 +91,7 @@ for example `sips -c 2880 1440 --cropOffset 116 0` on a 1440×3088 screen.
 ## App content (Policy section)
 
 - **Privacy policy URL:** the GitHub URL of [`PRIVACY.md`](../PRIVACY.md)
-- **Ads:** No
+- **Ads:** Yes (optional rewarded videos for a hint, AdMob)
 - **Target audience:** 13 and over is the simplest choice. Picking ages under 13
   brings in Families policy, which restricts analytics SDKs.
 - **Content rating:** answer the IARC questionnaire. No violence, no user
